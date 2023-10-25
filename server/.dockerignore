@@ -1,0 +1,6 @@
+http
+node_modules
+.dockerignore
+.gitignore
+.prettierrc
+Dockerfile

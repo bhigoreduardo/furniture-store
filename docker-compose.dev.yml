@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./server
+      args:
+        - NODE_ENV=dev
+    environment:
+      - MONGO_USER=admin
+      - MONGO_PASS=admin
+      - MONGO_DB=furniture_dev
+      - CLIENT_URL=http://localhost
+      - CLIENT_PORT=3000
+      - SERVER_URL=http://localhost
+      - SERVER_PORT=3001
+      - SERVER_JWT_SECRET=jwt_secret
+      - SERVER_ACTIVATED_SECRET=activated_secret
+      - SMTP_EMAIL_HOST=smtp.mailtrap.io
+      - SMTP_EMAIL_PORT=2525
+      - SMTP_EMAIL_USER=3d2f2f98a9b177
+      - SMTP_EMAIL_PASS=e768cecaa9403c
+    restart: always
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    command: yarn dev
+
+  mongo:
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    restart: always

@@ -1,0 +1,42 @@
+/* BASE */
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all ease-in-out 300ms;
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+  scroll-padding-top: 55px;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+select,
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+iframe,
+textarea,
+input,
+select {
+  font-family: inherit;
+  resize: none;
+  border: none;
+  outline: none;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
