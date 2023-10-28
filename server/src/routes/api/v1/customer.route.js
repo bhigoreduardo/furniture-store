@@ -19,6 +19,11 @@ router.post(
   useError(customerController.confirmSignUp)
 )
 router.post(
+  '/activated-token',
+  validate(customerMiddleware.activatedToken),
+  useError(customerController.activatedToken)
+)
+router.post(
   '/sign-in',
   validate(customerMiddleware.signIn),
   useError(customerController.signIn)

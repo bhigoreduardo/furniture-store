@@ -21,6 +21,12 @@ export const confirmSignUp = {
   }),
 }
 
+export const activatedToken = {
+  body: Joi.object({
+    email: Joi.string().email().required(),
+  }),
+}
+
 export const signIn = {
   body: Joi.object({
     email: Joi.string().email().required(),
@@ -39,7 +45,10 @@ export const generateRecoveryPassword = {
 export const recoveryPassword = {
   body: Joi.object({
     passwordResetToken: Joi.string().required(),
-    newPassword: Joi.string()
+    password: Joi.string()
+      .regex(/[a-zA-Z0-9]{3,30}/)
+      .required(),
+    repeatPassword: Joi.string()
       .regex(/[a-zA-Z0-9]{3,30}/)
       .required(),
   }),

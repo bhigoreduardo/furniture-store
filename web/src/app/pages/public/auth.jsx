@@ -1,11 +1,11 @@
 import Container from '../../components/ui/container'
 
-import Login from '../../components/ui/form/public/login'
+import FormAuth from '../../components/ui/form/public/form-auth'
 
-export default function SignIn() {
+export default function Auth() {
   return (
     <Container className="flex items-center justify-center py-[100px]">
-      <Login />
+      <FormAuth />
     </Container>
   )
 }

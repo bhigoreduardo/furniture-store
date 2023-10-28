@@ -1,6 +1,6 @@
 import api from '../libs/api'
 
-const apiAuth = async (endPoint, values) => {
+export const apiAuth = async (endPoint, values) => {
   try {
     const { data } = await api.post(endPoint, values)
     return data
@@ -9,4 +9,11 @@ const apiAuth = async (endPoint, values) => {
   }
 }
 
-export default apiAuth
+export const apiGenerateRecoveryPassword = async (values) => {
+  try {
+    const { data } = await api.post('/customers/generate-recovery-password', values)
+    return data
+  } catch (err) {
+    return err?.response?.data
+  }
+}

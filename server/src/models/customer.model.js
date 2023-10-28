@@ -115,6 +115,7 @@ CustomerSchema.methods.sendAuth = function () {
       address: this.address,
       terms: this.terms,
       status: this.status,
+      activated: this.activated,
     },
     token: this.generateToken(),
   }

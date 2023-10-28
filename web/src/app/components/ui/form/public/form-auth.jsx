@@ -5,12 +5,12 @@ import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
+import { apiAuth } from '../../../../../api/api-auth'
 import InputLabel from '../../input/input-label'
 import PasswordLabel from '../../input/password-label'
 import Button from '../../button/button'
 import Tab from '../../button/tab'
 import CheckboxLabel from '../../input/checkbox-label'
-import apiAuth from '../../../../../api/api-auth'
 
 const validationSignInSchema = yup.object().shape({
   email: yup
@@ -40,7 +40,7 @@ const initialSignUpValues = {
   terms: '',
 }
 
-export default function Login() {
+export default function FormAuth() {
   const [info, setInfo] = useState('')
   const [success, setSuccess] = useState(false)
   const [isNonLogin, setIsNonLogin] = useState(false)
@@ -85,7 +85,15 @@ export default function Login() {
           onClick={() => setIsNonLogin(true)}
         />
       </div>
-      <span className={`flex pt-2 justify-center text-xs ${success ? "text-blue-500" : "text-red-500"}`}>{info}</span>
+      {info && (
+        <span
+          className={`flex pt-2 justify-center text-xs ${
+            success ? 'text-blue-500' : 'text-red-500'
+          }`}
+        >
+          {info}
+        </span>
+      )}
       <div className="flex flex-col gap-4 px-8 py-6">
         {isNonLogin && (
           <InputLabel
@@ -130,7 +138,10 @@ export default function Login() {
           name="password"
           btn={
             !isNonLogin && (
-              <Link className="font-semibold text-blue-500 hover:text-blue-600">
+              <Link
+                to="/recuperar-senha"
+                className="font-semibold text-blue-500 hover:text-blue-600"
+              >
                 Esqueceu a senha?
               </Link>
             )

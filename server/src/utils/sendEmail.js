@@ -16,8 +16,8 @@ export const activatedTokenEmail = async (user, activatedToken, cb) => {
     <p>
         Acesse o link abaixo para ativar sua conta.
     </p>
-    <a href="${clientURL}/ativar-conta?token=${activatedToken}">
-      Ativar conta: ${clientURL}/ativar-conta?token=${activatedToken}
+    <a href="${clientURL}/confirmar-conta?token=${activatedToken}">
+      Ativar conta: ${clientURL}/confirmar-conta?token=${activatedToken}
     </a>
     <br /><br /><hr />
     <p>
@@ -54,8 +54,8 @@ export const generateRecoveryPasswordEmail = async (
     <p>
         Acesse o link abaixo para redefinir sua senha.
     </p>
-    <a href="${clientURL}/recuperar-senha?token=${recoveryPassword.passwordResetToken}">
-      Redefinir senha: ${clientURL}/recuperar-senha?token=${recoveryPassword.passwordResetToken}
+    <a href="${clientURL}/redefinir-senha?token=${recoveryPassword.passwordResetToken}">
+      Redefinir senha: ${clientURL}/redefinir-senha?token=${recoveryPassword.passwordResetToken}
     </a>
     <br /><br /><hr />
     <p>

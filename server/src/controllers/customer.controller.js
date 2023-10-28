@@ -44,6 +44,29 @@ export const confirmSignUp = async (req, res) => {
   })
 }
 
+export const activatedToken = async (req, res) => {
+  const finded = await CustomerModel.findOne({
+    email: req.body.email,
+    'activated.activatedStatus': false,
+  })
+  if (!finded) throw new ErrorHandler('Usuário não encontrado', 400)
+  const activated = finded.generateActivatedToken()
+  await finded.save()
+  await activatedTokenEmail(
+    finded,
+    activated?.activatedToken,
+    async (err = null, info = null) => {
+      if (err) throw new ErrorHandler(err, 500)
+
+      return res.status(200).json({
+        success: true,
+        message: 'Solicitação realizada com sucesso',
+        info,
+      })
+    }
+  )
+}
+
 export const signIn = async (req, res) => {
   const finded = await CustomerModel.findOne({
     email: req.body.email,
@@ -84,6 +107,8 @@ export const generateRecoveryPassword = async (req, res) => {
 }
 
 export const recoveryPassword = async (req, res) => {
+  if (req.body.password !== req.body.repeatPassword)
+    throw new ErrorHandler('Senhas inválidas', 400)
   const finded = await CustomerModel.findOne({
     'recoveryPassword.passwordResetToken': req.body.passwordResetToken,
     'recoveryPassword.passwordResetExpires': { $gte: new Date() },
@@ -91,7 +116,7 @@ export const recoveryPassword = async (req, res) => {
   if (!finded)
     throw new ErrorHandler('Token inválido, contate o administrador', 422)
 
-  finded.setPassword(req.body.newPassword)
+  finded.setPassword(req.body.password)
   finded.clearRecoveryPassword()
   await finded.save()
   return res.status(200).json({
