@@ -4,10 +4,12 @@ import * as yup from 'yup'
 import { ArrowRight } from 'phosphor-react'
 import { toast } from 'react-toastify'
 
-import { apiAuth } from '../../../../../api/api-auth'
+import auth from '../../../../../api/auth'
+import useApp from '../../../../../hooks/useApp'
 import useQueries from '../../../../../hooks/useQueries'
 import PasswordLabel from '../../input/password-label'
 import Button from '../../button/button'
+import { useNavigate } from 'react-router-dom'
 
 const validationSchema = yup.object().shape({
   password: yup.string().required('Senha é obrigatório'),
@@ -22,6 +24,8 @@ const initialValues = {
 }
 
 export default function FormRecoveryPassword() {
+  const navigate = useNavigate()
+  const { setIsLoading } = useApp()
   const queries = useQueries()
   const [info, setInfo] = useState('')
   const [success, setSuccess] = useState(false)
@@ -33,14 +37,17 @@ export default function FormRecoveryPassword() {
   })
   const handleSubmit = async (values) => {
     if (queries.has('token')) {
-      const { message, info, success } = await apiAuth(
+      setIsLoading(true)
+      const { message, info, success } = await auth(
         '/customers/recovery-password',
         { ...values, passwordResetToken: queries.get('token') }
       )
+      setIsLoading(false)
       setInfo(info)
       setSuccess(success)
       if (success) {
         toast.success(message)
+        navigate('/entrar')
       } else {
         toast.error(message)
       }

@@ -1,5 +1,5 @@
 import Container from '../../../ui/container'
-import Social from '../../../ui/icon/social'
+import IconSocial from '../../../ui/icon/icon-social'
 
 export default function TopNav() {
   return (
@@ -10,7 +10,7 @@ export default function TopNav() {
         </span>
         <div className="flex items-center gap-3">
           <span className="text-sm">Siga nos:</span>
-          <Social />
+          <IconSocial />
         </div>
       </Container>
     </div>

@@ -2,9 +2,11 @@
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import AppContextProvider from '../contexts/app-context'
+
 export default function DefaultProvider({ children }) {
   return (
-    <>
+    <AppContextProvider>
       <ToastContainer
         position="top-right"
         // autoClose={250}
@@ -17,6 +19,6 @@ export default function DefaultProvider({ children }) {
         theme="light"
       />
       {children}
-    </>
+    </AppContextProvider>
   )
 }

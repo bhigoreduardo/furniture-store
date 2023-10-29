@@ -1,16 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
+import useApp from '../hooks/useApp'
+import LoaderContainer from './components/ui/loader-container'
 import Public from './layouts/public'
 import Auth from './pages/public/auth'
-import DefaultProvider from './providers/default'
 import GenerateRecoveryPassword from './pages/public/generate-recovery-password'
 import SignUpConfirm from './pages/public/sign-up-confirm'
 import ActivatedToken from './pages/public/activated-token'
 import RecoveryPassword from './pages/public/recovery-password'
 
 export default function App() {
+  const { isLoading } = useApp()
+  
   return (
-    <DefaultProvider>
+    <>
+      {isLoading && <LoaderContainer />}
       <Router>
         <Routes>
           <Route path="/" element={<Public />}>
@@ -25,6 +29,6 @@ export default function App() {
           </Route>
         </Routes>
       </Router>
-    </DefaultProvider>
+    </>
   )
 }

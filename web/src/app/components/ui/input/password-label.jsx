@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import Hint from '../icon/hint'
+import IconHint from '../icon/icon-hint'
 import Password from './password'
 
 export default function PasswordLabel({
@@ -17,7 +17,7 @@ export default function PasswordLabel({
       <span className="flex items-center justify-between text-sm text-gray-900">
         <div className="flex items-center gap-1 relative">
           <label htmlFor={id}>{label}</label>
-          {hint && <Hint hint={hint} />}
+          {hint && <IconHint hint={hint} />}
         </div>
         {btn}
       </span>

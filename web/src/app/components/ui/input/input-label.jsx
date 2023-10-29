@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import Hint from '../icon/hint'
+import IconHint from '../icon/icon-hint'
 import Input from './input'
 
 export default function InputLabel({
@@ -19,7 +19,7 @@ export default function InputLabel({
       <span className="flex items-center justify-between text-sm text-gray-900">
         <div className="flex items-center gap-1 relative">
           <label htmlFor={id}>{label}</label>
-          {hint && <Hint hint={hint} />}
+          {hint && <IconHint hint={hint} />}
         </div>
         {btn}
       </span>

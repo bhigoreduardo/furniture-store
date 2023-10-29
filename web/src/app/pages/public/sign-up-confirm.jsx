@@ -1,19 +1,23 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CheckCircle, XCircle } from 'phosphor-react'
 
+import auth from '../../../api/auth'
+import useApp from '../../../hooks/useApp'
 import useQueries from '../../../hooks/useQueries'
 import Container from '../../components/ui/container'
-import { useEffect, useState } from 'react'
-import { apiAuth } from '../../../api/api-auth'
 
 export default function SignUpConfirm() {
+  const { setIsLoading } = useApp()
   const queries = useQueries()
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)
   const signUpConfirm = async () => {
-    const { message, success } = await apiAuth('/customers/sign-up/confirm', {
+    setIsLoading(true)
+    const { message, success } = await auth('/customers/sign-up/confirm', {
       activatedToken: queries.get('token'),
     })
+    setIsLoading(false)
     setMessage(message)
     setSuccess(success)
   }

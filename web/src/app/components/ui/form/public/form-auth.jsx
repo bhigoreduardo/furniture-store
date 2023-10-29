@@ -5,7 +5,8 @@ import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
-import { apiAuth } from '../../../../../api/api-auth'
+import auth from '../../../../../api/auth'
+import useApp from '../../../../../hooks/useApp'
 import InputLabel from '../../input/input-label'
 import PasswordLabel from '../../input/password-label'
 import Button from '../../button/button'
@@ -25,6 +26,7 @@ const initialSignInValues = {
 }
 const validationSignUpSchema = validationSignInSchema.shape({
   name: yup.string().required('Nome é obrigatório'),
+  cpf: yup.string().required('CPF é obrigatório'),
   phone: yup.string().required('Número de telefone é obrigatório'),
   repeatPassword: yup
     .string()
@@ -35,12 +37,14 @@ const validationSignUpSchema = validationSignInSchema.shape({
 const initialSignUpValues = {
   ...initialSignInValues,
   name: '',
+  cpf: '',
   phone: '',
   repeatPassword: '',
   terms: '',
 }
 
 export default function FormAuth() {
+  const { setIsLoading } = useApp()
   const [info, setInfo] = useState('')
   const [success, setSuccess] = useState(false)
   const [isNonLogin, setIsNonLogin] = useState(false)
@@ -53,10 +57,12 @@ export default function FormAuth() {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
+    setIsLoading(true)
     let endPoint = ''
     if (isNonLogin) endPoint = '/customers/sign-up'
     else endPoint = '/customers/sign-in'
-    const { message, info, success } = await apiAuth(endPoint, values)
+    const { message, info, success } = await auth(endPoint, values)
+    setIsLoading(false)
     setInfo(info)
     setSuccess(success)
     if (success) {
@@ -96,16 +102,28 @@ export default function FormAuth() {
       )}
       <div className="flex flex-col gap-4 px-8 py-6">
         {isNonLogin && (
-          <InputLabel
-            id="name"
-            label="Nome"
-            placeholder="Nome"
-            name="name"
-            error={formik.touched.name && formik.errors.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-          />
+          <>
+            <InputLabel
+              id="name"
+              label="Nome"
+              placeholder="Nome"
+              name="name"
+              error={formik.touched.name && formik.errors.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+            />
+            <InputLabel
+              id="cpf"
+              label="CPF"
+              placeholder="CPF"
+              name="cpf"
+              error={formik.touched.cpf && formik.errors.cpf}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.cpf}
+            />
+          </>
         )}
         <InputLabel
           id="email"

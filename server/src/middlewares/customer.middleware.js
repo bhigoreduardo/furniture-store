@@ -3,6 +3,7 @@ import { Joi } from 'express-validation'
 export const signUp = {
   body: Joi.object({
     name: Joi.string().min(2).max(200).required(),
+    cpf: Joi.string().length(11).required(),
     email: Joi.string().email().required(),
     phone: Joi.string().length(11).required(),
     password: Joi.string()

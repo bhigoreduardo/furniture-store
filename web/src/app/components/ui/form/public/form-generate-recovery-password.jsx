@@ -5,7 +5,8 @@ import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
-import { apiGenerateRecoveryPassword } from '../../../../../api/api-auth'
+import auth from '../../../../../api/auth'
+import useApp from '../../../../../hooks/useApp'
 import InputLabel from '../../input/input-label'
 import Button from '../../button/button'
 
@@ -18,6 +19,7 @@ const validationSchema = yup.object().shape({
 const initialValues = { email: '' }
 
 export default function FormGenerateRecoveryPassword() {
+  const { setIsLoading } = useApp()
   const [info, setInfo] = useState('')
   const [success, setSuccess] = useState(false)
   const formik = useFormik({
@@ -27,7 +29,12 @@ export default function FormGenerateRecoveryPassword() {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    const { message, info, success } = await apiGenerateRecoveryPassword(values)
+    setIsLoading(true)
+    const { message, info, success } = await auth(
+      '/customers/generate-recovery-password',
+      values
+    )
+    setIsLoading(false)
     setInfo(info)
     setSuccess(success)
     if (success) {

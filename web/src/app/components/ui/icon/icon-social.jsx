@@ -6,7 +6,7 @@ import {
   YoutubeLogo,
 } from 'phosphor-react'
 
-export default function Social() {
+export default function IconSocial() {
   return (
     <>
       <TwitterLogo size={16} className="text-white" />
