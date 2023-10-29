@@ -1,0 +1,21 @@
+@server=http://localhost:3001
+@endPoint=api/v1/stores
+
+### POST /sign-up
+POST {{ server }}/{{ endPoint }}/sign-up HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "store@email.com",
+  "password": "test",
+  "repeatPassword": "test"
+}
+
+### POST /sign-in
+POST {{ server }}/{{ endPoint }}/sign-in HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "store@email.com",
+  "password": "test"
+}
