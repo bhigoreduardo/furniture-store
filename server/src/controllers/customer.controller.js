@@ -1,9 +1,6 @@
 import CustomerModel from '../models/customer.model.js'
 import ErrorHandler from '../utils/ErrorHandler.js'
-import {
-  activatedTokenEmail,
-  generateRecoveryPasswordEmail,
-} from '../utils/sendEmail.js'
+import { sendInfoEmail } from '../utils/sendEmail.js'
 
 export const signUp = async (req, res) => {
   const { password, repeatPassword, ...restBody } = req.body
@@ -13,19 +10,26 @@ export const signUp = async (req, res) => {
   created.setPassword(password)
   const activated = created.generateActivatedToken()
   await created.save()
-  await activatedTokenEmail(
-    created,
-    activated?.activatedToken,
-    async (err = null, info = null) => {
-      if (err) throw new ErrorHandler(err, 500)
+  const emailInfo = {
+    title: 'Ativar conta',
+    name: created.name,
+    shortDescription: 'Acesse o link abaixo para ativar sua conta.',
+    email: created.email,
+    endPoint: `/confirmar-conta?token=${activated?.activatedToken}`,
+    message: {
+      fail: 'Falha no envio do email para ativar sua conta, entre em contato com o administrador',
+      success: 'Verifique seu email, para ativar sua conta',
+    },
+  }
+  await sendInfoEmail(emailInfo, (err = null, info = null) => {
+    if (err) throw new ErrorHandler(err, 500)
 
-      return res.status(201).json({
-        success: true,
-        message: 'Cadastro realizado com sucesso',
-        info,
-      })
-    }
-  )
+    return res.status(201).json({
+      success: true,
+      message: 'Cadastro realizado com sucesso',
+      info,
+    })
+  })
 }
 
 export const confirmSignUp = async (req, res) => {
@@ -52,19 +56,26 @@ export const activatedToken = async (req, res) => {
   if (!finded) throw new ErrorHandler('Usuário não encontrado', 400)
   const activated = finded.generateActivatedToken()
   await finded.save()
-  await activatedTokenEmail(
-    finded,
-    activated?.activatedToken,
-    async (err = null, info = null) => {
-      if (err) throw new ErrorHandler(err, 500)
+  const emailInfo = {
+    title: 'Ativar conta',
+    name: finded.name,
+    shortDescription: 'Acesse o link abaixo para ativar sua conta.',
+    email: finded.email,
+    endPoint: `/confirmar-conta?token=${activated?.activatedToken}`,
+    message: {
+      fail: 'Falha no envio do email para ativar sua conta, entre em contato com o administrador',
+      success: 'Verifique seu email, para ativar sua conta',
+    },
+  }
+  await sendInfoEmail(emailInfo, (err = null, info = null) => {
+    if (err) throw new ErrorHandler(err, 500)
 
-      return res.status(200).json({
-        success: true,
-        message: 'Solicitação realizada com sucesso',
-        info,
-      })
-    }
-  )
+    return res.status(200).json({
+      success: true,
+      message: 'Solicitação realizada com sucesso',
+      info,
+    })
+  })
 }
 
 export const signIn = async (req, res) => {
@@ -91,19 +102,26 @@ export const generateRecoveryPassword = async (req, res) => {
   if (!finded) throw new ErrorHandler('Usuário não cadastrado', 422)
   const recoveryPassword = finded.generateRecoveryPassword()
   await finded.save()
-  await generateRecoveryPasswordEmail(
-    finded,
-    recoveryPassword,
-    (err = null, info = null) => {
-      if (err) throw new ErrorHandler(err, 500)
+  const emailInfo = {
+    title: 'Recuperar Senha',
+    name: finded.name,
+    shortDescription: 'Acesse o link abaixo para redefinir sua senha.',
+    email: finded.email,
+    endPoint: `/redefinir-senha?token=${recoveryPassword.passwordResetToken}`,
+    message: {
+      fail: 'Falha no envio do email para recuperar senha, entre em contato com o administrador',
+      success: 'Verifique seu email, para recuperar sua senha',
+    },
+  }
+  await sendInfoEmail(emailInfo, (err = null, info = null) => {
+    if (err) throw new ErrorHandler(err, 500)
 
-      return res.status(200).json({
-        success: true,
-        message: 'Solicitação realizada com sucesso',
-        info,
-      })
-    }
-  )
+    return res.status(200).json({
+      success: true,
+      message: 'Solicitação realizada com sucesso',
+      info,
+    })
+  })
 }
 
 export const recoveryPassword = async (req, res) => {
