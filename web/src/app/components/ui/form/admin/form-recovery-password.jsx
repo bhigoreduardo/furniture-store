@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { ArrowRight } from 'phosphor-react'
 import { toast } from 'react-toastify'
+import { ArrowRight } from 'phosphor-react'
 
 import auth from '../../../../../api/auth'
 import useApp from '../../../../../hooks/useApp'
 import useQueries from '../../../../../hooks/useQueries'
-import PasswordLabel from '../../input/password-label'
 import Button from '../../button/button'
+import PasswordLabel from '../../input/password-label'
 
 const validationSchema = yup.object().shape({
   password: yup.string().required('Senha é obrigatório'),
@@ -25,6 +25,7 @@ const initialValues = {
 
 export default function FormRecoveryPassword() {
   const navigate = useNavigate()
+  const { pathname } = useLocation()
   const { setIsLoading } = useApp()
   const queries = useQueries()
   const [info, setInfo] = useState('')
@@ -37,17 +38,21 @@ export default function FormRecoveryPassword() {
   })
   const handleSubmit = async (values) => {
     if (queries.has('token')) {
+      const endPoint =
+        pathname.split('/')[1] === 'loja'
+          ? '/users/recovery-password'
+          : '/stores/recovery-password'
       setIsLoading(true)
-      const { message, info, success } = await auth(
-        '/customers/recovery-password',
-        { ...values, passwordResetToken: queries.get('token') }
-      )
+      const { message, info, success } = await auth(endPoint, {
+        ...values,
+        passwordResetToken: queries.get('token'),
+      })
       setIsLoading(false)
       setInfo(info)
       setSuccess(success)
       if (success) {
         toast.success(message)
-        navigate('/entrar')
+        navigate(`/${pathname.split('/')[1]}/entrar`)
       } else {
         toast.error(message)
       }

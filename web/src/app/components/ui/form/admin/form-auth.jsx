@@ -67,7 +67,7 @@ export default function FormAuth() {
           name="password"
           btn={
             <Link
-              to="recuperar-senha"
+              to={`/${pathname.split('/')[1]}/recuperar-senha`}
               className="font-semibold text-blue-500 hover:text-blue-600"
             >
               Esqueceu a senha?

@@ -149,5 +149,23 @@ StoreSchema.methods.sendAuth = function () {
     token: this.generateToken(),
   }
 }
+StoreSchema.methods.generateRecoveryPassword = function () {
+  const resetToken = crypto.randomBytes(16).toString('hex')
+
+  this.recoveryPassword.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex')
+  this.recoveryPassword.passwordResetExpires = Date.now() + 10 * 60 * 1000 // 10 minutes
+  return this.recoveryPassword
+}
+StoreSchema.methods.clearRecoveryPassword = function () {
+  this.recoveryPassword = {
+    passwordResetToken: undefined,
+    passwordResetExpires: undefined,
+    passwordChangedAt: Date.now(),
+  }
+  return this.recoveryPassword
+}
 
 export default mongoose.model('Store', StoreSchema)

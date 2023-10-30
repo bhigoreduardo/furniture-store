@@ -17,5 +17,15 @@ router.post(
   validate(storeMiddleware.signIn),
   useError(storeController.signIn)
 )
+router.post(
+  '/generate-recovery-password',
+  validate(storeMiddleware.generateRecoveryPassword),
+  useError(storeController.generateRecoveryPassword)
+)
+router.post(
+  '/recovery-password',
+  validate(storeMiddleware.recoveryPassword),
+  useError(storeController.recoveryPassword)
+)
 
 export default router

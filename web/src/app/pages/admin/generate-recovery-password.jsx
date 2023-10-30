@@ -1,13 +1,13 @@
 import Container from '../../components/ui/container'
 import Copyright from '../../components/ui/copyright'
-import FormSignUp from '../../components/ui/form/admin/form-sign-up'
+import FormGenerateRecoveryPassword from '../../components/ui/form/admin/form-generate-recovery-password'
 
-export default function SignUp() {
+export default function GenerateRecoveryPassword() {
   return (
     <main className="flex flex-col h-[100vh]">
       <div className="flex-grow flex items-center w-full bg-[url('/images/auth-bg.png')]">
         <Container className="flex items-center justify-center py-[100px]">
-          <FormSignUp />
+          <FormGenerateRecoveryPassword />
         </Container>
       </div>
       <Copyright />

@@ -20,3 +20,21 @@ export const signIn = {
       .required(),
   }),
 }
+
+export const generateRecoveryPassword = {
+  body: Joi.object({
+    email: Joi.string().email().required(),
+  }),
+}
+
+export const recoveryPassword = {
+  body: Joi.object({
+    passwordResetToken: Joi.string().required(),
+    password: Joi.string()
+      .regex(/[a-zA-Z0-9]{3,30}/)
+      .required(),
+    repeatPassword: Joi.string()
+      .regex(/[a-zA-Z0-9]{3,30}/)
+      .required(),
+  }),
+}
