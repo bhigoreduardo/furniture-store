@@ -5,8 +5,8 @@ import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
-import auth from '../../../../../api/auth'
-import useApp from '../../../../../hooks/useApp'
+import { post } from '../../../../../libs/fetcher'
+import useApp from '../../../../../hooks/use-app'
 import InputLabel from '../../input/input-label'
 import Button from '../../button/button'
 
@@ -30,7 +30,7 @@ export default function FormGenerateRecoveryPassword() {
   })
   const handleSubmit = async (values) => {
     setIsLoading(true)
-    const { message, info, success } = await auth(
+    const { message, info, success } = await post(
       '/customers/generate-recovery-password',
       values
     )

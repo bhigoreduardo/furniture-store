@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Question } from 'phosphor-react'
 
-export default function Hint({ hint }) {
+export default function IconHint({ hint }) {
   return (
     <div className="group cursor-pointer">
       <Question size={14} />

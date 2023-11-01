@@ -5,9 +5,9 @@ import * as yup from 'yup'
 import { ArrowRight } from 'phosphor-react'
 import { toast } from 'react-toastify'
 
-import auth from '../../../../../api/auth'
-import useApp from '../../../../../hooks/useApp'
-import useQueries from '../../../../../hooks/useQueries'
+import { post } from '../../../../../libs/fetcher'
+import useApp from '../../../../../hooks/use-app'
+import useQueries from '../../../../../hooks/use-queries'
 import PasswordLabel from '../../input/password-label'
 import Button from '../../button/button'
 
@@ -38,7 +38,7 @@ export default function FormRecoveryPassword() {
   const handleSubmit = async (values) => {
     if (queries.has('token')) {
       setIsLoading(true)
-      const { message, info, success } = await auth(
+      const { message, info, success } = await post(
         '/customers/recovery-password',
         { ...values, passwordResetToken: queries.get('token') }
       )

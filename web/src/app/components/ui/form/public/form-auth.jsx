@@ -5,8 +5,8 @@ import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
-import auth from '../../../../../api/auth'
-import useApp from '../../../../../hooks/useApp'
+import { post } from '../../../../../libs/fetcher'
+import useApp from '../../../../../hooks/use-app'
 import InputLabel from '../../input/input-label'
 import PasswordLabel from '../../input/password-label'
 import Button from '../../button/button'
@@ -61,7 +61,7 @@ export default function FormAuth() {
     let endPoint = ''
     if (isNonLogin) endPoint = '/customers/sign-up'
     else endPoint = '/customers/sign-in'
-    const { message, info, success } = await auth(endPoint, values)
+    const { message, info, success } = await post(endPoint, values)
     setIsLoading(false)
     setInfo(info)
     setSuccess(success)

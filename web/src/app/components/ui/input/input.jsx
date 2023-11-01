@@ -1,6 +1,6 @@
+/* eslint-disable react/prop-types */
 import { mergeClassName } from '../../../../utils/format'
 
-/* eslint-disable react/prop-types */
 export default function Input({
   id,
   type,

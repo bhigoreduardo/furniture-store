@@ -22,6 +22,7 @@ export const signUp = async (req, res) => {
 export const signIn = async (req, res) => {
   const finded = await StoreModel.findOne({
     email: req.body.email,
+    status: true,
   })
   if (!finded) throw new ErrorHandler('Usuário não cadastrado', 422)
   if (!finded.validatePassword(req.body.password))

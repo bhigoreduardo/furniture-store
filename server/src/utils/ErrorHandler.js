@@ -13,39 +13,39 @@ export const useError = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next)
 
 export function errors(err, req, res, next) {
-  console.log(err.details?.body[0]?.path.slice(-1)[0])
   err.statusCode = err.statusCode || 500
   err.message = err.message || 'Erro no servidor, contate o administrador'
 
   // Duplicate key error
   if (err.code === 11000) {
-    const message = `Valor do campo: '${Object.keys(err.keyValue)}' já cadastrado`
+    const message = `Valor do campo: '${Object.keys(
+      err.keyValue
+    )}' já cadastrado`
     err = new ErrorHandler(message, 400)
   }
 
   // Validation error
-  if (err instanceof ValidationError) {
+  else if (err instanceof ValidationError) {
+    let message = ''
     const field = err.details?.body[0]?.path.slice(-1)[0]
+    const type = err.details?.body[0]?.type
 
-    if (err.details?.body[0]?.type.includes('required')) {
-      const message = `Valor do campo: '${field}' é obrigatório`
-      err = new ErrorHandler(message, 422)
-    }
+    if (type.includes('required'))
+      message = `Valor do campo: '${field}' é obrigatório`
 
-    if (err.details?.body[0]?.type.includes('empty')) {
-      const message = `Valor do campo: '${field}' não pode ser vazio`
-      err = new ErrorHandler(message, 422)
-    }
+    else if (type.includes('empty'))
+      message = `Valor do campo: '${field}' não pode ser vazio`
 
-    if (err.details?.body[0]?.type.includes('email')) {
-      const message = `Valor do campo: '${field}' deve ser email válido`
-      err = new ErrorHandler(message, 422)
-    }
+    else if (type.includes('email'))
+      message = `Valor do campo: '${field}' deve ser email válido`
 
-    if (['length', 'min', 'max'].some((value) => err.details?.body[0]?.type.includes(value))) {
-      const message = `Valor do campo: '${field}' contém quantidade de caracteres inválido`
-      err = new ErrorHandler(message, 422)
-    }
+    else if (['length', 'min', 'max'].some((value) => type.includes(value)))
+      message = `Valor do campo: '${field}' contém quantidade de caracteres inválido`
+
+    else if (type.includes('unknown'))
+      message = `Valor do campo: '${field}' não é aceito`
+
+    err = new ErrorHandler(message, 422)
   }
 
   return res

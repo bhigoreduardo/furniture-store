@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CheckCircle, XCircle } from 'phosphor-react'
 
-import auth from '../../../api/auth'
-import useApp from '../../../hooks/useApp'
-import useQueries from '../../../hooks/useQueries'
+import { post } from '../../../libs/fetcher'
+import useApp from '../../../hooks/use-app'
+import useQueries from '../../../hooks/use-queries'
 import Container from '../../components/ui/container'
 
 export default function SignUpConfirm() {
@@ -14,7 +14,7 @@ export default function SignUpConfirm() {
   const [success, setSuccess] = useState(false)
   const signUpConfirm = async () => {
     setIsLoading(true)
-    const { message, success } = await auth('/customers/sign-up/confirm', {
+    const { message, success } = await post('/customers/sign-up/confirm', {
       activatedToken: queries.get('token'),
     })
     setIsLoading(false)
