@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import useApp from '../hooks/useApp'
+import useApp from '../hooks/use-app'
 import LoaderContainer from './components/ui/loader-container'
 import Public from './layouts/public'
 import PublicAuth from './pages/public/auth'
@@ -10,9 +10,13 @@ import ActivatedToken from './pages/public/activated-token'
 import PublicRecoveryPassword from './pages/public/recovery-password'
 
 import AdminAuth from './pages/admin/auth'
-import SignUp from './pages/admin/sign-up'
-import AdminGenerateRecoveryPassword from './pages/admin/generate-recovery-password'
-import AdminRecoveryPassword from './pages/admin/recovery-password'
+import SignUp from './pages/admin/auth/sign-up'
+import AdminGenerateRecoveryPassword from './pages/admin/auth/generate-recovery-password'
+import AdminRecoveryPassword from './pages/admin/auth/recovery-password'
+import Admin from './layouts/admin'
+import Dashboard from './pages/admin/dashboard'
+import Categories from './pages/admin/categories'
+import CategoriesForm from './pages/admin/categories/form'
 
 export default function App() {
   const { isLoading } = useApp()
@@ -36,6 +40,12 @@ export default function App() {
             />
           </Route>
 
+          <Route path="/admin" element={<Admin />}>
+            <Route index element={<Dashboard />} />
+            <Route path="categorias" element={<Categories />} />
+            <Route path="categorias/cadastrar" element={<CategoriesForm />} />
+            <Route path="categorias/editar/:id" element={<CategoriesForm />} />
+          </Route>
           <Route path="/admin/cadastrar" element={<SignUp />} />
           <Route path="/admin/entrar" element={<AdminAuth />} />
           <Route
