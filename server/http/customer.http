@@ -9,17 +9,10 @@ Content-Type: application/json
   "name": "First",
   "email": "firstcustomer@email.com",
   "phone": "11999987264",
-  "address": {
-    "street": "Fake street",
-    "neighborhood": "Fake Neighborhood",
-    "city": "Fake City",
-    "state": "Fake State",
-    "number": "12",
-    "zipCode": "12345678",
-    "complement": "Fale complement"
-  },
+  "cpf": "12345678912",
   "terms": true,
-  "password": "fakepass"
+  "password": "fakepass",
+  "repeatPassword": "fakepass"
 }
 
 ### POST /sign-up/confirm
@@ -59,7 +52,7 @@ Content-Type: application/json
 ### PUT /update
 PUT {{ server }}/{{ endPoint }}/update HTTP/1.1
 Content-Type: application/json
-Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzcwMGMzNDllODczOGJhNDgzYzhlMiIsImV4cCI6MTY5OTQwNjU0Ny44NjcsImlhdCI6MTY5ODExMDU0N30.lIr30Hru-PxVbz9Yw35Lbif6brlGa3TwxlXuMIYv0bU
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NDBlZDZhNTRiZDU1NTYyZTk4NjRjYSIsImV4cCI6MTcwMDA1MDAxMy45NjcsImlhdCI6MTY5ODc1NDAxM30.Q-W83rJxTs2vGLY3H0tXr2QlZ8kzhxlFBmBfKBcTQu4
 
 {
   "name": "First",

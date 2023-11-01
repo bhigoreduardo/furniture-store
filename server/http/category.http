@@ -1,0 +1,6 @@
+@server=http://localhost:3001
+@endPoint=api/v1/categories
+@id=654143eeb7dca9d630d445b3
+
+### GET /:id
+GET {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1

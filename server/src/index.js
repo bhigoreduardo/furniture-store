@@ -3,6 +3,8 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import colors from 'colors'
 
 import config from './config/index.js'
@@ -12,6 +14,8 @@ import { errors } from './utils/ErrorHandler.js'
 
 /* CONST */
 const serverPort = config.SERVER_PORT
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 /* START */
 const app = express()
@@ -30,6 +34,8 @@ app.use(bodyParser.json({ limit: 1.5 * 1024 * 1024, extended: false }))
 connectWithRetry()
 
 /* PUBLIC ROUTES */
+app.use('/api/v1/public', express.static(path.join(__dirname, './public')))
+app.use('/api/v1/public/images', express.static(path.join(__dirname, './public/images')))
 
 /* ROUTES */
 app.use('/', routes)

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 import CustomerModel from '../models/customer.model.js'
+import StoreModel from '../models/store.model.js'
 import config from '../config/index.js'
 import ErrorHandler from '../utils/ErrorHandler.js'
 
@@ -27,6 +28,14 @@ export const customerAuth = async (req, res, next) => {
   if (!req.userId) throw new ErrorHandler('Erro de autenticação', 401)
   const finded = await CustomerModel.findOne({ _id: req.userId, status: true })
   if (!finded) throw new ErrorHandler('Erro de autenticação', 401)
+
+  next()
+}
+
+export const adminAuth = async (req, res, next) => {
+  if (!req.userId) throw new ErrorHandler('Erro de autenticação', 401)
+  const storeFinded = await StoreModel.findOne({ _id: req.userId })
+  if (!storeFinded) throw new ErrorHandler('Erro de autenticação', 401)
 
   next()
 }
