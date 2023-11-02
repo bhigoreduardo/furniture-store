@@ -1,5 +1,5 @@
-import Container from '../../components/ui/container'
-import FormActivatedToken from '../../components/ui/form/public/form-activated-token'
+import Container from '../../../components/ui/container'
+import FormActivatedToken from '../../../components/ui/form/public/form-activated-token'
 
 export default function ActivatedToken() {
   return (

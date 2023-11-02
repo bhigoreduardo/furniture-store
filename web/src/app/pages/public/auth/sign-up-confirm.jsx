@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CheckCircle, XCircle } from 'phosphor-react'
 
-import { post } from '../../../libs/fetcher'
-import useApp from '../../../hooks/use-app'
-import useQueries from '../../../hooks/use-queries'
-import Container from '../../components/ui/container'
+import { post } from '../../../../libs/fetcher'
+import useApp from '../../../../hooks/use-app'
+import useQueries from '../../../../hooks/use-queries'
+import Container from '../../../components/ui/container'
 
 export default function SignUpConfirm() {
   const { setIsLoading } = useApp()

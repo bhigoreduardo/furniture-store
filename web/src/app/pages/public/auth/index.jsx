@@ -1,6 +1,6 @@
-import Container from '../../components/ui/container'
+import Container from '../../../components/ui/container'
 
-import FormAuth from '../../components/ui/form/public/form-auth'
+import FormAuth from '../../../components/ui/form/public/form-auth'
 
 export default function Auth() {
   return (
