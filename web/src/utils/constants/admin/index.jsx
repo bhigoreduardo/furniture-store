@@ -35,7 +35,7 @@ export const categoryColumns = [
   },
 ]
 
-export const brandColumns = [
+export const colorColumns = [
   {
     accessorKey: 'name',
     header: 'Nome',
@@ -47,6 +47,40 @@ export const brandColumns = [
         </span>
       </div>
     ),
+  },
+  {
+    accessorKey: 'description',
+    header: 'Descrição',
+  },
+  {
+    accessorKey: 'slug',
+    header: 'Link',
+    cell: ({ row }) => (
+      <Link to={`/${row.original?.slug}`}>{row.original?.slug}</Link>
+    ),
+  },
+  {
+    accessorKey: 'products',
+    header: 'Produtos',
+  },
+  {
+    accessorKey: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <Link
+        to={`editar/${row.original?._id}`}
+        className="flex items-center gap-1 text-sm text-blue-500"
+      >
+        Vê detalhes <ArrowRight size={14} />
+      </Link>
+    ),
+  },
+]
+
+export const brandColumns = [
+  {
+    accessorKey: 'name',
+    header: 'Nome',
   },
   {
     accessorKey: 'description',

@@ -12,7 +12,7 @@ import FileLabel from '../../input/file-label'
 import InputLabel from '../../input/input-label'
 import SelectLabel from '../../input/select-label'
 import TextAreaLabel from '../../input/textarea-label'
-import { parsedSelectData } from '../../../../../utils/format'
+import { formDataUpload, parsedSelectData } from '../../../../../utils/format'
 
 const validationSchema = yup.object().shape({
   image: yup.string().required('Imagem é obrigatório'),
@@ -39,14 +39,7 @@ export default function FormCategories({ data }) {
   })
   const handleSubmit = async (values) => {
     setIsLoading(true)
-    if (typeof values.image !== 'string') {
-      const formData = new FormData()
-      for (const value in values) {
-        formData.append(value, values[value])
-      }
-      values = formData
-    }
-
+    if (typeof values.image !== 'string') values = formDataUpload(values)
     let response
     if (data)
       response = await put(
