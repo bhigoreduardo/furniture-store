@@ -4,6 +4,7 @@ import slugify from 'slugify'
 
 import CategoryModel from '../models/category.model.js'
 import ErrorHandler from '../utils/ErrorHandler.js'
+import { filterSorted } from '../utils/format.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -51,22 +52,6 @@ export const update = async (req, res) => {
     .json({ success: true, message: 'Categoria atualizada com sucesso' })
 }
 
-const categorySorted = (sorted) => {
-  switch (sorted) {
-    case 'asc':
-      return { name: 1 }
-    case 'desc':
-      return { name: -1 }
-    case 'news':
-      return { createdAt: -1 }
-    case 'old':
-      return { createdAt: 1 }
-    case 'latest':
-      return { updatedAt: -1 }
-    default:
-      return { name: 1 }
-  }
-}
 export const search = async (req, res) => {
   const query = req.query
   const page = Number(query.page) || 0
@@ -83,7 +68,7 @@ export const search = async (req, res) => {
   const finded = await CategoryModel.paginate(filter, {
     page,
     limit,
-    sort: categorySorted(query.priority),
+    sort: filterSorted(query.priority),
   })
   return res.status(200).json(finded)
 }
