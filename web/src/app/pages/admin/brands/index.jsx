@@ -1,17 +1,17 @@
 import { useNavigate } from 'react-router-dom'
 import { PlusCircle } from 'phosphor-react'
 
-import { colorColumns } from '../../../../utils/constants/admin'
-import { useColors } from '../../../../hooks/use-color'
+import { brandColumns } from '../../../../utils/constants/admin'
+import { useBrands } from '../../../../hooks/use-brand'
 import useFilter from '../../../../hooks/use-filter'
 import Button from '../../../components/ui/button/button'
 import Filter from '../../../components/ui/filter/admin/filter'
 import TableData from '../../../components/ui/table/table-data'
 
-export default function Colors() {
+export default function Brands() {
   const navigate = useNavigate()
   const { setTotalCount, setTotalPage } = useFilter()
-  const { docs, total, pages } = useColors()
+  const { docs, total, pages } = useBrands()
   setTotalCount(total)
   setTotalPage(pages)
 
@@ -19,7 +19,7 @@ export default function Colors() {
     <section className="flex-grow flex flex-col gap-6">
       <Filter />
       <TableData
-        title="Cores"
+        title="Marcas"
         btn={
           <Button
             label="Adicionar"
@@ -28,7 +28,7 @@ export default function Colors() {
             onClick={() => navigate('cadastrar')}
           />
         }
-        columns={colorColumns}
+        columns={brandColumns}
         data={docs}
       />
     </section>

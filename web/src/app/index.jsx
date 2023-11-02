@@ -19,6 +19,8 @@ import Categories from './pages/admin/categories'
 import CategoriesForm from './pages/admin/categories/form'
 import Colors from './pages/admin/colors'
 import ColorsForm from './pages/admin/colors/form'
+import Brands from './pages/admin/brands'
+import BrandsForm from './pages/admin/brands/form'
 
 export default function App() {
   const { isLoading } = useApp()
@@ -44,7 +46,7 @@ export default function App() {
 
           <Route path="/admin" element={<Admin />}>
             <Route index element={<Dashboard />} />
-            
+
             <Route path="categorias" element={<Categories />} />
             <Route path="categorias/cadastrar" element={<CategoriesForm />} />
             <Route path="categorias/editar/:id" element={<CategoriesForm />} />
@@ -52,6 +54,10 @@ export default function App() {
             <Route path="cores" element={<Colors />} />
             <Route path="cores/cadastrar" element={<ColorsForm />} />
             <Route path="cores/editar/:id" element={<ColorsForm />} />
+
+            <Route path="marcas" element={<Brands />} />
+            <Route path="marcas/cadastrar" element={<BrandsForm />} />
+            <Route path="marcas/editar/:id" element={<BrandsForm />} />
           </Route>
           <Route path="/admin/cadastrar" element={<SignUp />} />
           <Route path="/admin/entrar" element={<AdminAuth />} />
