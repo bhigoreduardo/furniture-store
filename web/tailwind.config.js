@@ -2,7 +2,11 @@
 export default {
   content: ['./src/**/*.{ts,tsx,js,jsx}'],
   theme: {
-    extend: {},
+    extend: {
+      variants: {
+        rounded: ['responsive', 'color-swatch' ],
+      },
+    },
   },
   plugins: [],
 }
