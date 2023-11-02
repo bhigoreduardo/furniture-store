@@ -22,6 +22,7 @@ export default function TableData({ title, btn, columns, data }) {
     data,
     getCoreRowModel: getCoreRowModel(),
   })
+  if (typeof data === 'undefined') return
 
   return (
     <div className="flex flex-col border border-100 rounded-sm shadow-md py-2 pb-4">

@@ -1,34 +1,23 @@
-import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PlusCircle } from 'phosphor-react'
 
-import { get } from '../../../../libs/fetcher'
 import { categoryColumns } from '../../../../utils/constants/admin'
+import useCategory from '../../../../hooks/use-category'
 import useFilter from '../../../../hooks/use-filter'
 import TableData from '../../../components/ui/table/table-data'
-import FilterCategory from '../../../components/ui/filter/admin/filter-category'
+import Filter from '../../../components/ui/filter/admin/filter'
 import Button from '../../../components/ui/button/button'
 
 export default function Categories() {
   const navigate = useNavigate()
-  const { search, priority, page, perPage, setTotalCount, setTotalPage } =
-    useFilter()
-  const [data, setData] = useState([])
-  const getCategories = async () => {
-    const { docs, pages, total } = await get(
-      `/categories/search?search=${search}&priority=${priority}&page=${page}&perPage=${perPage}`
-    )
-    setTotalCount(total)
-    setTotalPage(pages)
-    setData(docs)
-  }
-  useEffect(() => {
-    getCategories()
-  }, [search, priority, page, perPage]) // eslint-disable-line react-hooks/exhaustive-deps
+  const { setTotalCount, setTotalPage } = useFilter()
+  const { docs, total, pages } = useCategory()
+  setTotalCount(total)
+  setTotalPage(pages)
 
   return (
     <section className="flex-grow flex flex-col gap-6">
-      <FilterCategory />
+      <Filter />
       <TableData
         title="Categorias"
         btn={
@@ -40,7 +29,7 @@ export default function Categories() {
           />
         }
         columns={categoryColumns}
-        data={data}
+        data={docs}
       />
     </section>
   )

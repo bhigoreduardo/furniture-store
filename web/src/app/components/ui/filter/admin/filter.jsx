@@ -10,7 +10,7 @@ import Button from '../../button/button'
 import Input from '../../input/input'
 import Select from '../../input/select'
 
-export default function FilterCategory() {
+export default function Filter() {
   const { search, setSearch, priority, setPriority, perPage, setPerPage } =
     useFilter()
   const order = sanitizeSelectData(priorityType, [
