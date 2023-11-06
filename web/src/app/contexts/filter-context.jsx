@@ -8,6 +8,10 @@ export const FilterContext = createContext({
   perPage: 10,
   totalCount: '',
   totalPage: 0,
+  featured: true,
+  actived: true,
+  category: '',
+  brand: '',
 })
 
 export default function FilterContextProvider({ children }) {
@@ -17,6 +21,23 @@ export default function FilterContextProvider({ children }) {
   const [perPage, setPerPage] = useState(10)
   const [totalCount, setTotalCount] = useState('')
   const [totalPage, setTotalPage] = useState(0)
+  const [featured, setFeatured] = useState(true)
+  const [actived, setActived] = useState(true)
+  const [category, setCategory] = useState('')
+  const [brand, setBrand] = useState('')
+
+  const handleClear = () => {
+    setSearch('')
+    setPriority('')
+    setPage(1)
+    setPerPage(10)
+    setTotalCount('')
+    setTotalPage(0)
+    setFeatured(true)
+    setActived(true)
+    setCategory('')
+    setBrand('')
+  }
 
   return (
     <FilterContext.Provider value={{
@@ -26,6 +47,11 @@ export default function FilterContextProvider({ children }) {
       perPage, setPerPage,
       totalCount, setTotalCount,
       totalPage, setTotalPage,
+      featured, setFeatured,
+      actived, setActived,
+      category, setCategory,
+      brand, setBrand,
+      handleClear,
     }}>
       {children}
     </FilterContext.Provider>

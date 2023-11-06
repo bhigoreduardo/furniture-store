@@ -60,7 +60,7 @@ export const TableHead = forwardRef(function TableHead(
     <th
       ref={ref}
       className={mergeClassName(
-        'flex-1 text-left font-semibold text-xs uppercase text-gray-600',
+        'flex-1 last-of-type:w-[120px] last-of-type:flex-none text-left font-semibold text-xs uppercase text-gray-600',
         className
       )}
       {...props}
@@ -75,7 +75,10 @@ export const TableCell = forwardRef(function TableCell(
   return (
     <td
       ref={ref}
-      className={mergeClassName('flex-1 text-sm text-gray-600 text-left', className)}
+      className={mergeClassName(
+        'flex-1 last-of-type:w-[120px] last-of-type:flex-none text-sm text-gray-600 text-left',
+        className
+      )}
       {...props}
     />
   )

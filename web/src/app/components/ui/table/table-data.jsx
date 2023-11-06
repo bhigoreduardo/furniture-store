@@ -15,8 +15,9 @@ import {
 } from './table'
 import Pagination from '../pagination/pagination'
 import Heading from '../heading'
+import { mergeClassName } from '../../../../utils/format'
 
-export default function TableData({ title, btn, columns, data }) {
+export default function TableData({ title, btn, columns, data, className }) {
   const table = useReactTable({
     columns,
     data,
@@ -25,8 +26,8 @@ export default function TableData({ title, btn, columns, data }) {
   if (typeof data === 'undefined') return
 
   return (
-    <div className="flex flex-col border border-100 rounded-sm shadow-md py-2 pb-4">
-      <Heading title={title} btn={btn} />
+    <div className={mergeClassName("flex flex-col border border-100 rounded-sm shadow-md py-2 pb-4", className)}>
+      {title && <Heading title={title} btn={btn} />}
       <Table className="mb-6">
         <TableHeader>
           {table.getHeaderGroups()?.map((item, i) => (

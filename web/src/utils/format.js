@@ -18,3 +18,14 @@ export const formDataUpload = (values) => {
   }
   return formData
 }
+
+export const makeTree = (arr, parent) => {
+  const node = {}
+  arr
+    .filter((item) => item.parent === parent)
+    .forEach(
+      (item) =>
+        (node[item._id] = { name: item.name, ...makeTree(arr, item._id) })
+    )
+  return node
+}

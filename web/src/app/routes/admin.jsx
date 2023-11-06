@@ -12,6 +12,8 @@ import Colors from '../pages/admin/colors'
 import ColorsForm from '../pages/admin/colors/form'
 import Brands from '../pages/admin/brands'
 import BrandsForm from '../pages/admin/brands/form'
+import Products from '../pages/admin/products'
+import ProductsForm from '../pages/admin/products/form'
 
 const children = [
   {
@@ -56,6 +58,14 @@ const children = [
           { path: '', element: <Brands /> },
           { path: 'cadastrar', element: <BrandsForm /> },
           { path: 'editar/:id', element: <BrandsForm /> },
+        ],
+      },
+      {
+        path: 'produtos',
+        children: [
+          { path: '', element: <Products /> },
+          { path: 'cadastrar', element: <ProductsForm /> },
+          { path: 'editar/:id', element: <ProductsForm /> },
         ],
       },
     ],

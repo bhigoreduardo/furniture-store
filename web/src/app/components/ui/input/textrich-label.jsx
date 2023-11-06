@@ -1,15 +1,12 @@
 /* eslint-disable react/prop-types */
 import { mergeClassName } from '../../../../utils/format'
 import IconHint from '../icon/icon-hint'
-import Input from './input'
+import TextRich from './textrich'
 
-export default function InputLabel({
+export default function TextRichLabel({
   id,
   label,
-  name,
-  type,
   placeholder,
-  icon,
   error,
   hint,
   btn,
@@ -18,21 +15,16 @@ export default function InputLabel({
 }) {
   return (
     <div className={mergeClassName('flex flex-col gap-2', className)}>
-      {(label || hint || btn) && (
-        <span className="flex items-center justify-between text-sm text-gray-900">
-          <div className="flex items-center gap-1 relative">
-            {label && <label htmlFor={id}>{label}</label>}
-            {hint && <IconHint hint={hint} />}
-          </div>
-          {btn}
-        </span>
-      )}
-      <Input
+      <span className="flex items-center justify-between text-sm text-gray-900">
+        <div className="flex items-center gap-1 relative">
+          {label && <label htmlFor={id}>{label}</label>}
+          {hint && <IconHint hint={hint} />}
+        </div>
+        {btn}
+      </span>
+      <TextRich
         id={id}
-        type={type}
         placeholder={placeholder}
-        name={name}
-        icon={icon}
         className={`${error && 'border-red-500'}`}
         {...props}
       />

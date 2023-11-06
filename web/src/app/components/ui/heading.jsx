@@ -1,8 +1,15 @@
+import { mergeClassName } from '../../../utils/format'
+
 /* eslint-disable react/prop-types */
-export default function Heading({ title, btn }) {
+export default function Heading({ title, btn, className }) {
   return (
-    <div className="flex items-center justify-between px-6 pb-2 border-b border-gray-100">
-      <span className="font-semibold uppercase text-sm text-gray-900">
+    <div
+      className={mergeClassName(
+        'flex items-center justify-between uppercase px-6 pb-2 border-b border-gray-100',
+        className
+      )}
+    >
+      <span className="font-semibold text-sm text-gray-900">
         {title}
       </span>
       {btn && btn}

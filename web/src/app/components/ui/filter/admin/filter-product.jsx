@@ -1,16 +1,18 @@
+import { useState } from 'react'
 import { ArrowsClockwise } from 'phosphor-react'
 
 import {
   perPage as perPageType,
   priority as priorityType,
+  featured as featuredType,
+  actived as activedType,
 } from '../../../../../types/filter-type'
-import { sanitizeSelectData } from '../../../../../utils/format'
 import useFilter from '../../../../../hooks/use-filter'
 import Button from '../../button/button'
 import Input from '../../input/input'
 import Select from '../../input/select'
 
-export default function Filter() {
+export default function FilterProduct() {
   const {
     search,
     setSearch,
@@ -18,14 +20,18 @@ export default function Filter() {
     setPriority,
     perPage,
     setPerPage,
+    featured,
+    setFeatured,
+    actived,
+    setActived,
+    category,
+    setCategory,
+    brand,
+    setBrand,
     handleClear,
   } = useFilter()
-  const order = sanitizeSelectData(priorityType, [
-    'sold',
-    'popularity',
-    'minor-price',
-    'biggest-price',
-  ])
+  const [categories, setCategories] = useState([])
+  const [brands, setBrands] = useState([])
 
   return (
     <div className="flex justify-between gap-2">
@@ -39,11 +45,6 @@ export default function Filter() {
           onChange={(e) => setSearch(e.target.value)}
           className="w-full max-w-[500px]"
         />
-        {/* <Button
-          icon={<MagnifyingGlass size={18} className="text-white" />}
-          title="Procurar"
-          className="bg-orange-500 text-white hover:bg-orange-600 !p-2"
-        /> */}
         <Button
           icon={
             <ArrowsClockwise size={18} className="transition-all duration-0" />
@@ -58,9 +59,41 @@ export default function Filter() {
           id="order"
           name="order"
           placeholder="Ordem"
-          data={order}
+          data={priorityType}
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
+        />
+        <Select
+          id="category"
+          name="category"
+          placeholder="Categoria"
+          data={categories}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+        <Select
+          id="brand"
+          name="brand"
+          placeholder="Marca"
+          data={brands}
+          value={brand}
+          onChange={(e) => setBrand(e.target.value)}
+        />
+        <Select
+          id="featured"
+          name="featured"
+          placeholder="Estoque"
+          data={featuredType}
+          value={featured}
+          onChange={(e) => setFeatured(e.target.value)}
+        />
+        <Select
+          id="actived"
+          name="actived"
+          placeholder="Ativo"
+          data={activedType}
+          value={actived}
+          onChange={(e) => setActived(e.target.value)}
         />
         <Select
           id="show"

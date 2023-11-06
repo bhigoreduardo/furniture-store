@@ -10,3 +10,6 @@
     font-family: 'Open Sans', system-ui, sans-serif;
   }
 }
+
+.ql-toolbar { @apply bg-white; }
+.ql-toolbar .ql-formats { @apply border border-gray-100 rounded-sm; }

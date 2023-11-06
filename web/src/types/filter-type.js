@@ -1,6 +1,7 @@
 export const priority = [
   { value: 'asc', label: 'Crescente' },
   { value: 'desc', label: 'Decrescente' },
+  { value: 'sold', label: 'Mais vendidos' },
   { value: 'news', label: 'Mais novos' },
   { value: 'old', label: 'Mais antigos' },
   { value: 'latest', label: 'Últimas atualizações' },
@@ -14,4 +15,14 @@ export const perPage = [
   { value: '20', label: '20' },
   { value: '50', label: '50' },
   { value: '100', label: '100' },
+]
+
+export const featured = [
+  { value: false, label: 'Fora de estoque' },
+  { value: true, label: 'Em estoque' },
+]
+
+export const actived = [
+  { value: false, label: 'Inativo' },
+  { value: true, label: 'Ativo' },
 ]
