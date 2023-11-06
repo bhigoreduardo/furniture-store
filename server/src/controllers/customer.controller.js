@@ -86,7 +86,8 @@ export const signIn = async (req, res) => {
   if (!finded) throw new ErrorHandler('Usuário não cadastrado', 422)
   if (!finded.validatePassword(req.body.password))
     throw new ErrorHandler('Credenciais incorretas', 422)
-
+  if (!finded.activated.activatedStatus)
+    throw new ErrorHandler('Solicite novamente confirmação de email', 422)
   return res.status(200).json({
     success: true,
     message: 'Login realizado com sucesso',

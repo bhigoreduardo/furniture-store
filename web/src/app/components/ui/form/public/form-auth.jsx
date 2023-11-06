@@ -205,6 +205,14 @@ export default function FormAuth() {
           icon={<ArrowRight size={20} className="text-white" />}
           className="bg-orange-500 text-white hover:bg-orange-600"
         />
+        {!isNonLogin && (
+          <Link
+            to="/ativar-conta"
+            className="ml-auto font-semibold text-blue-500 hover:text-blue-600"
+          >
+            Ativar conta
+          </Link>
+        )}
       </div>
     </form>
   )
