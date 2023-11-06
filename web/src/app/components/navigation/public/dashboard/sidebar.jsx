@@ -37,7 +37,7 @@ export default function Sidebar() {
         className={comparePathname(path, 'conta') && ACTIVE_ITEM}
       />
       <NavItem
-        to="/pedidos"
+        to="pedidos"
         icon={<Storefront size={18} className="!transition-all !duration-0" />}
         label="Pedidos"
         title="Pedidos"
@@ -62,7 +62,7 @@ export default function Sidebar() {
         title="Carrinho"
       />
       <NavItem
-        to="/favoritos"
+        to="favoritos"
         icon={
           <Heart
             size={18}
@@ -75,7 +75,7 @@ export default function Sidebar() {
         className={comparePathname(path, 'favoritos') && ACTIVE_ITEM}
       />
       <NavItem
-        to="/compare"
+        to="compare"
         icon={
           <ArrowsCounterClockwise
             size={18}
@@ -88,7 +88,7 @@ export default function Sidebar() {
         className={comparePathname(path, 'compare') && ACTIVE_ITEM}
       />
       <NavItem
-        to="/endereco"
+        to="endereco"
         icon={
           <Notebook
             size={18}
@@ -101,7 +101,7 @@ export default function Sidebar() {
         className={comparePathname(path, 'endereco') && ACTIVE_ITEM}
       />
       <NavItem
-        to="/historico"
+        to="historico"
         icon={
           <ClockClockwise
             size={18}
@@ -114,7 +114,7 @@ export default function Sidebar() {
         className={comparePathname(path, 'historico') && ACTIVE_ITEM}
       />
       <NavItem
-        to="/configuracao"
+        to="configuracao"
         icon={
           <Gear
             size={18}

@@ -5,6 +5,7 @@ import { useError } from '../../../utils/ErrorHandler.js'
 import { userAuth, customerAuth } from '../../../middlewares/auth.middleware.js'
 import * as customerMiddleware from '../../../middlewares/customer.middleware.js'
 import * as customerController from '../../../controllers/customer.controller.js'
+import upload from '../../../config/multer.js'
 
 const router = express.Router()
 
@@ -42,6 +43,7 @@ router.put(
   '/update',
   useError(userAuth),
   useError(customerAuth),
+  upload.single('image'),
   validate(customerMiddleware.update),
   useError(customerController.update)
 )

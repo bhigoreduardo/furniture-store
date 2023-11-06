@@ -57,8 +57,9 @@ export const recoveryPassword = {
 
 export const update = {
   body: Joi.object({
-    name: Joi.string().min(2).max(200).required(),
-    whatsApp: Joi.string().length(11).required(),
+    name: Joi.string().min(2).max(200).optional(),
+    cpf: Joi.string().length(11).optional(),
+    whatsApp: Joi.string().length(11).optional(),
     address: Joi.object({
       street: Joi.string().required(),
       neighborhood: Joi.string().required(),
@@ -67,7 +68,7 @@ export const update = {
       number: Joi.optional(),
       zipCode: Joi.string().required(),
       complement: Joi.optional(),
-    }).required(),
+    }).optional(),
     image: Joi.string().optional(),
   }),
 }

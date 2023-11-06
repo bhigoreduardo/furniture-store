@@ -8,6 +8,7 @@ import GenerateRecoveryPassword from '../pages/public/auth/generate-recovery-pas
 import RecoveryPassword from '../pages/public/auth/recovery-password'
 
 import Dashboard from '../pages/public/dashboard'
+import Setting from '../pages/public/dashboard/setting'
 
 const router = [
   {
@@ -41,6 +42,10 @@ const router = [
           {
             path: '',
             element: <Dashboard />,
+          },
+          {
+            path: 'configuracao',
+            element: <Setting />,
           },
         ],
       },

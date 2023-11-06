@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import useUser from '../../../../hooks/use-user'
 import Heading from '../../../components/ui/heading'
@@ -7,7 +7,9 @@ import CardOverview from '../../../components/ui/card/card-overview'
 import { Package, Receipt, Rocket } from 'phosphor-react'
 
 export default function Dashboard() {
+  const navigate = useNavigate()
   const { user } = useUser()
+  const address = user?.address
 
   return (
     <section className="flex-grow flex flex-col gap-6">
@@ -15,11 +17,23 @@ export default function Dashboard() {
         <h4 className="text-xl text-gray-900">Olá, {user.name}</h4>
         <p className="text-sm text-gray-700">
           No painel da sua conta. você pode verificar e visualizar facilmente
-          seus <Link className="text-blue-500">pedidos</Link> recentes,
-          gerenciar seus <Link className="text-blue-500">endereços</Link> de
-          envio e cobrança e editar sua{' '}
-          <Link className="text-blue-500">senha</Link> e configurações da{' '}
-          <Link className="text-blue-500">conta</Link>.
+          seus{' '}
+          <Link to="pedidos" className="text-blue-500">
+            pedidos
+          </Link>{' '}
+          recentes, gerenciar seus{' '}
+          <Link to="endereco" className="text-blue-500">
+            endereços
+          </Link>{' '}
+          de envio e cobrança e editar sua{' '}
+          <Link to="configuracao" className="text-blue-500">
+            senha
+          </Link>{' '}
+          e configurações da{' '}
+          <Link to="configuracao" className="text-blue-500">
+            conta
+          </Link>
+          .
         </p>
       </div>
 
@@ -58,6 +72,7 @@ export default function Dashboard() {
             <Button
               label="Editar conta"
               className="text-blue-500 !border-blue-500 hover:bg-blue-500 hover:text-white"
+              onClick={() => navigate('configuracao')}
             />
           </div>
         </div>
@@ -65,8 +80,39 @@ export default function Dashboard() {
         <div className="flex-1 flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
           <Heading title="Endereço" />
           <div className="flex flex-col gap-6 px-6">
-            {user.address ? (
-              ''
+            {address ? (
+              <div className="flex flex-col gap-2">
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold text-gray-900">Rua: </span>
+                  {address.street}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold text-gray-900">Bairro: </span>
+                  {address.neighborhood}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold text-gray-900">Número: </span>
+                  {address.number ?? 'S/N'}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold text-gray-900">
+                    Cidade/UF:{' '}
+                  </span>
+                  {address.city}-{address.state}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold text-gray-900">CEP: </span>
+                  {address.zipCode}
+                </p>
+                {address.complement && (
+                  <p className="text-sm text-gray-600">
+                    <span className="font-semibold text-gray-900">
+                      Complemento:{' '}
+                    </span>
+                    {address.complement}
+                  </p>
+                )}
+              </div>
             ) : (
               <p className="text-sm text-gray-600">
                 Sem endereço cadastrado, por gentileza, realize a edição de seu
@@ -76,6 +122,7 @@ export default function Dashboard() {
             <Button
               label="Editar endereço"
               className="text-blue-500 !border-blue-500 hover:bg-blue-500 hover:text-white"
+              onClick={() => navigate('configuracao')}
             />
           </div>
         </div>

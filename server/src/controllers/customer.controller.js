@@ -146,7 +146,10 @@ export const recoveryPassword = async (req, res) => {
 
 export const update = async (req, res) => {
   await CustomerModel.findOneAndUpdate({ _id: req.userId }, { ...req.body })
-  const finded = await CustomerModel.findOne({ _id: req.userId })
+  const finded = await CustomerModel.findOne({
+    _id: req.userId,
+    image: req.body.image ?? '',
+  })
   return res.status(200).json({
     success: true,
     message: 'Atualização realizada com sucesso',
