@@ -30,7 +30,10 @@ export default function BottomNav() {
             <Storefront size={16} weight="duotone" />
             Loja
           </Link>
-          <Link className="flex items-center gap-1 text-sm text-gray-600">
+          <Link
+            to="/rastrear"
+            className="flex items-center gap-1 text-sm text-gray-600"
+          >
             <MapPinLine size={16} weight="duotone" />
             Rastrear
           </Link>

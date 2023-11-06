@@ -6,6 +6,7 @@ import SignUpConfirm from '../pages/public/auth/sign-up-confirm'
 import ActivatedToken from '../pages/public/auth/activated-token'
 import GenerateRecoveryPassword from '../pages/public/auth/generate-recovery-password'
 import RecoveryPassword from '../pages/public/auth/recovery-password'
+import Tracker from '../pages/public/tracker'
 
 import Dashboard from '../pages/public/dashboard'
 import Setting from '../pages/public/dashboard/setting'
@@ -34,6 +35,10 @@ const router = [
       {
         path: '/redefinir-senha',
         element: <RecoveryPassword />,
+      },
+      {
+        path: '/rastrear',
+        element: <Tracker />,
       },
       {
         path: '/conta',
