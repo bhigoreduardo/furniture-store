@@ -33,7 +33,7 @@ const children = [
     element: <Layout />,
     children: [
       {
-        path: '',
+        path: 'painel',
         element: <Dashboard />,
       },
       {

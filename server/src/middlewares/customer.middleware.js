@@ -5,7 +5,7 @@ export const signUp = {
     name: Joi.string().min(2).max(200).required(),
     cpf: Joi.string().length(11).required(),
     email: Joi.string().email().required(),
-    phone: Joi.string().length(11).required(),
+    whatsApp: Joi.string().length(11).required(),
     password: Joi.string()
       .regex(/[a-zA-Z0-9]{3,30}/)
       .required(),
@@ -58,7 +58,7 @@ export const recoveryPassword = {
 export const update = {
   body: Joi.object({
     name: Joi.string().min(2).max(200).required(),
-    phone: Joi.string().length(11).required(),
+    whatsApp: Joi.string().length(11).required(),
     address: Joi.object({
       street: Joi.string().required(),
       neighborhood: Joi.string().required(),

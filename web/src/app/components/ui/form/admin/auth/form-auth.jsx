@@ -9,7 +9,7 @@ import useApp from '../../../../../../hooks/use-app'
 import InputLabel from '../../../input/input-label'
 import PasswordLabel from '../../../input/password-label'
 import Button from '../../../button/button'
-import useUser from '../../../../../../hooks/use-User'
+import useUser from '../../../../../../hooks/use-user'
 
 const validationSchema = yup.object().shape({
   email: yup

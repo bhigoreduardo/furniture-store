@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
+import useUser from '../../../../../hooks/use-user'
 import { post } from '../../../../../libs/fetcher'
 import useApp from '../../../../../hooks/use-app'
 import InputLabel from '../../input/input-label'
@@ -27,7 +28,7 @@ const initialSignInValues = {
 const validationSignUpSchema = validationSignInSchema.shape({
   name: yup.string().required('Nome é obrigatório'),
   cpf: yup.string().required('CPF é obrigatório'),
-  phone: yup.string().required('Número de telefone é obrigatório'),
+  whatsApp: yup.string().required('Número de telefone é obrigatório'),
   repeatPassword: yup
     .string()
     .oneOf([yup.ref('password'), null], 'Senhas devem ser iguais')
@@ -38,13 +39,15 @@ const initialSignUpValues = {
   ...initialSignInValues,
   name: '',
   cpf: '',
-  phone: '',
+  whatsApp: '',
   repeatPassword: '',
   terms: '',
 }
 
 export default function FormAuth() {
+  const navigate = useNavigate()
   const { setIsLoading } = useApp()
+  const { handleUpdateUser } = useUser()
   const [info, setInfo] = useState('')
   const [success, setSuccess] = useState(false)
   const [isNonLogin, setIsNonLogin] = useState(false)
@@ -58,15 +61,17 @@ export default function FormAuth() {
   })
   const handleSubmit = async (values) => {
     setIsLoading(true)
-    let endPoint = ''
-    if (isNonLogin) endPoint = '/customers/sign-up'
-    else endPoint = '/customers/sign-in'
-    const { message, info, success } = await post(endPoint, values)
+    const endPoint = isNonLogin ? '/customers/sign-up' : '/customers/sign-in'
+    const { message, info, success, user, token } = await post(endPoint, values)
     setIsLoading(false)
     setInfo(info)
     setSuccess(success)
     if (success) {
       toast.success(message)
+      if (!isNonLogin) {
+        handleUpdateUser(user, token)
+        navigate('/conta')
+      }
     } else {
       toast.error(message)
     }
@@ -138,15 +143,15 @@ export default function FormAuth() {
         />
         {isNonLogin && (
           <InputLabel
-            id="phone"
-            label="Telefone"
-            type="phone"
-            placeholder="Telefone"
-            name="phone"
-            error={formik.touched.phone && formik.errors.phone}
+            id="whatsApp"
+            label="WhatsApp"
+            type="whatsApp"
+            placeholder="WhatsApp"
+            name="whatsApp"
+            error={formik.touched.whatsApp && formik.errors.whatsApp}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.phone}
+            value={formik.values.whatsApp}
           />
         )}
         <PasswordLabel

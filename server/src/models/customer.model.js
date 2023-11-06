@@ -8,7 +8,7 @@ const CustomerSchema = new mongoose.Schema({
   name: { type: String, required: [true, 'Nome é obrigatório'], min: [2, 'Nome deve possuir ao 2 caracteres'], max: [200, 'Nome deve possuir até 200 caracteres'] },
   email: { type: String, required: [true, 'Email é obrigatório'], match: [/\S+@\S+\.\S+/, 'Informe email válido'], lowercase: true, unique: [true, 'Email já cadastrado'] },
   cpf: { type: String, required: [true, 'CPF é obrigatório'], unique: [true, 'CPF já cadastrado'], min: 11, max: 11 },
-  phone: { type: String, required: [true, 'Celular é obrigatório'], unique: [true, 'Celular já cadastrado'], min: 11, max: 11 },
+  whatsApp: { type: String, required: [true, 'Celular é obrigatório'], unique: [true, 'Celular já cadastrado'], min: 11, max: 11 },
   image: { type: String },
   address: {
     type: {
@@ -113,12 +113,13 @@ CustomerSchema.methods.sendAuth = function () {
       name: this.name,
       email: this.email,
       cpf: this.cpf,
-      phone: this.phone,
+      whatsApp: this.whatsApp,
       image: this.image,
       address: this.address,
       terms: this.terms,
       status: this.status,
       activated: this.activated,
+      createdAt: this.createdAt,
     },
     token: this.generateToken(),
   }

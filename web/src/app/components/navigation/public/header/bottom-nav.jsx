@@ -23,27 +23,27 @@ export default function BottomNav() {
           </button>
 
           <Link className="flex items-center gap-1 text-sm text-orange-500">
-            <House size={16} />
+            <House size={16} weight="duotone" />
             Início
           </Link>
           <Link className="flex items-center gap-1 text-sm text-gray-600">
-            <Storefront size={16} />
+            <Storefront size={16} weight="duotone" />
             Loja
           </Link>
           <Link className="flex items-center gap-1 text-sm text-gray-600">
-            <MapPinLine size={16} />
+            <MapPinLine size={16} weight="duotone" />
             Rastrear
           </Link>
           <Link className="flex items-center gap-1 text-sm text-gray-600">
-            <ArrowsCounterClockwise size={16} />
+            <ArrowsCounterClockwise size={16} weight="duotone" />
             Compare
           </Link>
           <Link className="flex items-center gap-1 text-sm text-gray-600">
-            <Headphones size={16} />
+            <Headphones size={16} weight="duotone" />
             Contato
           </Link>
           <Link className="flex items-center gap-1 text-sm text-gray-600">
-            <Note size={16} />
+            <Note size={16} weight="duotone" />
             Sobre
           </Link>
         </nav>

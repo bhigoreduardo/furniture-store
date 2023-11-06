@@ -29,3 +29,5 @@ export const makeTree = (arr, parent) => {
     )
   return node
 }
+
+export const comparePathname = (pathname, cur) => pathname === cur
