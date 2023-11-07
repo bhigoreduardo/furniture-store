@@ -34,11 +34,11 @@ export default function Sidebar() {
       } border border-gray-100 bg-white rounded-sm shadow-md py-2`}
     >
       <NavItem
-        to="painel"
+        to=""
         icon={<Stack size={18} className="!transition-all !duration-0" />}
         label="Painel"
         title="Painel"
-        className={comparePathname(path, 'painel') && ACTIVE_ITEM}
+        className={comparePathname(path, undefined) && ACTIVE_ITEM}
       />
       {!isStore && (
         <NavItem
@@ -100,7 +100,7 @@ export default function Sidebar() {
             }
             label="Loja"
             title="Loja"
-            className={comparePathname(path, 'lojq') && ACTIVE_ITEM}
+            className={comparePathname(path, 'loja') && ACTIVE_ITEM}
           />
           <NavItem
             to="usuarios"

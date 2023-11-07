@@ -66,113 +66,116 @@ export const initialInventoryValues = {
   },
 }
 const validationSchema = yup.object().shape({
-  name: yup.string().required('Nome é obrigatório'),
-  sku: yup.string().optional(),
-  code: yup.string().optional(),
-  status: yup.bool().required('Status é obrigatório'),
-  description: yup
-    .object({
-      overview: yup.string().required('Descrição é obrigatório'),
-      otherInfos: yup.array().of(validationOtherInfosSchema).optional(),
-    })
-    .required('Descrição é obrigatório'),
-  additional: yup
-    .object({
-      detail: yup.string().required('Detalhe é obrigatório'),
-      otherInfos: yup.array().of(validationOtherInfosSchema).optional(),
-    })
-    .required('Informação adicional é obrigatório'),
-  specification: yup
+  // name: yup.string().required('Nome é obrigatório'),
+  // sku: yup.string().optional(),
+  // code: yup.string().optional(),
+  // status: yup.bool().required('Status é obrigatório'),
+  // description: yup
+  //   .object({
+  //     overview: yup.string().required('Descrição é obrigatório'),
+  //     otherInfos: yup.array().of(validationOtherInfosSchema).optional(),
+  //   })
+  //   .required('Descrição é obrigatório'),
+  // additional: yup
+  //   .object({
+  //     detail: yup.string().required('Detalhe é obrigatório'),
+  //     otherInfos: yup.array().of(validationOtherInfosSchema).optional(),
+  //   })
+  //   .required('Informação adicional é obrigatório'),
+  // specification: yup
+  //   .array()
+  //   .of(validationOtherInfosSchema)
+  //   .min(1, 'Pelo menos 1 especificação é obrigatório'),
+  // productData: yup.object({
+  //   // media: yup
+  //   //   .object({
+  //   //     covers: yup
+  //   //       .array()
+  //   //       .of(yup.string())
+  //   //       .length(2, 'Imagem de capa frente/verso é obrigatório'),
+  //   //     gallery: yup
+  //   //       .array()
+  //   //       .of(yup.string())
+  //   //       .min(2, 'Galeria obrigatório pelo menos 2 imagens'),
+  //   //     video: yup.string().optional(),
+  //   //   })
+  //   //   .required('Imagens do produto é obrigatório'),
+  //   inventory: yup
+  //     .array()
+  //     .of(validationInventorySchema)
+  //     .min(1, 'Pelo menos 1 produto deve ser adicionado'),
+  //   shippingInfo: yup
+  //     .object({
+  //       weight: yup.number().required('Peso é obrigatório'),
+  //       length: yup.number().required('Comprimento é obrigatório'),
+  //       width: yup.number().required('Largura é obrigatório'),
+  //       height: yup.number().required('Altura é obrigatório'),
+  //       fee: yup.number().required('Frete é obrigatório'),
+  //       timeDelivery: yup.number().required('Tempo de entrega é obrigatório'),
+  //       isFree: yup.bool().required('Frete grátis é obrigatório'),
+  //     })
+  //     .required('Informações de entrega é obrigatório'),
+  // }),
+  // seoData: yup
+  //   .object({
+  //     slug: yup.string().required('Slug é obrigatório'),
+  //     metaTitle: yup.string().required('Título é obrigatório'),
+  //     metaDescription: yup.string().optional(),
+  //   })
+  //   .required('Dados de busca é obrigatório'),
+  // published: yup
+  //   .object({
+  //     step: yup.string().required('Etapa da publicação é obrigatório'),
+  //     visibility: yup
+  //       .string()
+  //       .required('Visibilidade da publicação é obrigatório'),
+  //   })
+  //   .required('Publicação é obrigatório'),
+  category: yup
     .array()
-    .of(validationOtherInfosSchema)
-    .min(1, 'Pelo menos 1 especificação é obrigatório'),
-  productData: yup.object({
-    // media: yup
-    //   .object({
-    //     covers: yup
-    //       .array()
-    //       .of(yup.string())
-    //       .length(2, 'Imagem de capa frente/verso é obrigatório'),
-    //     gallery: yup
-    //       .array()
-    //       .of(yup.string())
-    //       .min(2, 'Galeria obrigatório pelo menos 2 imagens'),
-    //     video: yup.string().optional(),
-    //   })
-    //   .required('Imagens do produto é obrigatório'),
-    inventory: yup
-      .array()
-      .of(validationInventorySchema)
-      .min(1, 'Pelo menos 1 produto deve ser adicionado'),
-    shippingInfo: yup
-      .object({
-        weight: yup.number().required('Peso é obrigatório'),
-        length: yup.number().required('Comprimento é obrigatório'),
-        width: yup.number().required('Largura é obrigatório'),
-        height: yup.number().required('Altura é obrigatório'),
-        fee: yup.number().required('Frete é obrigatório'),
-        timeDelivery: yup.number().required('Tempo de entrega é obrigatório'),
-        isFree: yup.bool().required('Frete grátis é obrigatório'),
-      })
-      .required('Informações de entrega é obrigatório'),
-  }),
-  seoData: yup
-    .object({
-      slug: yup.string().required('Slug é obrigatório'),
-      metaTitle: yup.string().required('Título é obrigatório'),
-      metaDescription: yup.string().optional(),
-    })
-    .required('Dados de busca é obrigatório'),
-  published: yup
-    .object({
-      step: yup.string().required('Etapa da publicação é obrigatório'),
-      visibility: yup
-        .string()
-        .required('Visibilidade da publicação é obrigatório'),
-    })
-    .required('Publicação é obrigatório'),
-  category: yup.string().required('Categoria é obrigatório'),
+    .of(yup.string())
+    .min(1, 'Pelo menos 1 categoria deve ser selecionada'),
   brand: yup.string().required('Marca é obrigatório'),
-  tags: yup.array(yup.string()).optional(),
+  // tags: yup.array(yup.string()).optional(),
 })
 const initialValues = {
-  name: '',
-  sku: '',
-  code: '',
-  status: '',
-  description: {
-    overview: '',
-    otherInfos: [],
-  },
-  additional: {
-    detail: '',
-    otherInfos: [],
-  },
-  specification: [],
-  productData: {
-    inventory: [],
-    shippingInfo: {
-      weight: '',
-      length: '',
-      width: '',
-      height: '',
-      fee: '',
-      timeDelivery: '',
-      isFree: '',
-    },
-  },
-  seoData: {
-    slug: '',
-    metaTitle: '',
-    metaDescription: '',
-  },
-  published: {
-    step: '',
-    visibility: '',
-  },
-  category: '',
+  // name: '',
+  // sku: '',
+  // code: '',
+  // status: '',
+  // description: {
+  //   overview: '',
+  //   otherInfos: [],
+  // },
+  // additional: {
+  //   detail: '',
+  //   otherInfos: [],
+  // },
+  // specification: [],
+  // productData: {
+  //   inventory: [],
+  //   shippingInfo: {
+  //     weight: '',
+  //     length: '',
+  //     width: '',
+  //     height: '',
+  //     fee: '',
+  //     timeDelivery: '',
+  //     isFree: '',
+  //   },
+  // },
+  // seoData: {
+  //   slug: '',
+  //   metaTitle: '',
+  //   metaDescription: '',
+  // },
+  // published: {
+  //   step: '',
+  //   visibility: '',
+  // },
+  category: [],
   brand: '',
-  tags: [],
+  // tags: [],
 }
 //   productData: {
 //     media: {

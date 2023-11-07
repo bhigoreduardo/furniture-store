@@ -19,15 +19,31 @@ export const formDataUpload = (values) => {
   return formData
 }
 
-export const makeTree = (arr, parent) => {
+export const makeObjTree = (arr, parent) => {
   const node = {}
   arr
     .filter((item) => item.parent === parent)
     .forEach(
       (item) =>
-        (node[item._id] = { name: item.name, ...makeTree(arr, item._id) })
+        (node[item._id] = { name: item.name, ...makeObjTree(arr, item._id) })
     )
   return node
 }
 
+export const makeArrTree = (arr, parent) => {
+  const node = []
+  arr
+    .filter((item) => item.parent === parent)
+    .forEach((item) =>
+      node.push({ ...item, children: makeArrTree(arr, item._id) })
+    )
+
+  return node
+}
+
 export const comparePathname = (pathname, cur) => pathname === cur
+
+export const regexCaseIgnore = (search, value) => {
+  const regex = new RegExp(search, 'i')
+  return regex.test(value)
+}

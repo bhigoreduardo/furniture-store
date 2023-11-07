@@ -1,55 +1,54 @@
 /* eslint-disable react/prop-types */
-import { Fragment } from 'react'
+import { useEffect, useState } from 'react'
 import { MagnifyingGlass } from 'phosphor-react'
 
-import { makeTree } from '../../../../../../utils/format'
+import { makeArrTree, regexCaseIgnore } from '../../../../../../utils/format'
 import InputLabel from '../../../input/input-label'
 import FormWrapper from '../form-wrapper'
-import CheckboxLabel from '../../../input/checkbox-label'
+import CheckboxFamily from '../../../input/checkbox-family'
 
 const categories = [
   {
     _id: '213678',
-    name: 'Sapatos',
+    name: 'Pai 1',
     parent: null,
   },
   {
     _id: '783912',
-    name: 'Sapatos de couro',
+    name: 'Filho 1 do Pai 1',
     parent: '213678',
   },
   {
     _id: '783512',
-    name: 'Sapatos de couro',
+    name: 'Filho 2 do Pai 1',
     parent: '213678',
   },
   {
     _id: '789321',
-    name: 'Sapata usuado',
+    name: 'Filho 1 do Filho 1 do Pai 1',
     parent: '783912',
   },
   {
     _id: '216678',
-    name: 'Sapatos',
+    name: 'Pai 2',
     parent: null,
   },
 ]
 
 export default function FormCategory(props) {
-  const tree = makeTree(categories, null)
-  console.log(tree)
-  // Object.entries(tree).map((item) => {
-  //   console.log(item.shift())
-  //   console.log(item)
-
-  //   Object.entries(item).map((i) => {
-  //     console.log(i.shift())
-  //     console.log(i)
-  //   })
-  // })
-  // const myFn = (items) =>
-  //   items.length ? `${items.shift()} ${myFn(items)}` : ''
-  // console.log(myFn(Object.keys(tree)))
+  const [search, setSearch] = useState('')
+  const [dataSearch, setDataSearch] = useState(categories)
+  const handleSearch = () => {
+    setDataSearch(() =>
+      search !== ''
+        ? categories.filter((item) => regexCaseIgnore(search, item.name))
+        : categories
+    )
+  }
+  const arrTree = makeArrTree(dataSearch, null)
+  useEffect(() => {
+    handleSearch()
+  }, [search]) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <FormWrapper title="Categoria">
       <div className="flex flex-col gap-4">
@@ -58,7 +57,11 @@ export default function FormCategory(props) {
             id="searchCategory"
             placeholder="Pesquisar"
             name="searchCategory"
-            icon={<MagnifyingGlass className="text-gray-400" />}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            icon={
+              <MagnifyingGlass className="text-gray-400" weight="duotone" />
+            }
             className="flex-grow"
           />
           {props.formik.touched.category && props.formik.errors.category && (
@@ -68,16 +71,17 @@ export default function FormCategory(props) {
           )}
         </div>
         <div className="flex flex-col gap-1">
-          {categories.map((item, i) => (
-            <Fragment key={i}>
-              <CheckboxLabel label={item.name} />
-              <div className="flex flex-col gap-1 pl-4">
-                {item?.children?.map((i) => (
-                  <CheckboxLabel key={i._id} label={i.name} />
-                ))}
-              </div>
-            </Fragment>
-          ))}
+          {arrTree?.length > 0 ? (
+            arrTree.map((item) => (
+              <CheckboxFamily
+                key={item._id}
+                familyTree={item}
+                formik={props.formik}
+              />
+            ))
+          ) : (
+            <span className="text-sm text-gray-600">Sem resultados</span>
+          )}
         </div>
       </div>
     </FormWrapper>
