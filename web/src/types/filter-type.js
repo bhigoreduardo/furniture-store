@@ -18,11 +18,19 @@ export const perPage = [
 ]
 
 export const featured = [
-  { value: false, label: 'Fora de estoque' },
-  { value: true, label: 'Em estoque' },
+  { value: 'false', label: 'Fora de estoque' },
+  { value: 'true', label: 'Em estoque' },
+  { value: 'undefined', label: 'Todos' },
 ]
 
 export const actived = [
-  { value: false, label: 'Inativo' },
-  { value: true, label: 'Ativo' },
+  { value: 'false', label: 'Inativo' },
+  { value: 'true', label: 'Ativo' },
+  { value: 'undefined', label: 'Todos' },
+]
+
+export const chatStatus = [
+  { value: 'false', label: 'Offline' },
+  { value: 'true', label: 'Online' },
+  { value: 'undefined', label: 'Todos' },
 ]

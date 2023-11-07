@@ -1,5 +1,6 @@
 import CustomerModel from '../models/customer.model.js'
 import ErrorHandler from '../utils/ErrorHandler.js'
+import { filterSorted } from '../utils/format.js'
 import { sendInfoEmail } from '../utils/sendEmail.js'
 
 export const signUp = async (req, res) => {
@@ -145,15 +146,25 @@ export const recoveryPassword = async (req, res) => {
 }
 
 export const update = async (req, res) => {
-  await CustomerModel.findOneAndUpdate({ _id: req.userId }, { ...req.body })
+  await CustomerModel.findOneAndUpdate(
+    { _id: req.userId },
+    { ...req.body, image: req.body.image ?? '' }
+  )
   const finded = await CustomerModel.findOne({
     _id: req.userId,
-    image: req.body.image ?? '',
   })
   return res.status(200).json({
     success: true,
     message: 'Atualização realizada com sucesso',
     ...finded.sendAuth(),
+  })
+}
+
+export const updateAdmin = async (req, res) => {
+  await CustomerModel.findOneAndUpdate({ _id: req.params.id }, { ...req.body })
+  return res.status(200).json({
+    success: true,
+    message: 'Atualização realizada com sucesso',
   })
 }
 
@@ -172,5 +183,52 @@ export const changePassword = async (req, res) => {
   return res.status(200).json({
     success: true,
     message: 'Senha alterada com sucesso',
+  })
+}
+
+export const search = async (req, res) => {
+  const query = req.query
+  const page = Number(query.page) || 0
+  const limit = Number(query.perPage) || 10
+  const filter = {
+    ...(query.search && {
+      $or: [
+        { name: { $regex: query.search, $options: 'i' } },
+        { email: { $regex: query.search, $options: 'i' } },
+        { cpf: { $regex: query.search, $options: 'i' } },
+        { whatsApp: { $regex: query.search, $options: 'i' } },
+        { 'address.street': { $regex: query.search, $options: 'i' } },
+        { 'address.neighborhood': { $regex: query.search, $options: 'i' } },
+        { 'address.city': { $regex: query.search, $options: 'i' } },
+        { 'address.state': { $regex: query.search, $options: 'i' } },
+        { 'address.zipCode': { $regex: query.search, $options: 'i' } },
+        { 'address.complement': { $regex: query.search, $options: 'i' } },
+      ],
+    }),
+    ...(query.chatStatus && { chatStatus: query.chatStatus }),
+    ...(query.status && { status: query.status }),
+  }
+  const finded = await CustomerModel.paginate(filter, {
+    page,
+    limit,
+    sort: filterSorted(query.priority),
+  })
+  finded.docs = finded?.docs.map((item) => item.sendPublic())
+  return res.status(200).json(finded)
+}
+
+export const findById = async (req, res) => {
+  const finded = await CustomerModel.findOne({ _id: req.params.id })
+  return res.status(200).json(finded.sendPublic())
+}
+
+export const toggleStatus = async (req, res) => {
+  await CustomerModel.findOneAndUpdate(
+    { _id: req.params.id },
+    { status: req.body.status }
+  )
+  return res.status(200).json({
+    success: true,
+    message: 'Atualização realizada com sucesso',
   })
 }

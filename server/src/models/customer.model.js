@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
+import mongoosePaginate from 'mongoose-paginate'
 
 import config from '../config/index.js'
 
@@ -51,7 +52,7 @@ const CustomerSchema = new mongoose.Schema({
     default: {},
     _id: false,
   },
-  // chatStatus,
+  chatStatus: { type: Boolean, default: false },
   // orders,
   // amountSpend,
   // favorits,
@@ -118,10 +119,26 @@ CustomerSchema.methods.sendAuth = function () {
       address: this.address,
       terms: this.terms,
       status: this.status,
+      chatStatus: this.chatStatus,
       activated: this.activated,
       createdAt: this.createdAt,
     },
     token: this.generateToken(),
+  }
+}
+CustomerSchema.methods.sendPublic = function () {
+  return {
+    _id: this._id,
+    name: this.name,
+    email: this.email,
+    cpf: this.cpf,
+    whatsApp: this.whatsApp,
+    image: this.image,
+    address: this.address,
+    terms: this.terms,
+    status: this.status,
+    chatStatus: this.chatStatus,
+    createdAt: this.createdAt,
   }
 }
 CustomerSchema.methods.generateRecoveryPassword = function () {
@@ -142,5 +159,7 @@ CustomerSchema.methods.clearRecoveryPassword = function () {
   }
   return this.recoveryPassword
 }
+
+CustomerSchema.plugin(mongoosePaginate)
 
 export default mongoose.model('Customer', CustomerSchema)

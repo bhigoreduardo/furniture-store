@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'phosphor-react'
 
+import useUser from '../../../../../../hooks/use-user'
 import Button from '../../../button/button'
 import Heading from '../../../heading'
 import FormAddress from './form-address'
@@ -8,6 +9,7 @@ import FormProfile from './form-profile'
 import FormPassword from './form-password'
 
 export default function FormSetting() {
+  const { user } = useUser()
   const navigate = useNavigate()
 
   return (
@@ -24,12 +26,12 @@ export default function FormSetting() {
             />
           }
         />
-        <FormProfile />
+        <FormProfile user={user} />
       </div>
 
       <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
         <Heading title="Endereço" />
-        <FormAddress />
+        <FormAddress user={user} />
       </div>
 
       <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">

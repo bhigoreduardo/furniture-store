@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -20,8 +21,8 @@ const validationSchema = yup.object().shape({
   whatsApp: yup.string().required('Número de telefone é obrigatório'),
 })
 
-export default function FormProfile() {
-  const { user, handleUpdateUser } = useUser()
+export default function FormProfile({ user, isAdmin = false }) {
+  const { handleUpdateUser } = useUser()
   const { setIsLoading } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
@@ -38,15 +39,20 @@ export default function FormProfile() {
   const handleSubmit = async (values) => {
     delete values.email
     setIsLoading(true)
+    const endPoint = isAdmin
+      ? `/customers/update/${user._id}/admin`
+      : '/customers/update'
     if (typeof values.image !== 'string') values = formDataUpload(values)
-    const { success, message, user, token } = await put(
-      '/customers/update',
-      values
-    )
+    const {
+      success,
+      message,
+      user: userData,
+      token,
+    } = await put(endPoint, values)
     setIsLoading(false)
     if (success) {
       toast.success(message)
-      handleUpdateUser(user, token)
+      if (!isAdmin) handleUpdateUser(userData, token)
     } else {
       toast.error(message)
     }

@@ -12,6 +12,7 @@ export const FilterContext = createContext({
   actived: true,
   category: '',
   brand: '',
+  chatStatus: true,
 })
 
 export default function FilterContextProvider({ children }) {
@@ -25,6 +26,7 @@ export default function FilterContextProvider({ children }) {
   const [actived, setActived] = useState(true)
   const [category, setCategory] = useState('')
   const [brand, setBrand] = useState('')
+  const [chatStatus, setChatStatus] = useState(true)
 
   const handleClear = () => {
     setSearch('')
@@ -51,6 +53,7 @@ export default function FilterContextProvider({ children }) {
       actived, setActived,
       category, setCategory,
       brand, setBrand,
+      chatStatus, setChatStatus,
       handleClear,
     }}>
       {children}

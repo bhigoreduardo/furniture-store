@@ -14,6 +14,9 @@ import Brands from '../pages/admin/brands'
 import BrandsForm from '../pages/admin/brands/form'
 import Products from '../pages/admin/products'
 import ProductsForm from '../pages/admin/products/form'
+import Customers from '../pages/admin/customers'
+import CustomersProfile from '../pages/admin/customers/profile'
+import CustomersForm from '../pages/admin/customers/form'
 
 const children = [
   {
@@ -66,6 +69,14 @@ const children = [
           { path: '', element: <Products /> },
           { path: 'cadastrar', element: <ProductsForm /> },
           { path: 'editar/:id', element: <ProductsForm /> },
+        ],
+      },
+      {
+        path: 'clientes',
+        children: [
+          { path: '', element: <Customers /> },
+          { path: 'perfil/:id', element: <CustomersProfile /> },
+          { path: 'perfil/:id/editar', element: <CustomersForm /> },
         ],
       },
     ],

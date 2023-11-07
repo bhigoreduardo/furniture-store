@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -36,8 +37,8 @@ const initialValues = {
   },
 }
 
-export default function FormAddress() {
-  const { user, handleUpdateUser } = useUser()
+export default function FormAddress({ user, isAdmin = false }) {
+  const { handleUpdateUser } = useUser()
   const { setIsLoading } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
@@ -47,14 +48,17 @@ export default function FormAddress() {
   })
   const handleSubmit = async (values) => {
     setIsLoading(true)
+    const endPoint = isAdmin
+      ? `/customers/update/${user._id}/admin`
+      : '/customers/update'
     const { success, message, user, token } = await put(
-      '/customers/update',
+      endPoint,
       validationSchema.cast(values, { stripUnknown: true })
     )
     setIsLoading(false)
     if (success) {
       toast.success(message)
-      handleUpdateUser(user, token)
+      if (!isAdmin) handleUpdateUser(user, token)
     } else {
       toast.error(message)
     }
