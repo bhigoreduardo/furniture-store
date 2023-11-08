@@ -6,7 +6,9 @@ import { MinusCircle, PlusCircle } from 'phosphor-react'
 import CheckboxLabel from './checkbox-label'
 
 export default function CheckboxFamily({ familyTree, formik }) {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(
+    formik.values.category.includes(familyTree._id)
+  )
   const setCategories = (e) =>
     formik.values?.category?.length > 0
       ? formik.values.category.includes(e.target.value)
@@ -35,6 +37,7 @@ export default function CheckboxFamily({ familyTree, formik }) {
             <PlusCircle weight="duotone" className="text-gray-700" />
           ))
         }
+        checked={formik.values.category.includes(familyTree._id)}
       />
       {isVisible &&
         familyTree?.children?.map((item) => (

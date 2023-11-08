@@ -18,9 +18,11 @@ export default function FormIdentity({ formik }) {
           name="status"
           label="Status"
           error={formik.touched.status && formik.errors.status}
-          onChange={formik.handleChange}
+          onChange={() => {
+            formik.setFieldValue('status', !formik.values.status)
+          }}
           onBlur={formik.handleBlur}
-          value={formik.values.status}
+          checked={formik.values.status}
         />
 
         <div className="flex gap-4">

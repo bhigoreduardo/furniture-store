@@ -1,6 +1,8 @@
 import { ArrowRight, PencilLine, Trash } from 'phosphor-react'
 import { Link } from 'react-router-dom'
 
+import { currencyPrice, optionsShortLocaleDate } from '../../format'
+
 export const categoryColumns = [
   {
     accessorKey: 'name',
@@ -150,7 +152,7 @@ export const productColumns = [
   },
 ]
 
-export const infoProductColumns = [
+export const infoProductColumns = (handleEdit, handleDelete) => [
   {
     accessorKey: 'title',
     header: 'Título',
@@ -162,12 +164,21 @@ export const infoProductColumns = [
   {
     accessorKey: 'actions',
     header: 'Ações',
-    cell: () => (
+    cell: ({ row }) => (
       <div className="flex items-center gap-2 text-sm text-blue-600">
-        <button type="button" title="Editar">
+        <button
+          type="button"
+          title="Editar"
+          onClick={() => handleEdit(row?.index)}
+        >
           <PencilLine size={16} />
         </button>
-        <button type="button" title="Excluir" className="text-red-500">
+        <button
+          type="button"
+          title="Excluir"
+          onClick={() => handleDelete(row?.index)}
+          className="text-red-500"
+        >
           <Trash size={16} />
         </button>
       </div>
@@ -175,7 +186,7 @@ export const infoProductColumns = [
   },
 ]
 
-export const invetoryProductColumns = [
+export const invetoryProductColumns = (handleEdit, handleDelete) => [
   {
     accessorKey: 'color',
     header: 'Cor',
@@ -187,29 +198,66 @@ export const invetoryProductColumns = [
   {
     accessorKey: 'price',
     header: 'Preço',
+    cell: ({ row }) => currencyPrice.format(row?.original?.price),
   },
   {
-    accessorKey: 'discountValue',
+    accessorKey: 'offer',
     header: 'Desconto',
-  },
-  {
-    accessorKey: 'discountType',
-    header: 'Tipo',
-  },
-  {
-    accessorKey: 'expiresIn',
-    header: 'Data limite',
+    cell: ({ row }) =>
+      row?.original?.offer?.offerValue ? (
+        <div className="flex flex-col text-xs">
+          <p>
+            <span className="font-semibold">Desconto: </span>
+            {row?.original?.offer?.offerType === 'percentage'
+              ? `${row?.original?.offer?.offerValue}%`
+              : currencyPrice.format(row?.original?.offer?.offerValue)}
+          </p>
+          <p>
+            <span className="font-semibold">Preço: </span>
+            {currencyPrice.format(row?.original?.offer?.offerPrice)}
+          </p>
+          {row?.original?.offer?.offerPriceDates[0] && (
+            <p>
+              <span className="font-semibold">Data criação: </span>
+              {new Date(
+                row?.original?.offer?.offerPriceDates[0]
+              ).toLocaleDateString('pt-BR', optionsShortLocaleDate)}
+            </p>
+          )}
+          {row?.original?.offer?.offerPriceDates[1] && (
+            <p>
+              <span className="font-semibold">Data expiração: </span>
+              {new Date(
+                row?.original?.offer?.offerPriceDates[1]
+              ).toLocaleDateString('pt-BR', optionsShortLocaleDate)}
+            </p>
+          )}
+        </div>
+      ) : (
+        '-'
+      ),
   },
   {
     accessorKey: 'actions',
     header: 'Ações',
     cell: ({ row }) => (
-      <Link
-        to={`editar/${row.original?._id}`}
-        className="flex items-center gap-1 text-sm text-blue-500"
-      >
-        Vê detalhes <ArrowRight size={14} />
-      </Link>
+      <div className="flex items-center gap-2 text-sm text-blue-600">
+        <button
+          type="button"
+          title="Editar"
+          onClick={() => handleEdit(row?.index)}
+        >
+          <PencilLine size={16} />
+        </button>
+        <button
+          type="button"
+          title="Excluir"
+          onClick={() => handleDelete(row?.index)}
+          className="text-red-500"
+        >
+          <Trash size={16} />
+        </button>
+      </div>
     ),
   },
 ]

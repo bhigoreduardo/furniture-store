@@ -1,19 +1,20 @@
-import { useState } from 'react'
+/* eslint-disable react/prop-types */
+// import { useState } from 'react'
 import { Calendar } from 'phosphor-react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { mergeClassName } from '../../../../utils/format'
 
-export default function DatePickerUI(
+export default function DatePickerUI({
   id,
   name,
   className,
-  handleChange,
+  // handleChange,
   ...props
-) {
-  const [dateRange, setDateRange] = useState([null, null])
-  const [startDate, endDate] = dateRange
+}) {
+  // const [dateRange, setDateRange] = useState([null, null])
+  // const [startDate, endDate] = dateRange
   return (
     <div
       className={mergeClassName(
@@ -25,12 +26,12 @@ export default function DatePickerUI(
         id={id}
         name={name}
         selectsRange={true}
-        startDate={startDate}
-        endDate={endDate}
-        onChange={(update) => {
-          setDateRange(update)
-          handleChange(update)
-        }}
+        // startDate={startDate}
+        // endDate={endDate}
+        // onChange={(update) => {
+        //   setDateRange(update)
+        //   handleChange(update)
+        // }}
         dateFormat="dd/MM/yy"
         isClearable={true}
         monthsShown={2}

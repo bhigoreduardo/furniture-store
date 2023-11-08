@@ -4,12 +4,8 @@ import SelectLabel from '../../../input/select-label'
 import FormWrapper from '../form-wrapper'
 
 export default function FormPublished(props) {
-  const handleClear = () => {
-    props.formik.setFieldValue('published.step', '')
-    props.formik.setFieldValue('published.visibility', '')
-  }
   return (
-    <FormWrapper title="Publicação" handleClear={handleClear}>
+    <FormWrapper title="Publicação">
       <div className="flex gap-4">
         <SelectLabel
           id="published.step"

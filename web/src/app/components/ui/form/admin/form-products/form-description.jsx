@@ -1,7 +1,8 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable react/prop-types */
+import { useState } from 'react'
 import { useFormik } from 'formik'
-import { PlusCircle } from 'phosphor-react'
+import { CheckCircle, PlusCircle } from 'phosphor-react'
 
 import { initialOtherInfosValues, validationOtherInfosSchema } from '.'
 import { infoProductColumns } from '../../../../../../utils/constants/admin'
@@ -13,21 +14,44 @@ import TextRichLabel from '../../../input/textrich-label'
 import TableData from '../../../table/table-data'
 
 export default function FormDescription(props) {
+  const [indexEdit, setIndexEdit] = useState(null)
   const formik = useFormik({
     initialValues: initialOtherInfosValues,
     validationSchema: validationOtherInfosSchema,
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    props.formik.setFieldValue('description.otherInfos', [
-      ...props.formik?.values?.description?.otherInfos,
-      values,
-    ])
+    const curValues = props.formik?.values?.description?.otherInfos
+    if (indexEdit === null) {
+      props.formik.setFieldValue('description.otherInfos', [
+        ...curValues,
+        values,
+      ])
+    } else {
+      curValues[indexEdit] = values
+      props.formik.setFieldValue('description.otherInfos', [...curValues])
+      setIndexEdit(null)
+    }
     formik.resetForm()
   }
   const handleClear = () => {
     props.formik.setFieldValue('description.overview', '')
     formik.resetForm()
+  }
+  const handleEdit = (index) => {
+    const values = props.formik?.values?.description?.otherInfos[index]
+    formik.setFieldValue('title', values.title)
+    formik.setFieldValue('description', values.description)
+    setIndexEdit(index)
+  }
+  const handleDelete = (index) => {
+    props.formik.setFieldValue('description.otherInfos', [
+      ...props.formik?.values?.description?.otherInfos.filter(
+        (_, i) => i !== index
+      ),
+    ])
+    formik.resetForm()
+    setIndexEdit(null)
   }
   return (
     <FormWrapper title="Descrição" handleClear={handleClear}>
@@ -52,8 +76,14 @@ export default function FormDescription(props) {
             title="Outras informações"
             btn={
               <Button
-                label="Adicionar"
-                icon={<PlusCircle size={16} className="text-white" />}
+                label={indexEdit !== null ? 'Salvar' : 'Adicionar'}
+                icon={
+                  indexEdit !== null ? (
+                    <CheckCircle size={16} className="text-white" />
+                  ) : (
+                    <PlusCircle size={16} className="text-white" />
+                  )
+                }
                 onClick={formik.handleSubmit}
                 className="bg-orange-500 text-white hover:bg-orange-600 !py-2"
               />
@@ -82,7 +112,7 @@ export default function FormDescription(props) {
         </div>
         <div className="flex flex-col gap-3 overflow-y-auto max-[300px]">
           <TableData
-            columns={infoProductColumns}
+            columns={infoProductColumns(handleEdit, handleDelete)}
             data={props.formik.values?.description?.otherInfos}
             className="!p-0"
           />

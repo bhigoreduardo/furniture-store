@@ -25,9 +25,6 @@ const brands = [
 export default function FormBrand(props) {
   const [search, setSearch] = useState('')
   const [dataSearch, setDataSearch] = useState(brands)
-  const handleClear = () => {
-    props.formik.setFieldValue('brand', '')
-  }
   const handleSearch = () => {
     setDataSearch(() =>
       search !== ''
@@ -39,7 +36,7 @@ export default function FormBrand(props) {
     handleSearch()
   }, [search]) // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <FormWrapper title="Marca" handleClear={handleClear}>
+    <FormWrapper title="Marca">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <InputLabel
@@ -71,6 +68,7 @@ export default function FormBrand(props) {
                   props.formik.setFieldValue('brand', e.target.value)
                 }
                 onBlur={props.formik.handleBlur}
+                checked={props.formik.values.brand === item._id}
               />
             ))
           ) : (

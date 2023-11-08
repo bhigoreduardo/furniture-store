@@ -47,3 +47,21 @@ export const regexCaseIgnore = (search, value) => {
   const regex = new RegExp(search, 'i')
   return regex.test(value)
 }
+
+export const currencyPrice = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+})
+
+export const optionsFullLocaleDate = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}
+
+export const optionsShortLocaleDate = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+}

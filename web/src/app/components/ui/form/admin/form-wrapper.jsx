@@ -15,17 +15,19 @@ export default function FormWrapper({ title, handleClear, children }) {
         title={title}
         btn={
           <div className="flex gap-2">
-            <Button
-              icon={
-                <ArrowsClockwise
-                  size={14}
-                  className="transition-all duration-0"
-                />
-              }
-              title="Limpar"
-              onClick={handleClear}
-              className="text-orange-500 border !border-orange-500 !p-1 !rounded-full hover:bg-orange-500 hover:text-white transition-all duration-0"
-            />
+            {handleClear && (
+              <Button
+                icon={
+                  <ArrowsClockwise
+                    size={14}
+                    className="transition-all duration-0"
+                  />
+                }
+                title="Limpar"
+                onClick={handleClear}
+                className="text-orange-500 border !border-orange-500 !p-1 !rounded-full hover:bg-orange-500 hover:text-white transition-all duration-0"
+              />
+            )}
             <Button
               icon={
                 !isVisible ? (
