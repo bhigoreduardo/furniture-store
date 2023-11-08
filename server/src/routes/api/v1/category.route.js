@@ -28,5 +28,11 @@ router.put(
 router.get('/', useError(categoryController.findAll))
 router.get('/search', useError(categoryController.search))
 router.get('/:id', useError(categoryController.findById))
+router.delete(
+  '/:id',
+  useError(userAuth),
+  useError(adminAuth),
+  useError(categoryController.remove)
+)
 
 export default router

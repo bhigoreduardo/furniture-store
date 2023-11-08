@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { get } from '../libs/fetcher'
 import useFilter from './use-filter'
 
-export function useCategories() {
+export function useFilterCategories() {
   const { search, priority, page, perPage } = useFilter()
 
   const { data } = useQuery({
@@ -24,5 +24,15 @@ export function useCategory(id) {
     queryFn: async () => await get(`/categories/${id}`),
   })
 
-  console.log(data)
+  return { ...data }
+}
+
+export function useCategories() {
+  const { data } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => await get('/categories'),
+    staleTime: 1000 * 60 * 1,
+  })
+
+  return data
 }

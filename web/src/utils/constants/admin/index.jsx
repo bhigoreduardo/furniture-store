@@ -3,10 +3,22 @@ import { Link } from 'react-router-dom'
 
 import { currencyPrice, optionsShortLocaleDate } from '../../format'
 
+const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
+
 export const categoryColumns = [
   {
     accessorKey: 'name',
     header: 'Nome',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <img
+          src={`${serverPublicImages}/${row?.original?.image}`}
+          alt={row?.original?.name}
+          className="h-12 w-12 rounded-full bg-gray-500 object-contain"
+        />
+        <span>{row?.original.name}</span>
+      </div>
+    ),
   },
   {
     accessorKey: 'description',
@@ -22,6 +34,7 @@ export const categoryColumns = [
   {
     accessorKey: 'products',
     header: 'Produtos',
+    cell: ({ row }) => row?.original?.products ?? '-',
   },
   {
     accessorKey: 'actions',
@@ -43,7 +56,11 @@ export const colorColumns = [
     header: 'Nome',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <span className={`w-6 h-6 rounded-full bg-[${row.original?.color}]`} />
+        <span
+          className={`w-6 h-6 rounded-full border border-gray-300 bg-[${row.original?.color.slice(
+            1
+          )}]`}
+        />
         <span className="font-semibold text-gray-900 text-sm capitalize">
           {row.original?.name}
         </span>
@@ -64,6 +81,7 @@ export const colorColumns = [
   {
     accessorKey: 'products',
     header: 'Produtos',
+    cell: ({ row }) => row?.original?.products ?? '-',
   },
   {
     accessorKey: 'actions',
@@ -83,6 +101,16 @@ export const brandColumns = [
   {
     accessorKey: 'name',
     header: 'Nome',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <img
+          src={`${serverPublicImages}/${row?.original?.image}`}
+          alt={row?.original?.name}
+          className="h-12 w-12 rounded-full bg-gray-500 object-contain"
+        />
+        <span>{row?.original.name}</span>
+      </div>
+    ),
   },
   {
     accessorKey: 'description',
@@ -98,6 +126,7 @@ export const brandColumns = [
   {
     accessorKey: 'products',
     header: 'Produtos',
+    cell: ({ row }) => row?.original?.products ?? '-',
   },
   {
     accessorKey: 'actions',

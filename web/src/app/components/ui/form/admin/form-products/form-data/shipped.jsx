@@ -68,20 +68,6 @@ export default function Shipped(props) {
           value={props.formik.values?.productData?.shippingInfo?.height}
           className="flex-grow flex-1"
         />
-      </div>
-      <CheckboxToggleLabel
-        id="productData.shippingInfo.isFree"
-        name="productData.shippingInfo.isFree"
-        label="Frete grátis"
-        error={
-          props.formik.touched?.productData?.shippingInfo?.isFree &&
-          props.formik.errors?.productData?.shippingInfo?.isFree
-        }
-        onChange={props.formik.handleChange}
-        onBlur={props.formik.handleBlur}
-        value={props.formik.values?.productData?.shippingInfo?.isFree}
-      />
-      <div className="flex gap-4">
         <InputLabel
           id="productData.shippingInfo.timeDelivery"
           name="productData.shippingInfo.timeDelivery"
@@ -97,21 +83,38 @@ export default function Shipped(props) {
           value={props.formik.values?.productData?.shippingInfo?.timeDelivery}
           className="flex-grow flex-1"
         />
-        <InputLabel
-          id="productData.shippingInfo.fee"
-          name="productData.shippingInfo.fee"
-          type="number"
-          label="Preço"
-          placeholder="Infome o preço do frete"
+      </div>
+      <div className="flex gap-4">
+        <CheckboxToggleLabel
+          id="productData.shippingInfo.isFree"
+          name="productData.shippingInfo.isFree"
+          label="Frete grátis"
           error={
-            props.formik.touched?.productData?.shippingInfo?.fee &&
-            props.formik.errors?.productData?.shippingInfo?.fee
+            props.formik.touched?.productData?.shippingInfo?.isFree &&
+            props.formik.errors?.productData?.shippingInfo?.isFree
           }
           onChange={props.formik.handleChange}
           onBlur={props.formik.handleBlur}
-          value={props.formik.values?.productData?.shippingInfo?.fee}
+          value={props.formik.values?.productData?.shippingInfo?.isFree}
           className="flex-grow flex-1"
         />
+        {!props.formik.values?.productData?.shippingInfo?.isFree && (
+          <InputLabel
+            id="productData.shippingInfo.fee"
+            name="productData.shippingInfo.fee"
+            type="number"
+            label="Preço"
+            placeholder="Infome o preço do frete"
+            error={
+              props.formik.touched?.productData?.shippingInfo?.fee &&
+              props.formik.errors?.productData?.shippingInfo?.fee
+            }
+            onChange={props.formik.handleChange}
+            onBlur={props.formik.handleBlur}
+            value={props.formik.values?.productData?.shippingInfo?.fee}
+            className="flex-grow flex-1"
+          />
+        )}
       </div>
     </div>
   )

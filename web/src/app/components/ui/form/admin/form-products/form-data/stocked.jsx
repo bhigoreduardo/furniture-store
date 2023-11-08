@@ -5,6 +5,8 @@ import { useFormik } from 'formik'
 import { PlusCircle } from 'phosphor-react'
 
 import { offer } from '../../../../../../../types/product-type'
+import { useColors } from '../../../../../../../hooks/use-color'
+import { parsedSelectData } from '../../../../../../../utils/format'
 import { invetoryProductColumns } from '../../../../../../../utils/constants/admin'
 import { validationInventoryInfoSchema } from '..'
 import Button from '../../../../button/button'
@@ -28,6 +30,8 @@ const initialValues = {
 }
 
 export default function Stocked(props) {
+  const colors = useColors()
+  const parsedColors = parsedSelectData(colors, '_id', 'name')
   const [indexEdit, setIndexEdit] = useState(null)
   const formik = useFormik({
     initialValues: initialValues,
@@ -132,7 +136,7 @@ export default function Stocked(props) {
           label="Cor"
           name="color"
           placeholder="Cor"
-          data={[{ value: '10', label: '10' }]}
+          data={parsedColors}
           error={formik.touched?.color && formik.errors?.color}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -222,9 +226,6 @@ export default function Stocked(props) {
           onChange={(update) =>
             formik.setFieldValue('offer.offerPriceDates', update)
           }
-          // handleChange={(values) => {
-          //   console.log(values)
-          // }}
           className="flex-grow flex-1"
         />
         <CheckboxToggleLabel

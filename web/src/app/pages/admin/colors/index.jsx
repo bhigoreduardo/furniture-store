@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { PlusCircle } from 'phosphor-react'
 
 import { colorColumns } from '../../../../utils/constants/admin'
-import { useColors } from '../../../../hooks/use-color'
+import { useFilterColors } from '../../../../hooks/use-color'
 import useFilter from '../../../../hooks/use-filter'
 import Button from '../../../components/ui/button/button'
 import Filter from '../../../components/ui/filter/admin/filter'
@@ -11,7 +11,7 @@ import TableData from '../../../components/ui/table/table-data'
 export default function Colors() {
   const navigate = useNavigate()
   const { setTotalCount, setTotalPage } = useFilter()
-  const { docs, total, pages } = useColors()
+  const { docs, total, pages } = useFilterColors()
   setTotalCount(total)
   setTotalPage(pages)
 

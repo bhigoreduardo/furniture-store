@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { get } from '../libs/fetcher'
 import useFilter from './use-filter'
 
-export function useColors() {
+export function useFilterColors() {
   const { search, priority, page, perPage } = useFilter()
 
   const { data } = useQuery({
@@ -16,4 +16,14 @@ export function useColors() {
   })
 
   return { ...data }
+}
+
+export function useColors() {
+  const { data } = useQuery({
+    queryKey: ['colors'],
+    queryFn: async () => await get('/colors'),
+    staleTime: 1000 * 60 * 1,
+  })
+
+  return data
 }

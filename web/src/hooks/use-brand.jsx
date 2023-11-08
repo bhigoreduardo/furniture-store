@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { get } from '../libs/fetcher'
 import useFilter from './use-filter'
 
-export function useBrands() {
+export function useFilterBrands() {
   const { search, priority, page, perPage } = useFilter()
 
   const { data } = useQuery({
@@ -16,4 +16,14 @@ export function useBrands() {
   })
 
   return { ...data }
+}
+
+export function useBrands() {
+  const { data } = useQuery({
+    queryKey: ['brands'],
+    queryFn: async () => await get('/brands'),
+    staleTime: 1000 * 60 * 1,
+  })
+
+  return data
 }

@@ -40,7 +40,7 @@ export default function File({
           >
             <XCircle size={20} />
           </button>
-          <div className="w-full h-full overflow-hidden">
+          <div className="flex items-center justify-center bg-gray-500 w-full h-full overflow-hidden">
             <img
               src={
                 typeof value === 'string'

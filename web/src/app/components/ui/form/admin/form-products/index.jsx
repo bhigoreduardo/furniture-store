@@ -69,33 +69,18 @@ const validationSchema = yup.object().shape({
         .of(validationInventoryInfoSchema)
         .min(1, 'Pelo menos 1 produto deve ser adicionado'),
     }),
+    shippingInfo: yup
+      .object({
+        weight: yup.number().required('Peso é obrigatório'),
+        length: yup.number().required('Comprimento é obrigatório'),
+        width: yup.number().required('Largura é obrigatório'),
+        height: yup.number().required('Altura é obrigatório'),
+        fee: yup.number().optional(),
+        timeDelivery: yup.number().required('Tempo de entrega é obrigatório'),
+        isFree: yup.bool().required('Frete grátis é obrigatório'),
+      })
+      .required('Informações de entrega é obrigatório'),
   }),
-  // productData: yup.object({
-  //   // media: yup
-  //   //   .object({
-  //   //     covers: yup
-  //   //       .array()
-  //   //       .of(yup.string())
-  //   //       .length(2, 'Imagem de capa frente/verso é obrigatório'),
-  //   //     gallery: yup
-  //   //       .array()
-  //   //       .of(yup.string())
-  //   //       .min(2, 'Galeria obrigatório pelo menos 2 imagens'),
-  //   //     video: yup.string().optional(),
-  //   //   })
-  //   //   .required('Imagens do produto é obrigatório'),
-  //   shippingInfo: yup
-  //     .object({
-  //       weight: yup.number().required('Peso é obrigatório'),
-  //       length: yup.number().required('Comprimento é obrigatório'),
-  //       width: yup.number().required('Largura é obrigatório'),
-  //       height: yup.number().required('Altura é obrigatório'),
-  //       fee: yup.number().required('Frete é obrigatório'),
-  //       timeDelivery: yup.number().required('Tempo de entrega é obrigatório'),
-  //       isFree: yup.bool().required('Frete grátis é obrigatório'),
-  //     })
-  //     .required('Informações de entrega é obrigatório'),
-  // }),
   seoData: yup
     .object({
       slug: yup.string().required('Slug é obrigatório'),
@@ -139,18 +124,16 @@ const initialValues = {
       lowStockWarning: true,
       info: [],
     },
+    shippingInfo: {
+      weight: '',
+      length: '',
+      width: '',
+      height: '',
+      fee: '',
+      timeDelivery: '',
+      isFree: false,
+    },
   },
-  // productData: {
-  //   shippingInfo: {
-  //     weight: '',
-  //     length: '',
-  //     width: '',
-  //     height: '',
-  //     fee: '',
-  //     timeDelivery: '',
-  //     isFree: '',
-  //   },
-  // },
   seoData: {
     slug: '',
     metaTitle: '',
@@ -164,12 +147,25 @@ const initialValues = {
   brand: '',
   tags: [],
 }
-//   productData: {
+// media: yup
+//   .object({
+//     covers: yup
+//       .array()
+//       .of(yup.string())
+//       .length(2, 'Imagem de capa frente/verso é obrigatório'),
+//     gallery: yup
+//       .array()
+//       .of(yup.string())
+//       .min(2, 'Galeria obrigatório pelo menos 2 imagens'),
+//     video: yup.string().optional(),
+//   })
+//   .required('Imagens do produto é obrigatório'),
+
 //     media: {
-//       covers: [images],
-//       gallery: [images],
-//       video: 'yout.com.br'
-//     }
+//       covers: [],
+//       gallery: [],
+//       video: ''
+//     },
 
 export default function FormProducts({ data }) {
   const formik = useFormik({

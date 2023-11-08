@@ -6,15 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 import { mergeClassName } from '../../../../utils/format'
 
-export default function DatePickerUI({
-  id,
-  name,
-  className,
-  // handleChange,
-  ...props
-}) {
-  // const [dateRange, setDateRange] = useState([null, null])
-  // const [startDate, endDate] = dateRange
+export default function DatePickerUI({ id, name, className, ...props }) {
   return (
     <div
       className={mergeClassName(
@@ -26,12 +18,6 @@ export default function DatePickerUI({
         id={id}
         name={name}
         selectsRange={true}
-        // startDate={startDate}
-        // endDate={endDate}
-        // onChange={(update) => {
-        //   setDateRange(update)
-        //   handleChange(update)
-        // }}
         dateFormat="dd/MM/yy"
         isClearable={true}
         monthsShown={2}

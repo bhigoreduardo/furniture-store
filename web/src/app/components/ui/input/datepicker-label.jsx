@@ -11,7 +11,6 @@ export default function DatePickerLabel({
   error,
   hint,
   className,
-  // handleChange,
   ...props
 }) {
   return (
@@ -25,7 +24,6 @@ export default function DatePickerLabel({
       <DatePickerUI
         id={id}
         name={name}
-        // handleChange={handleChange}
         className={`${error && 'border-red-500'}`}
         {...props}
       />

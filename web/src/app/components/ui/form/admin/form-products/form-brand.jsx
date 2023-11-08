@@ -2,27 +2,14 @@
 import { useEffect, useState } from 'react'
 import { MagnifyingGlass } from 'phosphor-react'
 
+import { useBrands } from '../../../../../../hooks/use-brand'
 import { regexCaseIgnore } from '../../../../../../utils/format'
 import InputLabel from '../../../input/input-label'
 import FormWrapper from '../form-wrapper'
 import RadioBoxLabel from '../../../input/radiobox-label'
 
-const brands = [
-  {
-    _id: '213678',
-    name: 'Pai 1',
-  },
-  {
-    _id: '783912',
-    name: 'Filho 1 do Pai 1',
-  },
-  {
-    _id: '783512',
-    name: 'Filho 2 do Pai 1',
-  },
-]
-
 export default function FormBrand(props) {
+  const brands = useBrands()
   const [search, setSearch] = useState('')
   const [dataSearch, setDataSearch] = useState(brands)
   const handleSearch = () => {

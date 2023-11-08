@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename)
 export const save = async (req, res) => {
   await CategoryModel.create({
     ...req.body,
-    parent: req.body.parent || undefined,
+    parent: req.body.parent || null,
     slug: slugify(req.body.name).toLowerCase(),
   })
   return res.status(201).json({
@@ -71,4 +71,9 @@ export const search = async (req, res) => {
     sort: filterSorted(query.priority),
   })
   return res.status(200).json(finded)
+}
+
+export const remove = async (req, res) => {
+  await CategoryModel.findByIdAndDelete(req.params.id)
+  return res.status(200).json({ success: true, message: 'Categoria removida' })
 }
