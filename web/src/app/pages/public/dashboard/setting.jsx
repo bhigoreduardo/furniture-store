@@ -1,9 +1,9 @@
-import FormSetting from '../../../components/ui/form/public/setting'
+import FormSettings from '../../../components/ui/form/public/form-settings'
 
 export default function Setting() {
   return (
     <section className="flex-grow flex flex-col gap-6">
-      <FormSetting />
+      <FormSettings />
     </section>
   )
 }

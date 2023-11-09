@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'phosphor-react'
 
-import useUser from '../../../../../../hooks/use-user'
-import Button from '../../../button/button'
-import Heading from '../../../heading'
-import FormProfile from '../../form-profile'
-import FormAddress from '../../form-address'
-import FormPassword from '../../form-password'
+import useUser from '../../../../../hooks/use-user'
+import Button from '../../button/button'
+import Heading from '../../heading'
+import FormProfile from '../form-profile'
+import FormAddress from '../form-address'
+import FormPassword from '../form-password'
 
 export default function FormSetting() {
   const { user } = useUser()

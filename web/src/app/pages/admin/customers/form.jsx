@@ -6,8 +6,8 @@ import { useFormik } from 'formik'
 import { patch } from '../../../../libs/fetcher'
 import { useCustomer } from '../../../../hooks/admin/use-customer'
 import useApp from '../../../../hooks/use-app'
-import FormAddress from '../../../components/ui/form/public/setting/form-address'
-import FormProfile from '../../../components/ui/form/public/setting/form-profile'
+import FormAddress from '../../../components/ui/form/form-address'
+import FormProfile from '../../../components/ui/form/form-profile'
 import Heading from '../../../components/ui/heading'
 import Button from '../../../components/ui/button/button'
 import CheckboxToggleLabel from '../../../components/ui/input/checkboxtoggle-label'
@@ -55,11 +55,19 @@ export default function Form() {
             />
           }
         />
-        <FormProfile user={customer} isAdmin />
+        <FormProfile
+          user={customer}
+          isAdmin
+          endPoint={`/customers/update/${customer._id}/admin`}
+        />
       </div>
       <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
         <Heading title="Endereço" />
-        <FormAddress user={customer} isAdmin />
+        <FormAddress
+          user={customer}
+          isAdmin
+          endPoint={`/customers/update/${customer._id}/admin`}
+        />
       </div>
     </section>
   )
