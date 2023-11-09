@@ -11,6 +11,6 @@ export const filterSorted = (sorted) => {
     case 'latest':
       return { updatedAt: -1 }
     default:
-      return { name: 1 }
+      return { createdAt: -1 }
   }
 }

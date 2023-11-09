@@ -57,9 +57,8 @@ export const colorColumns = [
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <span
-          className={`w-6 h-6 rounded-full border border-gray-300 bg-[${row.original?.color.slice(
-            1
-          )}]`}
+          className="w-6 h-6 rounded-full border border-gray-300"
+          style={{ backgroundColor: row.original?.color }}
         />
         <span className="font-semibold text-gray-900 text-sm capitalize">
           {row.original?.name}
