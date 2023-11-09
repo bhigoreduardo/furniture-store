@@ -36,14 +36,12 @@ export default function CardAuth({ setIsCardAuth, className }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    setIsLoading(true)
     const { success, user, token } = await post(
       '/customers/sign-in',
       values,
       setIsLoading,
       toast
     )
-    setIsLoading(false)
     if (success) {
       handleUpdateUser(user, token)
       formik.resetForm()
