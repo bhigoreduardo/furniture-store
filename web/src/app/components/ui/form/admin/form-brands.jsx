@@ -31,7 +31,6 @@ export default function FormBrands({ data }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    setIsLoading(true)
     if (typeof values.image !== 'string') values = formDataUpload(values)
     if (data)
       await put(

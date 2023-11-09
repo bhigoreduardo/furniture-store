@@ -3,17 +3,13 @@ import { PlusCircle } from 'phosphor-react'
 
 import { colorColumns } from '../../../../utils/constants/admin'
 import { useFilterColors } from '../../../../hooks/use-color'
-import useFilter from '../../../../hooks/use-filter'
 import Button from '../../../components/ui/button/button'
 import Filter from '../../../components/ui/filter/admin/filter'
 import TableData from '../../../components/ui/table/table-data'
 
 export default function Colors() {
   const navigate = useNavigate()
-  const { setTotalCount, setTotalPage } = useFilter()
   const { docs, total, pages } = useFilterColors()
-  setTotalCount(total)
-  setTotalPage(pages)
 
   return (
     <section className="flex-grow flex flex-col gap-6">
@@ -30,6 +26,8 @@ export default function Colors() {
         }
         columns={colorColumns}
         data={docs}
+        total={total}
+        pages={pages}
       />
     </section>
   )

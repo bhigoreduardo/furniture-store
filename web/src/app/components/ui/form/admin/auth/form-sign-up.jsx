@@ -37,14 +37,14 @@ export default function FormSignUp() {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    setIsLoading(true)
-    const { message, success } = await post('/stores/sign-up', values)
-    setIsLoading(false)
+    const { success } = await post(
+      '/stores/sign-up',
+      values,
+      setIsLoading,
+      toast
+    )
     if (success) {
-      toast.success(message)
       navigate('/admin/entrar')
-    } else {
-      toast.error(message)
     }
   }
   return (

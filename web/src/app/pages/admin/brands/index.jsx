@@ -3,17 +3,13 @@ import { PlusCircle } from 'phosphor-react'
 
 import { brandColumns } from '../../../../utils/constants/admin'
 import { useFilterBrands } from '../../../../hooks/use-brand'
-import useFilter from '../../../../hooks/use-filter'
 import Button from '../../../components/ui/button/button'
 import Filter from '../../../components/ui/filter/admin/filter'
 import TableData from '../../../components/ui/table/table-data'
 
 export default function Brands() {
   const navigate = useNavigate()
-  const { setTotalCount, setTotalPage } = useFilter()
   const { docs, total, pages } = useFilterBrands()
-  setTotalCount(total)
-  setTotalPage(pages)
 
   return (
     <section className="flex-grow flex flex-col gap-6">
@@ -30,6 +26,8 @@ export default function Brands() {
         }
         columns={brandColumns}
         data={docs}
+        total={total}
+        pages={pages}
       />
     </section>
   )

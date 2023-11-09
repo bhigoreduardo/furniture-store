@@ -30,20 +30,13 @@ export default function FormGenerateRecoveryPassword() {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    setIsLoading(true)
     const endPoint =
       pathname.split('/')[1] === 'loja'
         ? '/users/generate-recovery-password'
         : '/stores/generate-recovery-password'
-    const { message, info, success } = await post(endPoint, values)
-    setIsLoading(false)
+    const { info, success } = await post(endPoint, values, setIsLoading, toast)
     setInfo(info)
     setSuccess(success)
-    if (success) {
-      toast.success(message)
-    } else {
-      toast.error(message)
-    }
   }
   return (
     <form

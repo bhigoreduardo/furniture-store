@@ -9,7 +9,7 @@ import { useFilterUsers } from '../../../../hooks/admin/use-user'
 
 export default function Users() {
   const navigate = useNavigate()
-  const { docs } = useFilterUsers()
+  const { docs, total, pages } = useFilterUsers()
 
   return (
     <section className="flex-grow flex flex-col gap-6">
@@ -26,6 +26,8 @@ export default function Users() {
         }
         columns={userColumns}
         data={docs}
+        total={total}
+        pages={pages}
       />
     </section>
   )

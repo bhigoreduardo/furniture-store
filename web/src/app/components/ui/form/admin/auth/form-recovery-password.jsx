@@ -42,19 +42,20 @@ export default function FormRecoveryPassword() {
         pathname.split('/')[1] === 'loja'
           ? '/users/recovery-password'
           : '/stores/recovery-password'
-      setIsLoading(true)
-      const { message, info, success } = await post(endPoint, {
-        ...values,
-        passwordResetToken: queries.get('token'),
-      })
-      setIsLoading(false)
+
+      const { info, success } = await post(
+        endPoint,
+        {
+          ...values,
+          passwordResetToken: queries.get('token'),
+        },
+        setIsLoading,
+        toast
+      )
       setInfo(info)
       setSuccess(success)
       if (success) {
-        toast.success(message)
         navigate(`/${pathname.split('/')[1]}/entrar`)
-      } else {
-        toast.error(message)
       }
     }
   }
