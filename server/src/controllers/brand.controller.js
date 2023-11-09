@@ -1,7 +1,14 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+import fs from 'fs'
 import slugify from 'slugify'
 
 import BrandModel from '../models/brand.model.js'
+import ErrorHandler from '../utils/ErrorHandler.js'
 import { filterSorted } from '../utils/format.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export const save = async (req, res) => {
   await BrandModel.create({
@@ -63,4 +70,17 @@ export const search = async (req, res) => {
     sort: filterSorted(query.priority),
   })
   return res.status(200).json(finded)
+}
+
+export const remove = async (req, res) => {
+  const finded = await BrandModel.findById(req.params.id)
+  if (!finded) throw new ErrorHandler('Marca não cadastrada', 422)
+
+  const pathfile = path.join(__dirname, '../public/images/' + finded.image)
+  fs.unlink(pathfile, function (err) {
+    if (err) throw new ErrorHandler('Falha na remoção da imagem', 500)
+  })
+
+  await BrandModel.findByIdAndDelete(req.params.id)
+  return res.status(200).json({ success: true, message: 'Marca removida' })
 }

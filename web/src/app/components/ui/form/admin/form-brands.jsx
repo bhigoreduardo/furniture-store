@@ -16,29 +16,24 @@ const validationSchema = yup.object().shape({
   name: yup.string().required('Nome é obrigatório'),
   description: yup.string().optional(),
 })
-const initialValues = {
-  image: '',
-  name: '',
-  description: '',
-}
 
 export default function FormBrands({ data }) {
   const { setIsLoading } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: data || initialValues,
+    initialValues: {
+      image: data?.image || '',
+      name: data?.name || '',
+      description: data?.description || '',
+    },
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
+    validationSchema.cast(values, { stripUnknown: true })
     if (typeof values.image !== 'string') values = formDataUpload(values)
-    if (data)
-      await put(
-        `/brands/${data._id}`,
-        validationSchema.cast(values, { stripUnknown: true }),
-        setIsLoading,
-        toast
-      )
+    if (Object.keys(data)?.length !== 0)
+      await put(`/brands/${data._id}`, values, setIsLoading, toast)
     else await post('/brands/', values, setIsLoading, toast)
   }
 

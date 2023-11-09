@@ -34,3 +34,17 @@ export function useBrands() {
 
   return data
 }
+
+export function useBrand(id) {
+  const { setIsLoading } = useApp()
+
+  const { data } = useQuery({
+    queryKey: ['brand', id],
+    queryFn: async () => {
+      if (id) return await get(`/brands/${id}`, setIsLoading, toast)
+      return null
+    },
+  })
+
+  return { ...data }
+}
