@@ -36,8 +36,12 @@ export function useUser(id) {
 
   const { data } = useQuery({
     queryKey: ['user', id],
-    queryFn: async () => await get(`/users/${id}`, setIsLoading, toast),
+    queryFn: async () => {
+      if (id) return await get(`/users/${id}`, setIsLoading, toast)
+      return null
+    },
     staleTime: 1000 * 60 * 1,
   })
+  
   return { ...data }
 }

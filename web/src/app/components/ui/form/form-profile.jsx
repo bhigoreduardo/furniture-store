@@ -37,7 +37,7 @@ export default function FormProfile({ user, isAdmin = false, endPoint }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    if (user) {
+    if (Object.keys(user)?.length !== 0) {
       delete values.email
       if (typeof values.image !== 'string') values = formDataUpload(values)
       const { user: userData, token } = await put(
@@ -56,7 +56,7 @@ export default function FormProfile({ user, isAdmin = false, endPoint }) {
   return (
     <form className="flex flex-col gap-6 px-6" onSubmit={formik.handleSubmit}>
       <div className="flex gap-4">
-        {user && (
+        {Object.keys(user)?.length !== 0 && (
           <FileLabel
             id="image"
             label="Imagem"
@@ -92,7 +92,7 @@ export default function FormProfile({ user, isAdmin = false, endPoint }) {
               onBlur={formik.handleBlur}
               value={formik.values.email}
               className="flex-grow"
-              disabled={!!user}
+              disabled={!!Object.keys(user)?.length}
             />
           </div>
           <div className="flex gap-4">

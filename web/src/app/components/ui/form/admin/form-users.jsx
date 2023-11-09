@@ -18,7 +18,7 @@ export default function FormUsers({ user, isAdmin = false, endPoint }) {
   const navigate = useNavigate()
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: { status: user?.status },
+    initialValues: { status: user.status || false },
     onSubmit: async (values) =>
       await patch(
         `/users/${user._id}/toggle-status`,
@@ -30,7 +30,7 @@ export default function FormUsers({ user, isAdmin = false, endPoint }) {
 
   return (
     <div className="flex flex-col gap-6">
-      {user && isAdmin && (
+      {Object.keys(user)?.length !== 0 && isAdmin && (
         <CheckboxToggleLabel
           id="status"
           name="status"
@@ -56,7 +56,7 @@ export default function FormUsers({ user, isAdmin = false, endPoint }) {
         />
         <FormProfile user={user} isAdmin endPoint={endPoint} />
       </div>
-      {user && (
+      {Object.keys(user)?.length !== 0 && (
         <>
           <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
             <Heading title="Endereço" />
