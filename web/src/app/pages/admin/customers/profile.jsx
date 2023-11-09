@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { Package, Receipt, Rocket } from 'phosphor-react'
 
-import { useCustomer } from '../../../../hooks/use-customer'
+import { useCustomer } from '../../../../hooks/admin/use-customer'
 import CardOverview from '../../../components/ui/card/card-overview'
 import CardAddress from '../../../components/ui/card/customer/card-address'
 import CardProfile from '../../../components/ui/card/customer/card-profile'

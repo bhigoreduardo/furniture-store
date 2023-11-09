@@ -17,7 +17,7 @@ import Pagination from '../pagination/pagination'
 import Heading from '../heading'
 import { mergeClassName } from '../../../../utils/format'
 
-export default function TableData({ title, btn, columns, data, className }) {
+export default function TableData({ title, btn, columns, data, total, pages, className }) {
   const table = useReactTable({
     columns,
     data,
@@ -66,7 +66,7 @@ export default function TableData({ title, btn, columns, data, className }) {
           )}
         </TableBody>
       </Table>
-      <Pagination />
+      <Pagination total={total} pages={pages} />
     </div>
   )
 }

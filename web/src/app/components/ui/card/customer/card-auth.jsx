@@ -2,16 +2,16 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 import { useFormik } from 'formik'
-import * as yup from 'yup'
 import { toast } from 'react-toastify'
+import * as yup from 'yup'
 
 import { post } from '../../../../../libs/fetcher'
+import { mergeClassName } from '../../../../../utils/format'
 import useApp from '../../../../../hooks/use-app'
 import useUser from '../../../../../hooks/use-user'
 import InputLabel from '../../input/input-label'
 import PasswordLabel from '../../input/password-label'
 import Button from '../../button/button'
-import { mergeClassName } from '../../../../../utils/format'
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -37,19 +37,18 @@ export default function CardAuth({ setIsCardAuth, className }) {
   })
   const handleSubmit = async (values) => {
     setIsLoading(true)
-    const { message, success, user, token } = await post(
+    const { success, user, token } = await post(
       '/customers/sign-in',
-      values
+      values,
+      setIsLoading,
+      toast
     )
     setIsLoading(false)
     if (success) {
-      toast.success(message)
       handleUpdateUser(user, token)
       formik.resetForm()
       setIsCardAuth(false)
       navigate('/conta')
-    } else {
-      toast.error(message)
     }
   }
   return (
@@ -61,7 +60,9 @@ export default function CardAuth({ setIsCardAuth, className }) {
       onSubmit={formik.handleSubmit}
     >
       <div className="flex flex-col gap-6">
-        <h4 className="font-semibold text-xl text-gray-900 text-center">Acessar conta</h4>
+        <h4 className="font-semibold text-xl text-gray-900 text-center">
+          Acessar conta
+        </h4>
         <div className="flex flex-col gap-4">
           <InputLabel
             id="email"

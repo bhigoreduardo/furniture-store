@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 
 import { patch } from '../../../../libs/fetcher'
-import { useCustomer } from '../../../../hooks/use-customer'
+import { useCustomer } from '../../../../hooks/admin/use-customer'
 import useApp from '../../../../hooks/use-app'
 import FormAddress from '../../../components/ui/form/public/setting/form-address'
 import FormProfile from '../../../components/ui/form/public/setting/form-profile'

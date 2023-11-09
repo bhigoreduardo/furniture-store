@@ -31,15 +31,10 @@ export default function FormPassword({ endPoint }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    setIsLoading(true)
-    const { success, message } = await patch(endPoint, values)
+    const { success } = await patch(endPoint, values, setIsLoading, toast)
     if (success) {
-      toast.success(message)
       formik.resetForm()
-    } else {
-      toast.error(message)
     }
-    setIsLoading(false)
   }
 
   return (

@@ -34,17 +34,17 @@ export default function FormAuth() {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    setIsLoading(true)
     const endPoint =
       pathname.split('/')[1] === 'loja' ? '/users/sign-in' : '/stores/sign-in'
-    const { message, success, user, token } = await post(endPoint, values)
-    setIsLoading(false)
+    const { success, user, token } = await post(
+      endPoint,
+      values,
+      setIsLoading,
+      toast
+    )
     if (success) {
-      toast.success(message)
       handleUpdateUser(user, token)
       navigate('/admin')
-    } else {
-      toast.error(message)
     }
   }
 

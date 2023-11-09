@@ -69,7 +69,7 @@ export const update = {
       zipCode: Joi.string().required(),
       complement: Joi.optional(),
     }).optional(),
-    image: Joi.string().optional(),
+    image: Joi.string().allow('').optional(),
   }),
 }
 

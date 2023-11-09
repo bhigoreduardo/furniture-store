@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import { useUser } from '../../../../hooks/admin/use-users'
+import { useUser } from '../../../../hooks/admin/use-user'
 import FormUsers from '../../../components/ui/form/admin/form-users'
 
 export default function Form() {

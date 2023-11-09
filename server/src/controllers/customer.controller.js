@@ -169,7 +169,7 @@ export const updateAdmin = async (req, res) => {
 }
 
 export const changePassword = async (req, res) => {
-  if (req.body.password !== req.body.repeatPassword)
+  if (req.body.newPassword !== req.body.repeatPassword)
     throw new ErrorHandler('Senhas inválidas', 400)
   const finded = await CustomerModel.findOne({
     _id: req.userId,

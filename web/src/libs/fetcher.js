@@ -56,11 +56,16 @@ export const patch = async (endPoint, values, setIsLoading, toast) => {
   }
 }
 
-export const del = async (endPoint, values) => {
+export const del = async (endPoint, values, setIsLoading, toast) => {
   try {
+    setIsLoading(true)
     const { data } = await api.delete(endPoint, values)
+    if (data?.success) toast.success(data?.message)
     return data
   } catch (err) {
-    return err?.response?.data
+    const error = err?.response?.data
+    toast.error(error?.message)
+  } finally {
+    setIsLoading(false)
   }
 }

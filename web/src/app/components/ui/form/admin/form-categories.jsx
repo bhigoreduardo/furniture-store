@@ -1,18 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { toast } from 'react-toastify'
 
-import { get, post, put } from '../../../../../libs/fetcher'
+import { formDataUpload, parsedSelectData } from '../../../../../utils/format'
+import { useCategories } from '../../../../../hooks/use-category'
+import { post, put } from '../../../../../libs/fetcher'
 import useApp from '../../../../../hooks/use-app'
 import Button from '../../button/button'
 import FileLabel from '../../input/file-label'
 import InputLabel from '../../input/input-label'
 import SelectLabel from '../../input/select-label'
 import TextAreaLabel from '../../input/textarea-label'
-import { formDataUpload, parsedSelectData } from '../../../../../utils/format'
 
 const validationSchema = yup.object().shape({
   image: yup.string().required('Imagem é obrigatório'),
@@ -28,44 +27,31 @@ const initialValues = {
 }
 
 export default function FormCategories({ data }) {
-  const [categories, setCategories] = useState([])
-  const navigate = useNavigate()
   const { setIsLoading } = useApp()
+  const categories = useCategories()
+  const parsedData = categories && parsedSelectData(categories, '_id', 'name')
+  const parsedCategories = data
+    ? parsedData?.filter((item) => item.value !== data._id)
+    : parsedData
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: data || initialValues,
+    initialValues: data
+      ? { ...data, parent: data?.parent || '' }
+      : initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    setIsLoading(true)
     if (typeof values.image !== 'string') values = formDataUpload(values)
-    let response
     if (data)
-      response = await put(
+      await put(
         `/categories/${data._id}`,
-        validationSchema.cast(values, { stripUnknown: true })
+        validationSchema.cast(values, { stripUnknown: true }),
+        setIsLoading,
+        toast
       )
-    else response = await post('/categories/', values)
-
-    setIsLoading(false)
-    if (response?.success) {
-      toast.success(response?.message)
-      navigate(-1)
-    } else {
-      toast.error(response?.message)
-    }
+    else await post('/categories/', values, setIsLoading, toast)
   }
-  const getCategories = async () => {
-    const response = await get('/categories')
-    const parsedData = parsedSelectData(response, '_id', 'name')
-    setCategories(() =>
-      data ? parsedData.filter((item) => item.value !== data._id) : parsedData
-    )
-  }
-  useEffect(() => {
-    getCategories()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6 px-6">
@@ -93,18 +79,20 @@ export default function FormCategories({ data }) {
             value={formik.values.name}
             className="flex-grow"
           />
-          <SelectLabel
-            id="parent"
-            label="Categoria herdeira"
-            name="parent"
-            placeholder="Selecione"
-            data={categories}
-            error={formik.touched.parent && formik.errors.parent}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.parent}
-            className="flex-grow"
-          />
+          {parsedCategories?.length > 0 && (
+            <SelectLabel
+              id="parent"
+              label="Categoria herdeira"
+              name="parent"
+              placeholder="Selecione"
+              data={parsedCategories}
+              error={formik.touched.parent && formik.errors.parent}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.parent}
+              className="flex-grow"
+            />
+          )}
         </div>
         <TextAreaLabel
           id="description"

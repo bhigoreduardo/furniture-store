@@ -5,7 +5,7 @@ import { userColumns } from '../../../../utils/constants/admin'
 import Button from '../../../components/ui/button/button'
 import FilterUser from '../../../components/ui/filter/admin/filter-user'
 import TableData from '../../../components/ui/table/table-data'
-import { useFilterUsers } from '../../../../hooks/admin/use-users'
+import { useFilterUsers } from '../../../../hooks/admin/use-user'
 
 export default function Users() {
   const navigate = useNavigate()

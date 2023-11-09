@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Trash } from 'phosphor-react'
 import { toast } from 'react-toastify'
 
-import { del, get } from '../../../../libs/fetcher'
+import { del } from '../../../../libs/fetcher'
+import { useCategory } from '../../../../hooks/use-category'
+import useApp from '../../../../hooks/use-app'
 import Button from '../../../components/ui/button/button'
 import FormCategories from '../../../components/ui/form/admin/form-categories'
 import Heading from '../../../components/ui/heading'
@@ -11,23 +12,11 @@ import Heading from '../../../components/ui/heading'
 export default function Form() {
   const navigate = useNavigate()
   const { id } = useParams()
-  const [data, setData] = useState(null)
-  const getCategory = async () => {
-    const data = await get(`/categories/${id}`)
-    setData(data)
-  }
+  const { setIsLoading } = useApp()
+  const data = useCategory(id)
   const handleDelete = async () => {
-    const { success, message } = await del(`/categories/${id}`)
-    if (success) {
-      toast.success(message)
-      navigate(-1)
-    } else {
-      toast.error(message)
-    }
+    await del(`/categories/${id}`, {}, setIsLoading, toast)
   }
-  useEffect(() => {
-    if (id) getCategory()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <section className="flex-grow flex flex-col">

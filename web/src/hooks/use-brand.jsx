@@ -1,16 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
 
 import { get } from '../libs/fetcher'
 import useFilter from './use-filter'
+import useApp from './use-app'
 
 export function useFilterBrands() {
+  const { setIsLoading } = useApp()
   const { search, priority, page, perPage } = useFilter()
 
   const { data } = useQuery({
     queryKey: ['brands', search, priority, page, perPage],
     queryFn: async () =>
       await get(
-        `/brands/search?search=${search}&priority=${priority}&page=${page}&perPage=${perPage}`
+        `/brands/search?search=${search}&priority=${priority}&page=${page}&perPage=${perPage}`,
+        setIsLoading,
+        toast
       ),
     staleTime: 1000 * 60 * 1,
   })
@@ -19,9 +24,11 @@ export function useFilterBrands() {
 }
 
 export function useBrands() {
+  const { setIsLoading } = useApp()
+
   const { data } = useQuery({
     queryKey: ['brands'],
-    queryFn: async () => await get('/brands'),
+    queryFn: async () => await get('/brands', setIsLoading, toast),
     staleTime: 1000 * 60 * 1,
   })
 

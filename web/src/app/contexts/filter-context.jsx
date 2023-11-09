@@ -6,8 +6,6 @@ export const FilterContext = createContext({
   priority: '',
   page: 1,
   perPage: 10,
-  totalCount: '',
-  totalPage: 0,
   featured: true,
   actived: true,
   category: '',
@@ -20,8 +18,6 @@ export default function FilterContextProvider({ children }) {
   const [priority, setPriority] = useState('')
   const [page, setPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
-  const [totalCount, setTotalCount] = useState('')
-  const [totalPage, setTotalPage] = useState(0)
   const [featured, setFeatured] = useState(true)
   const [actived, setActived] = useState(true)
   const [category, setCategory] = useState('')
@@ -33,8 +29,6 @@ export default function FilterContextProvider({ children }) {
     setPriority('')
     setPage(1)
     setPerPage(10)
-    setTotalCount('')
-    setTotalPage(0)
     setFeatured(true)
     setActived(true)
     setCategory('')
@@ -47,8 +41,6 @@ export default function FilterContextProvider({ children }) {
       priority, setPriority,
       page, setPage,
       perPage, setPerPage,
-      totalCount, setTotalCount,
-      totalPage, setTotalPage,
       featured, setFeatured,
       actived, setActived,
       category, setCategory,

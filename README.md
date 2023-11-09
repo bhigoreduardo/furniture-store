@@ -10,3 +10,5 @@ FIXME:
   - Upload de image:
     Rota de validação dos dados está após o upload da imagem, irá deixar arquivos residuais
   - Reaproveitar form-address/password:
+  - Lista de cores está com bug de bg do círculo com a cor
+  - Colocar no filtro ignore acento

@@ -4,9 +4,9 @@ import { ArrowLeft } from 'phosphor-react'
 import useUser from '../../../../../../hooks/use-user'
 import Button from '../../../button/button'
 import Heading from '../../../heading'
-import FormAddress from './form-address'
-import FormProfile from './form-profile'
-import FormPassword from './form-password'
+import FormProfile from '../../form-profile'
+import FormAddress from '../../form-address'
+import FormPassword from '../../form-password'
 
 export default function FormSetting() {
   const { user } = useUser()
@@ -26,17 +26,17 @@ export default function FormSetting() {
             />
           }
         />
-        <FormProfile user={user} />
+        <FormProfile user={user} endPoint="/customers/update" />
       </div>
 
       <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
         <Heading title="Endereço" />
-        <FormAddress user={user} />
+        <FormAddress user={user} endPoint="/customers/update" />
       </div>
 
       <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
         <Heading title="Alterar senha" />
-        <FormPassword />
+        <FormPassword endPoint="/customers/change-password" />
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import { customerColumns } from '../../../../utils/constants/admin'
-import { useCustomers } from '../../../../hooks/use-customer'
+import { useCustomers } from '../../../../hooks/admin/use-customer'
 import useFilter from '../../../../hooks/use-filter'
 import FilterCustomer from '../../../components/ui/filter/admin/filter-customer'
 import TableData from '../../../components/ui/table/table-data'
