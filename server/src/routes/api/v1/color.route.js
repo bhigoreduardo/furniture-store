@@ -25,5 +25,11 @@ router.put(
 router.get('/', useError(colorController.findAll))
 router.get('/search', useError(colorController.search))
 router.get('/:id', useError(colorController.findById))
+router.delete(
+  '/:id',
+  useError(userAuth),
+  useError(adminAuth),
+  useError(colorController.remove)
+)
 
 export default router

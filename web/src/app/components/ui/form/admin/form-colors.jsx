@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -16,38 +15,24 @@ const validationSchema = yup.object().shape({
   color: yup.string().required('Cor é obrigatório'),
   description: yup.string().optional(),
 })
-const initialValues = {
-  name: '',
-  color: '',
-  description: '',
-}
 
 export default function FormColors({ data }) {
-  const navigate = useNavigate()
   const { setIsLoading } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: data || initialValues,
+    initialValues: {
+      name: data?.name || '',
+      color: data?.color || '',
+      description: data?.description || '',
+    },
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    setIsLoading(true)
-    let response
-    if (data)
-      response = await put(
-        `/colors/${data._id}`,
-        validationSchema.cast(values, { stripUnknown: true })
-      )
-    else response = await post('/colors/', values)
-
-    setIsLoading(false)
-    if (response?.success) {
-      toast.success(response?.message)
-      navigate(-1)
-    } else {
-      toast.error(response?.message)
-    }
+    validationSchema.cast(values, { stripUnknown: true })
+    if (Object.keys(data)?.length !== 0)
+      await put(`/colors/${data._id}`, values, setIsLoading, toast)
+    else await post('/colors/', values, setIsLoading, toast)
   }
 
   return (

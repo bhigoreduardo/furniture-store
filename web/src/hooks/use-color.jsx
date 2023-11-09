@@ -34,3 +34,17 @@ export function useColors() {
 
   return data
 }
+
+export function useColor(id) {
+  const { setIsLoading } = useApp()
+
+  const { data } = useQuery({
+    queryKey: ['color', id],
+    queryFn: async () => {
+      if (id) return await get(`/colors/${id}`, setIsLoading, toast)
+      return null
+    },
+  })
+
+  return { ...data }
+}

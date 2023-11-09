@@ -57,3 +57,8 @@ export const search = async (req, res) => {
   })
   return res.status(200).json(finded)
 }
+
+export const remove = async (req, res) => {
+  await ColorModel.findByIdAndDelete(req.params.id)
+  return res.status(200).json({ success: true, message: 'Cor removida' })
+}
