@@ -5,14 +5,14 @@ import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
-import useUser from '../../../../../hooks/use-user'
-import { post } from '../../../../../libs/fetcher'
-import useApp from '../../../../../hooks/use-app'
-import InputLabel from '../../input/input-label'
-import PasswordLabel from '../../input/password-label'
-import Button from '../../button/button'
-import Tab from '../../button/tab'
-import CheckboxLabel from '../../input/checkbox-label'
+import { post } from '../../../../../../libs/fetcher'
+import useUser from '../../../../../../hooks/use-user'
+import useApp from '../../../../../../hooks/use-app'
+import InputLabel from '../../../input/input-label'
+import PasswordLabel from '../../../input/password-label'
+import Button from '../../../button/button'
+import Tab from '../../../button/tab'
+import CheckboxLabel from '../../../input/checkbox-label'
 
 const validationSignInSchema = yup.object().shape({
   email: yup
@@ -60,20 +60,19 @@ export default function FormAuth() {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    setIsLoading(true)
     const endPoint = isNonLogin ? '/customers/sign-up' : '/customers/sign-in'
-    const { message, info, success, user, token } = await post(endPoint, values)
-    setIsLoading(false)
+    const { info, success, user, token } = await post(
+      endPoint,
+      values,
+      setIsLoading,
+      toast
+    )
     setInfo(info)
     setSuccess(success)
-    if (success) {
-      toast.success(message)
-      if (!isNonLogin) {
-        handleUpdateUser(user, token)
-        navigate('/conta')
-      }
-    } else {
-      toast.error(message)
+    if (success && !isNonLogin) {
+      handleUpdateUser(user, token)
+      navigate('/conta')
+      formik.resetForm()
     }
   }
 

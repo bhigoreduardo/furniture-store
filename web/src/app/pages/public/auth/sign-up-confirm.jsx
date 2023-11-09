@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CheckCircle, XCircle } from 'phosphor-react'
+import { toast } from 'react-toastify'
 
 import { post } from '../../../../libs/fetcher'
 import useApp from '../../../../hooks/use-app'
@@ -13,11 +14,14 @@ export default function SignUpConfirm() {
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState(false)
   const signUpConfirm = async () => {
-    setIsLoading(true)
-    const { message, success } = await post('/customers/sign-up/confirm', {
-      activatedToken: queries.get('token'),
-    })
-    setIsLoading(false)
+    const { message, success } = await post(
+      '/customers/sign-up/confirm',
+      {
+        activatedToken: queries.get('token'),
+      },
+      setIsLoading,
+      toast
+    )
     setMessage(message)
     setSuccess(success)
   }

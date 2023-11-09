@@ -5,11 +5,11 @@ import * as yup from 'yup'
 import { ArrowRight } from 'phosphor-react'
 import { toast } from 'react-toastify'
 
-import { post } from '../../../../../libs/fetcher'
-import useApp from '../../../../../hooks/use-app'
-import useQueries from '../../../../../hooks/use-queries'
-import PasswordLabel from '../../input/password-label'
-import Button from '../../button/button'
+import { post } from '../../../../../../libs/fetcher'
+import useApp from '../../../../../../hooks/use-app'
+import useQueries from '../../../../../../hooks/use-queries'
+import PasswordLabel from '../../../input/password-label'
+import Button from '../../../button/button'
 
 const validationSchema = yup.object().shape({
   password: yup.string().required('Senha é obrigatório'),
@@ -37,19 +37,19 @@ export default function FormRecoveryPassword() {
   })
   const handleSubmit = async (values) => {
     if (queries.has('token')) {
-      setIsLoading(true)
-      const { message, info, success } = await post(
+      const { info, success } = await post(
         '/customers/recovery-password',
-        { ...values, passwordResetToken: queries.get('token') }
+        {
+          ...values,
+          passwordResetToken: queries.get('token'),
+        },
+        setIsLoading,
+        toast
       )
-      setIsLoading(false)
       setInfo(info)
       setSuccess(success)
       if (success) {
-        toast.success(message)
         navigate('/entrar')
-      } else {
-        toast.error(message)
       }
     }
   }

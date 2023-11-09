@@ -1,5 +1,5 @@
 import Container from '../../../components/ui/container'
-import FormRecoveryPassword from '../../../components/ui/form/public/form-recovery-password'
+import FormRecoveryPassword from '../../../components/ui/form/public/auth/form-recovery-password'
 
 export default function RecoveryPassword() {
   return (

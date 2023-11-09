@@ -1,6 +1,6 @@
 import Container from '../../../components/ui/container'
 import Copyright from '../../../components/ui/copyright'
-import FormAuth from '../../../components/ui/form/admin/auth/form-auth'
+import FormAuth from '../../../components/ui/form/admin/auth'
 
 export default function Auth() {
   return (
