@@ -320,7 +320,7 @@ export const customerColumns = [
     header: 'Endereço',
     cell: ({ row }) => {
       return row?.original?.address ? (
-        <div className="flex flex-col">
+        <div className="flex flex-col text-xs">
           <span>
             {row?.original?.address?.street},{' '}
             {row?.original?.address?.neighborhood} -{' '}
@@ -343,6 +343,66 @@ export const customerColumns = [
     cell: ({ row }) => (
       <Link
         to={`perfil/${row.original?._id}`}
+        className="flex items-center gap-1 text-sm text-blue-500"
+      >
+        Vê detalhes <ArrowRight size={14} />
+      </Link>
+    ),
+  },
+]
+
+export const userColumns = [
+  {
+    accessorKey: 'name',
+    header: 'Nome',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <img
+          className="h-6 w-6 rounded-full"
+          src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        />
+        <span className="font-semibold text-sm text-gray-900 capitalize">
+          {row?.original?.name}
+        </span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+  },
+  {
+    accessorKey: 'whatsApp',
+    header: 'Contato',
+  },
+  {
+    accessorKey: 'address',
+    header: 'Endereço',
+    cell: ({ row }) => {
+      return row?.original?.address ? (
+        <div className="flex flex-col text-xs">
+          <span>
+            {row?.original?.address?.street},{' '}
+            {row?.original?.address?.neighborhood} -{' '}
+            {row?.original?.address?.number}
+          </span>
+          <span>
+            {row?.original?.address?.city}/{row?.original?.address?.state},{' '}
+            {row?.original?.address?.zipCode}
+          </span>
+          <span>{row?.original?.address?.complement}</span>
+        </div>
+      ) : (
+        <span>-</span>
+      )
+    },
+  },
+  {
+    accessorKey: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <Link
+        to={`editar/${row.original?._id}`}
         className="flex items-center gap-1 text-sm text-blue-500"
       >
         Vê detalhes <ArrowRight size={14} />

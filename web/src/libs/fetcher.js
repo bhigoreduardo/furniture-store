@@ -1,38 +1,58 @@
 import api from './api'
 
-export const get = async (endPoint) => {
+export const get = async (endPoint, setIsLoading, toast) => {
   try {
+    setIsLoading(true)
     const { data } = await api.get(endPoint)
+    if (data?.success) toast.success(data?.message)
     return data
   } catch (err) {
-    return err?.response?.data
+    const error = err?.response?.data
+    toast.error(error?.message)
+  } finally {
+    setIsLoading(false)
   }
 }
 
-export const post = async (endPoint, values) => {
+export const post = async (endPoint, values, setIsLoading, toast) => {
   try {
+    setIsLoading(true)
     const { data } = await api.post(endPoint, values)
+    if (data?.success) toast.success(data?.message)
     return data
   } catch (err) {
-    return err?.response?.data
+    const error = err?.response?.data
+    toast.error(error?.message)
+  } finally {
+    setIsLoading(false)
   }
 }
 
-export const put = async (endPoint, values) => {
+export const put = async (endPoint, values, setIsLoading, toast) => {
   try {
+    setIsLoading(true)
     const { data } = await api.put(endPoint, values)
+    if (data?.success) toast.success(data?.message)
     return data
   } catch (err) {
-    return err?.response?.data
+    const error = err?.response?.data
+    toast.error(error?.message)
+  } finally {
+    setIsLoading(false)
   }
 }
 
-export const patch = async (endPoint, values) => {
+export const patch = async (endPoint, values, setIsLoading, toast) => {
   try {
+    setIsLoading(true)
     const { data } = await api.patch(endPoint, values)
+    if (data?.success) toast.success(data?.message)
     return data
   } catch (err) {
-    return err?.response?.data
+    const error = err?.response?.data
+    toast.error(error?.message)
+  } finally {
+    setIsLoading(false)
   }
 }
 

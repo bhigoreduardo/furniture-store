@@ -7,3 +7,6 @@ FIXME:
     Bug estoque para renderizar cores com hook
     Bug categorias para renderizar com hook
     Bug marcas para renderizar com hook
+  - Upload de image:
+    Rota de validação dos dados está após o upload da imagem, irá deixar arquivos residuais
+  - Reaproveitar form-address/password:

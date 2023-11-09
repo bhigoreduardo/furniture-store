@@ -17,6 +17,8 @@ import ProductsForm from '../pages/admin/products/form'
 import Customers from '../pages/admin/customers'
 import CustomersProfile from '../pages/admin/customers/profile'
 import CustomersForm from '../pages/admin/customers/form'
+import Users from '../pages/admin/users'
+import UsersForm from '../pages/admin/users/form'
 
 const children = [
   {
@@ -71,12 +73,29 @@ const children = [
           { path: 'editar/:id', element: <ProductsForm /> },
         ],
       },
+    ],
+  },
+]
+
+const admin = [
+  {
+    path: '',
+    element: <Layout />,
+    children: [
       {
         path: 'clientes',
         children: [
           { path: '', element: <Customers /> },
           { path: 'perfil/:id', element: <CustomersProfile /> },
           { path: 'perfil/:id/editar', element: <CustomersForm /> },
+        ],
+      },
+      {
+        path: 'usuarios',
+        children: [
+          { path: '', element: <Users /> },
+          { path: 'cadastrar', element: <UsersForm /> },
+          { path: 'editar/:id', element: <UsersForm /> },
         ],
       },
     ],
@@ -88,6 +107,7 @@ const router = [
     path: '/admin',
     children: [
       ...children,
+      ...admin,
       {
         path: 'cadastrar',
         element: <SignUp />,
