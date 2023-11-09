@@ -19,12 +19,6 @@ const validationSchema = yup.object().shape({
   parent: yup.string().optional(),
   description: yup.string().optional(),
 })
-const initialValues = {
-  image: '',
-  name: '',
-  parent: '',
-  description: '',
-}
 
 export default function FormCategories({ data }) {
   const { setIsLoading } = useApp()
@@ -35,21 +29,20 @@ export default function FormCategories({ data }) {
     : parsedData
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: data
-      ? { ...data, parent: data?.parent || '' }
-      : initialValues,
+    initialValues: {
+      image: data?.image || '',
+      name: data?.name || '',
+      parent: data?.parent || '',
+      description: data?.description || '',
+    },
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
+    validationSchema.cast(values, { stripUnknown: true })
     if (typeof values.image !== 'string') values = formDataUpload(values)
-    if (data)
-      await put(
-        `/categories/${data._id}`,
-        validationSchema.cast(values, { stripUnknown: true }),
-        setIsLoading,
-        toast
-      )
+    if (Object.keys(data)?.length !== 0)
+      await put(`/categories/${data._id}`, values, setIsLoading, toast)
     else await post('/categories/', values, setIsLoading, toast)
   }
 

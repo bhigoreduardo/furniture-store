@@ -1,5 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
+import fs from 'fs'
 import slugify from 'slugify'
 
 import CategoryModel from '../models/category.model.js'
@@ -74,6 +75,14 @@ export const search = async (req, res) => {
 }
 
 export const remove = async (req, res) => {
+  const finded = await CategoryModel.findById(req.params.id)
+  if (!finded) throw new ErrorHandler('Categoria não cadastrada', 422)
+
+  const pathfile = path.join(__dirname, '../public/images/' + finded.image)
+  fs.unlink(pathfile, function (err) {
+    if (err) throw new ErrorHandler('Falha na remoção da imagem', 500)
+  })
+
   await CategoryModel.findByIdAndDelete(req.params.id)
   return res.status(200).json({ success: true, message: 'Categoria removida' })
 }
