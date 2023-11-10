@@ -2,13 +2,17 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable react/prop-types */
 import { useFormik } from 'formik'
+import { toast } from 'react-toastify'
 import * as yup from 'yup'
 
+import { formDataUpload, typeOfString } from '../../../../../../utils/format'
+import { post } from '../../../../../../libs/fetcher'
+import useApp from '../../../../../../hooks/use-app'
 import Button from '../../../button/button'
 import FormAdditional from './form-additional'
 import FormBrand from './form-brand'
 import FormCategory from './form-category'
-import FormData from './form-data'
+import FormDataProduct from './form-data'
 import FormDescription from './form-description'
 import FormIdentity from './form-identity'
 import FormPublished from './form-published'
@@ -102,6 +106,10 @@ const validationSchema = yup.object().shape({
     .min(1, 'Pelo menos 1 categoria deve ser selecionada'),
   brand: yup.string().required('Marca é obrigatório'),
   tags: yup.array(yup.string()).optional(),
+  cover: yup.string().required('Frete é obrigatório'),
+  backCover: yup.string().required('Verso é obrigatório'),
+  gallery: yup.array().of(yup.string()).min(2, 'Mínimo 2 imagens'),
+  video: yup.string().optional(),
 })
 const initialValues = {
   name: '',
@@ -129,7 +137,7 @@ const initialValues = {
       length: '',
       width: '',
       height: '',
-      fee: '',
+      fee: 0,
       timeDelivery: '',
       isFree: false,
     },
@@ -146,35 +154,66 @@ const initialValues = {
   category: [],
   brand: '',
   tags: [],
+  cover: '',
+  backCover: '',
+  gallery: [],
+  video: '',
 }
-// media: yup
-//   .object({
-//     covers: yup
-//       .array()
-//       .of(yup.string())
-//       .length(2, 'Imagem de capa frente/verso é obrigatório'),
-//     gallery: yup
-//       .array()
-//       .of(yup.string())
-//       .min(2, 'Galeria obrigatório pelo menos 2 imagens'),
-//     video: yup.string().optional(),
-//   })
-//   .required('Imagens do produto é obrigatório'),
-
-//     media: {
-//       covers: [],
-//       gallery: [],
-//       video: ''
-//     },
 
 export default function FormProducts({ data }) {
+  const { setIsLoading } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: data || initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
-  const handleSubmit = async (values) => console.log(values)
+  const handleSubmit = async (values) => {
+    validationSchema.cast(values, { stripUnknown: true })
+    const imageEndpoint = '/products/save-image'
+    let { cover, backCover, gallery } = values
+    if (!typeOfString(cover)) {
+      const { image } = await post(
+        imageEndpoint,
+        formDataUpload({ image: cover }),
+        setIsLoading,
+        null
+      )
+      cover = image
+    }
+    if (!typeOfString(backCover)) {
+      const { image } = await post(
+        imageEndpoint,
+        formDataUpload({ image: backCover }),
+        setIsLoading,
+        null
+      )
+      backCover = image
+    }
+    const galleryUrls = await Promise.all(
+      [...gallery].map(async (item) => {
+        if (!typeOfString(item)) {
+          const { image } = await post(
+            imageEndpoint,
+            formDataUpload({ image: item }),
+            setIsLoading,
+            null
+          )
+          return image
+        } else {
+          return item
+        }
+      })
+    )
+    gallery = galleryUrls
+
+    await post(
+      '/products',
+      { ...values, cover, backCover, gallery },
+      setIsLoading,
+      toast
+    )
+  }
 
   return (
     <form className="flex flex-col gap-6" onSubmit={formik.handleSubmit}>
@@ -184,7 +223,7 @@ export default function FormProducts({ data }) {
           <FormDescription formik={formik} />
           <FormAdditional formik={formik} />
           <FormSpecification formik={formik} />
-          <FormData formik={formik} />
+          <FormDataProduct formik={formik} />
           <FormSeo formik={formik} />
         </div>
         <div className="flex flex-col gap-6 w-[350px] min-w-[350px]">

@@ -17,7 +17,15 @@ import Pagination from '../pagination/pagination'
 import Heading from '../heading'
 import { mergeClassName } from '../../../../utils/format'
 
-export default function TableData({ title, btn, columns, data, total, pages, className }) {
+export default function TableData({
+  title,
+  btn,
+  columns,
+  data,
+  total,
+  pages,
+  className,
+}) {
   const table = useReactTable({
     columns,
     data,
@@ -26,7 +34,12 @@ export default function TableData({ title, btn, columns, data, total, pages, cla
   if (typeof data === 'undefined') return
 
   return (
-    <div className={mergeClassName("flex flex-col border border-100 rounded-sm shadow-md py-2 pb-4", className)}>
+    <div
+      className={mergeClassName(
+        'flex flex-col border border-100 rounded-sm shadow-md py-2 pb-4',
+        className
+      )}
+    >
       {title && <Heading title={title} btn={btn} />}
       <Table className="mb-6">
         <TableHeader>
@@ -66,7 +79,9 @@ export default function TableData({ title, btn, columns, data, total, pages, cla
           )}
         </TableBody>
       </Table>
-      <Pagination total={total} pages={pages} />
+      {typeof total !== 'undefined' && typeof pages !== 'undefined' && (
+        <Pagination total={total} pages={pages} />
+      )}
     </div>
   )
 }

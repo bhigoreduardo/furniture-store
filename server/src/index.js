@@ -21,21 +21,26 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 /* CONFIGURATIONS */
-app.disable("x-powered-by")
+app.disable('x-powered-by')
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 app.use(helmet())
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }))
-app.use(morgan("common"))
-app.use(bodyParser.urlencoded({ limit: 1.5 * 1024 * 1024, extended: false }))
-app.use(bodyParser.json({ limit: 1.5 * 1024 * 1024, extended: false }))
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
+app.use(morgan('common'))
+// app.use(bodyParser.urlencoded({ limit: 1.5 * 1024 * 1024, extended: true }))
+// app.use(bodyParser.json({ limit: 1.5 * 1024 * 1024, extended: true }))
 
 /* MONGOOSE SETUP */
 connectWithRetry()
 
 /* PUBLIC ROUTES */
 app.use('/api/v1/public', express.static(path.join(__dirname, './public')))
-app.use('/api/v1/public/images', express.static(path.join(__dirname, './public/images')))
+app.use(
+  '/api/v1/public/images',
+  express.static(path.join(__dirname, './public/images'))
+)
 
 /* ROUTES */
 app.use('/', routes)

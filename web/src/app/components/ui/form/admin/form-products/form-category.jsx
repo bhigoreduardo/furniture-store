@@ -9,22 +9,20 @@ import FormWrapper from '../form-wrapper'
 import CheckboxFamily from '../../../input/checkbox-family'
 
 export default function FormCategory(props) {
-  const categories = useCategories()
   const [search, setSearch] = useState('')
-  const [dataSearch, setDataSearch] = useState([])
-  const handleSearch = () => {
-    setDataSearch(() =>
+  const [filter, setFilter] = useState([])
+  const categories = useCategories()
+  const categoriesTree = categories ? makeArrTree(categories, null) : []
+  const handleFilter = () =>
+    setFilter(() =>
       search !== ''
-        ? categories.filter((item) => regexCaseIgnore(search, item.name))
-        : typeof categories === 'object'
-        ? categories
-        : []
+        ? categoriesTree.filter((item) => regexCaseIgnore(search, item.name))
+        : categoriesTree
     )
-  }
-  const arrTree = makeArrTree(dataSearch, null)
   useEffect(() => {
-    handleSearch()
-  }, [search]) // eslint-disable-line react-hooks/exhaustive-deps
+    handleFilter()
+  }, [search, categories]) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <FormWrapper title="Categoria">
       <div className="flex flex-col gap-4">
@@ -34,7 +32,7 @@ export default function FormCategory(props) {
             placeholder="Pesquisar"
             name="searchCategory"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={({ target: { value } }) => setSearch(value)}
             icon={
               <MagnifyingGlass className="text-gray-400" weight="duotone" />
             }
@@ -47,8 +45,8 @@ export default function FormCategory(props) {
           )}
         </div>
         <div className="flex flex-col gap-1">
-          {arrTree?.length > 0 ? (
-            arrTree.map((item) => (
+          {filter?.length > 0 ? (
+            filter.map((item) => (
               <CheckboxFamily
                 key={item._id}
                 familyTree={item}

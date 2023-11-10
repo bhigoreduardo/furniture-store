@@ -6,6 +6,7 @@ import category from './category.route.js'
 import color from './color.route.js'
 import brand from './brand.route.js'
 import user from './user.route.js'
+import product from './product.route.js'
 
 const router = express.Router()
 
@@ -15,5 +16,6 @@ router.use('/categories', category)
 router.use('/colors', color)
 router.use('/brands', brand)
 router.use('/users', user)
+router.use('/products', product)
 
 export default router

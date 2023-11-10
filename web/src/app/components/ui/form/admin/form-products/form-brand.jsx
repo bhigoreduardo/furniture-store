@@ -9,19 +9,18 @@ import FormWrapper from '../form-wrapper'
 import RadioBoxLabel from '../../../input/radiobox-label'
 
 export default function FormBrand(props) {
-  const brands = useBrands()
   const [search, setSearch] = useState('')
-  const [dataSearch, setDataSearch] = useState(brands)
-  const handleSearch = () => {
-    setDataSearch(() =>
+  const [filter, setFilter] = useState([])
+  const brands = useBrands()
+  const handleSearch = () =>
+    setFilter(() =>
       search !== ''
         ? brands.filter((item) => regexCaseIgnore(search, item.name))
         : brands
     )
-  }
   useEffect(() => {
     handleSearch()
-  }, [search]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [search, brands]) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <FormWrapper title="Marca">
       <div className="flex flex-col gap-4">
@@ -44,8 +43,8 @@ export default function FormBrand(props) {
           )}
         </div>
         <div className="flex flex-col gap-1">
-          {dataSearch?.length > 0 ? (
-            dataSearch.map((item) => (
+          {filter?.length > 0 ? (
+            filter.map((item) => (
               <RadioBoxLabel
                 key={item._id}
                 name="brand"

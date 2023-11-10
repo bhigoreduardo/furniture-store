@@ -110,7 +110,7 @@ export default function FormDescription(props) {
             className="mb-6"
           />
         </div>
-        <div className="flex flex-col gap-3 overflow-y-auto max-[300px]">
+        <div className="flex flex-col gap-3 overflow-y-auto max-[300px] max-h-[250px]">
           <TableData
             columns={infoProductColumns(handleEdit, handleDelete)}
             data={props.formik.values?.description?.otherInfos}

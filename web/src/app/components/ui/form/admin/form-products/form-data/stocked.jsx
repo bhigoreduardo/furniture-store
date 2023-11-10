@@ -21,9 +21,9 @@ const initialValues = {
   stock: '',
   price: '',
   offer: {
-    offerValue: '',
+    offerValue: 0,
     offerType: '',
-    offerPrice: '',
+    offerPrice: 0,
     offerPriceDates: [null, null],
   },
   featured: true,
@@ -31,7 +31,7 @@ const initialValues = {
 
 export default function Stocked(props) {
   const colors = useColors()
-  const parsedColors = parsedSelectData(colors, '_id', 'name')
+  const parsedColors = colors ? parsedSelectData(colors, '_id', 'name') : []
   const [indexEdit, setIndexEdit] = useState(null)
   const formik = useFormik({
     initialValues: initialValues,
@@ -247,15 +247,20 @@ export default function Stocked(props) {
         className="bg-orange-500 text-white hover:bg-orange-600 !py-2 w-fit"
       />
       <div className="flex flex-col gap-3 overflow-y-auto max-[300px]">
-        {props.formik.touched?.productData?.inventory &&
-          props.formik.errors?.productData?.inventory && (
+        {props.formik.touched?.productData?.inventory?.info &&
+          props.formik.errors?.productData?.inventory?.info && (
             <span className="text-xs text-red-500">
-              {props.formik.errors?.productData?.inventory}
+              {props.formik.errors?.productData?.inventory?.info}
             </span>
           )}
         <TableData
           columns={invetoryProductColumns(handleEdit, handleDelete)}
-          data={props.formik.values?.productData?.inventory?.info}
+          data={props.formik.values?.productData?.inventory?.info?.map(
+            (item) => ({
+              ...item,
+              color: parsedColors.find((i) => i.value === item.color)?.label,
+            })
+          )}
           className="!p-0"
         />
       </div>

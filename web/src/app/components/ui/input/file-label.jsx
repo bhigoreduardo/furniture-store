@@ -13,11 +13,13 @@ export default function FileLabel({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between text-sm text-gray-900">
-        <div className="flex items-center gap-1 relative">
-          {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <div className="flex items-center justify-between text-sm text-gray-900">
+          <div className="flex items-center gap-1 relative">
+            <label htmlFor={id}>{label}</label>
+          </div>
         </div>
-      </div>
+      )}
       <File
         id={id}
         name={name}

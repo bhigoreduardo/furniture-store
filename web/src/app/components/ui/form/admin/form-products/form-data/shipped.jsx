@@ -97,6 +97,7 @@ export default function Shipped(props) {
           onBlur={props.formik.handleBlur}
           value={props.formik.values?.productData?.shippingInfo?.isFree}
           className="flex-grow flex-1"
+          checked={props.formik.values?.productData?.shippingInfo?.isFree}
         />
         {!props.formik.values?.productData?.shippingInfo?.isFree && (
           <InputLabel

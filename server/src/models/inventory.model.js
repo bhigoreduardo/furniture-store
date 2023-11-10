@@ -14,25 +14,18 @@ const InventorySchema = new mongoose.Schema({
   price: { type: Number, required: [true, 'Preço é obrigatório'] },
   offer: {
     type: {
-      offerValue: {
-        type: Number,
-        required: [true, 'Preço de desconto é obrigatório'],
-      },
-      offerType: {
-        type: String,
-        enum: OfferTypeEnum,
-        required: [true, 'Tipo de desconto é obrigatório'],
-      },
+      offerValue: { type: Number },
+      offerType: { type: String },
       offerPrice: { type: Number },
-      offerPriceDates: {
-        type: {
-          createdAt: { type: Date, default: Date.now() },
-          expiresIn: { type: Date },
-        },
-      },
+      offerPriceDates: { type: [{ type: Date }] },
     },
+    _id: false,
   },
-  featured: { type: Boolean, default: true },
+  featured: {
+    type: Boolean,
+    default: true,
+    required: [true, 'Pronta entrega é obrigatório'],
+  },
 })
 
 export default mongoose.model('Inventory', InventorySchema)

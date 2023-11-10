@@ -1,3 +1,6 @@
+import DOMPurify from 'dompurify'
+import truncHtml from 'trunc-html'
+
 export const mergeClassName = (first, last) => first + ' ' + last
 
 export const sanitizeToken = (token) => token.replace(/[""]/g, '')
@@ -64,4 +67,18 @@ export const optionsShortLocaleDate = {
   year: 'numeric',
   month: 'numeric',
   day: 'numeric',
+}
+
+export const typeOfString = (element) => typeof element === 'string'
+
+export function createMarkup(html, limit) {
+  if (limit) {
+    return {
+      __html: DOMPurify.sanitize(truncHtml(html, limit).html)
+    }
+  }
+
+  return {
+    __html: DOMPurify.sanitize(html)
+  }
 }

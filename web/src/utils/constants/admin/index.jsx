@@ -1,7 +1,11 @@
 import { ArrowRight, PencilLine, Trash } from 'phosphor-react'
 import { Link } from 'react-router-dom'
 
-import { currencyPrice, optionsShortLocaleDate } from '../../format'
+import {
+  createMarkup,
+  currencyPrice,
+  optionsShortLocaleDate,
+} from '../../format'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
 
@@ -188,6 +192,12 @@ export const infoProductColumns = (handleEdit, handleDelete) => [
   {
     accessorKey: 'description',
     header: 'Descrição',
+    cell: ({ row }) => (
+      <span
+        className="line-clamp-4"
+        dangerouslySetInnerHTML={createMarkup(row?.original?.description)}
+      />
+    ),
   },
   {
     accessorKey: 'actions',

@@ -36,11 +36,11 @@ export default function File({
           <button
             type="button"
             onClick={onClear}
-            className="absolute z-50 -top-2 -right-2 bg-red-500 text-white cursor-pointer rounded-full"
+            className="absolute z-10 -top-2 -right-2 bg-red-500 text-white cursor-pointer rounded-full"
           >
             <XCircle size={20} />
           </button>
-          <div className="flex items-center justify-center bg-gray-500 w-full h-full overflow-hidden">
+          <div className="flex items-center justify-center w-full h-full overflow-hidden">
             <img
               src={
                 typeof value === 'string'

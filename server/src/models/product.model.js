@@ -27,6 +27,7 @@ const ProductSchema = new mongoose.Schema(
         otherInfos: [{ title: String, description: String }],
       },
       required: [true, 'Descrição é obrigatório'],
+      _id: false,
     },
     additional: {
       type: {
@@ -37,36 +38,51 @@ const ProductSchema = new mongoose.Schema(
         otherInfos: [{ title: String, description: String }],
       },
       required: [true, 'Informação adicional é obrigatório'],
+      _id: false,
     },
     specification: {
       type: [{ title: String, description: String }],
       required: [true, 'Especificação é obrigatório'],
+      _id: false,
     },
     productData: {
       type: {
-        media: { type: mongoose.Types.ObjectId, ref: 'Media' },
+        media: { type: mongoose.Schema.Types.ObjectId, ref: 'Media' },
         inventory: {
-          manageStock: { type: Boolean, default: true },
-          stockStatus: { type: Boolean, default: true },
-          lowStockWarning: { type: Boolean, default: true },
-          info: { type: mongoose.Types.ObjectId, ref: 'Inventory' },
+          type: {
+            manageStock: { type: Boolean, default: true },
+            stockStatus: { type: Boolean, default: true },
+            lowStockWarning: { type: Boolean, default: true },
+            info: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Inventory' }],
+          },
+          required: [true, 'Inventório é obrigatório'],
+          _id: false,
         },
         shippingInfo: {
-          weight: { type: Number, required: [true, 'Peso é obrigatório'] },
-          length: {
-            type: Number,
-            required: [true, 'Comprimento é obrigatório'],
+          type: {
+            weight: { type: Number, required: [true, 'Peso é obrigatório'] },
+            length: {
+              type: Number,
+              required: [true, 'Comprimento é obrigatório'],
+            },
+            width: { type: Number, required: [true, 'Largura é obrigatório'] },
+            height: { type: Number, required: [true, 'Altura é obrigatório'] },
+            fee: { type: Number, required: [true, 'Frete é obrigatório'] },
+            timeDelivery: {
+              type: Number,
+              required: [true, 'Tempo de entrega é obrigatório'],
+            },
+            isFree: {
+              type: Boolean,
+              default: false,
+              required: [true, 'Frete gratís é obrigatório definir'],
+            },
           },
-          width: { type: Number, required: [true, 'Largura é obrigatório'] },
-          height: { type: Number, required: [true, 'Altura é obrigatório'] },
-          fee: { type: Number, required: [true, 'Frete é obrigatório'] },
-          timeDelivery: {
-            type: Number,
-            required: [true, 'Tempo de entrega é obrigatório'],
-          },
-          ifFree: { type: Boolean, default: false },
+          required: [true, 'Informação de entrega é obrigatório'],
+          _id: false,
         },
       },
+      _id: false,
     },
     seoData: {
       type: {
@@ -78,6 +94,7 @@ const ProductSchema = new mongoose.Schema(
         metaTitle: { type: String, required: [true, 'Título é obrigatório'] },
         metaDescription: { type: String },
       },
+      _id: false,
     },
     published: {
       type: {
@@ -85,20 +102,34 @@ const ProductSchema = new mongoose.Schema(
           type: String,
           enum: StepEnumType,
           default: StepEnumType.Completed,
+          required: [true, 'Etapa de publicação é obrigatório'],
         },
         visibility: {
           type: String,
           enum: VisibilityEnumType,
           default: VisibilityEnumType.Public,
+          required: [true, 'Visibilidade da publicação é obrigatório'],
         },
-        publishedOn: { type: Date, default: Date.now() },
       },
+      _id: false,
     },
-    category: { type: mongoose.Types.ObjectId, ref: 'Category' },
-    brand: { type: mongoose.Types.ObjectId, ref: 'Brand' },
+    category: {
+      type: [{ type: mongoose.Types.ObjectId, ref: 'Category' }],
+      min: [1, 'Pelo menos 1 categoria é obrigatório'],
+      required: [true, 'Categoria é obrigatório'],
+    },
+    brand: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Brand',
+      required: [true, 'Marca é obrigatório'],
+    },
     tags: [{ type: String }],
-    rangePrice: { type: { min: Number, max: Number, avg: Number } },
-    status: { type: Boolean, default: true },
+    rangePrice: { type: { min: Number, max: Number, avg: Number }, _id: false },
+    status: {
+      type: Boolean,
+      default: true,
+      required: [true, 'Status do produto é obrigatório'],
+    },
     // sales/amountSales/reviews/reviewsAvg
   },
   { timestamps: true }
