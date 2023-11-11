@@ -14,7 +14,7 @@ import FormPassword from '../form-password'
 import FormProfile from '../form-profile'
 
 export default function FormUsers({ user, isAdmin = false, endPoint }) {
-  const { setIsLoading } = useApp()
+  const { setIsLoading, setRefetch } = useApp()
   const navigate = useNavigate()
   const formik = useFormik({
     enableReinitialize: true,
@@ -24,7 +24,8 @@ export default function FormUsers({ user, isAdmin = false, endPoint }) {
         `/users/${user._id}/toggle-status`,
         values,
         setIsLoading,
-        toast
+        toast,
+        setRefetch
       ),
   })
 
