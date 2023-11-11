@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
@@ -18,7 +19,8 @@ const validationSchema = yup.object().shape({
 })
 
 export default function FormBrands({ data }) {
-  const { setIsLoading } = useApp()
+  const navigate = useNavigate()
+  const { setIsLoading, setRefetch } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -30,11 +32,16 @@ export default function FormBrands({ data }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
+    let response
     validationSchema.cast(values, { stripUnknown: true })
     if (typeof values.image !== 'string') values = formDataUpload(values)
     if (Object.keys(data)?.length !== 0)
-      await put(`/brands/${data._id}`, values, setIsLoading, toast)
-    else await post('/brands/', values, setIsLoading, toast)
+      response = await put(`/brands/${data._id}`, values, setIsLoading, toast)
+    else response = await post('/brands/', values, setIsLoading, toast)
+    if (response?.success) {
+      setRefetch(true)
+      navigate(-1)
+    }
   }
 
   return (

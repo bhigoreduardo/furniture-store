@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -21,7 +22,8 @@ const validationSchema = yup.object().shape({
 })
 
 export default function FormCategories({ data }) {
-  const { setIsLoading } = useApp()
+  const navigate = useNavigate()
+  const { setIsLoading, setRefetch } = useApp()
   const categories = useCategories()
   const parsedData = categories && parsedSelectData(categories, '_id', 'name')
   const parsedCategories = data
@@ -39,11 +41,21 @@ export default function FormCategories({ data }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
+    let response
     validationSchema.cast(values, { stripUnknown: true })
     if (typeof values.image !== 'string') values = formDataUpload(values)
     if (Object.keys(data)?.length !== 0)
-      await put(`/categories/${data._id}`, values, setIsLoading, toast)
-    else await post('/categories/', values, setIsLoading, toast)
+      response = await put(
+        `/categories/${data._id}`,
+        values,
+        setIsLoading,
+        toast
+      )
+    else response = await post('/categories/', values, setIsLoading, toast)
+    if (response?.success) {
+      setRefetch(true)
+      navigate(-1)
+    }
   }
 
   return (

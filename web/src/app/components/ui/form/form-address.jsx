@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -38,8 +39,9 @@ const initialValues = {
 }
 
 export default function FormAddress({ user, isAdmin = false, endPoint }) {
+  const navigate = useNavigate()
+  const { setIsLoading, setRefetch } = useApp()
   const { handleUpdateUser } = useUser()
-  const { setIsLoading } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: user?.address ? { address: user.address } : initialValues,
@@ -47,13 +49,21 @@ export default function FormAddress({ user, isAdmin = false, endPoint }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    const { user: userData, token } = await put(
+    const {
+      user: userData,
+      token,
+      success,
+    } = await put(
       endPoint,
       validationSchema.cast(values, { stripUnknown: true }),
       setIsLoading,
       toast
     )
     if (!isAdmin) handleUpdateUser(userData, token)
+    if (isAdmin && success) {
+      setRefetch(true)
+      navigate(-1)
+    }
   }
 
   return (

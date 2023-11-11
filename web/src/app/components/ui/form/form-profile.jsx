@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -22,7 +23,8 @@ const validationSchema = yup.object().shape({
 })
 
 export default function FormProfile({ user, isAdmin = false, endPoint }) {
-  const { setIsLoading } = useApp()
+  const navigate = useNavigate()
+  const { setIsLoading, setRefetch } = useApp()
   const { handleUpdateUser } = useUser()
   const formik = useFormik({
     enableReinitialize: true,
@@ -37,19 +39,19 @@ export default function FormProfile({ user, isAdmin = false, endPoint }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
+    let response
     if (Object.keys(user)?.length !== 0) {
       delete values.email
       if (typeof values.image !== 'string') values = formDataUpload(values)
-      const { user: userData, token } = await put(
-        endPoint,
-        values,
-        setIsLoading,
-        toast
-      )
-      if (!isAdmin) handleUpdateUser(userData, token)
+      response = await put(endPoint, values, setIsLoading, toast)
+      if (!isAdmin) handleUpdateUser(response.user, response.token)
     } else if (isAdmin) {
       delete values.image
-      await post(endPoint, values, setIsLoading, toast)
+      response = await post(endPoint, values, setIsLoading, toast)
+    }
+    if (isAdmin && response?.success) {
+      setRefetch(true)
+      navigate(-1)
     }
   }
 
