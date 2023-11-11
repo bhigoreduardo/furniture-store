@@ -33,7 +33,7 @@ export function useFilterUsers() {
 }
 
 export function useUser(id) {
-  const { setIsLoading } = useApp()
+  const { setIsLoading, refetch } = useApp()
 
   const { data } = useQuery({
     queryKey: ['user', id],
@@ -41,7 +41,7 @@ export function useUser(id) {
       if (id) return await get(`/users/${id}`, setIsLoading, toast)
       return null
     },
-    staleTime: 1000 * 60 * 1,
+    staleTime: refetch ? 0 : 1000 * 60 * 1,
   })
 
   return { ...data }

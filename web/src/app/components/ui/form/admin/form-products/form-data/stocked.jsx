@@ -59,7 +59,6 @@ export default function Stocked(props) {
     formik.setFieldValue('price', values.price)
     formik.setFieldValue('offer', { ...values.offer })
     formik.setFieldValue('featured', values.featured)
-    // formik.setFieldValue('offer.offerPriceDates', {...values.offer?.offerPriceDates})
     setIndexEdit(index)
   }
   const handleDelete = (index) => {
@@ -184,50 +183,65 @@ export default function Stocked(props) {
           value={formik.values?.offer?.offerValue}
           className="flex-grow flex-1"
         />
-        <SelectLabel
-          id="offer.offerType"
-          label="Tipo desconto"
-          name="offer.offerType"
-          placeholder="Selecione"
-          data={offer}
-          error={
-            formik.touched?.offer?.offerType && formik.errors?.offer?.offerType
-          }
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values?.offer?.offerType}
-          className="flex-grow flex-1"
-        />
-        <InputLabel
-          id="offer.offerPrice"
-          type="number"
-          label="Preço desconto"
-          placeholder="Desconto final"
-          name="offer.offerPrice"
-          error={
-            formik.touched?.offer?.offerPrice &&
-            formik.errors?.offer?.offerPrice
-          }
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values?.offer?.offerPrice}
-          className="flex-grow flex-1"
-          disabled
-        />
+        {formik.values?.offer?.offerValue !== 0 && (
+          <>
+            <SelectLabel
+              id="offer.offerType"
+              label="Tipo desconto"
+              name="offer.offerType"
+              placeholder="Selecione"
+              data={offer}
+              error={
+                formik.touched?.offer?.offerType &&
+                formik.errors?.offer?.offerType
+              }
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values?.offer?.offerType}
+              className="flex-grow flex-1"
+            />
+            <InputLabel
+              id="offer.offerPrice"
+              type="number"
+              label="Preço desconto"
+              placeholder="Desconto final"
+              name="offer.offerPrice"
+              error={
+                formik.touched?.offer?.offerPrice &&
+                formik.errors?.offer?.offerPrice
+              }
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values?.offer?.offerPrice}
+              className="flex-grow flex-1"
+              disabled
+            />
+          </>
+        )}
       </div>
       <div className="flex gap-4">
-        <DatePickerLabel
-          id="expiresIn"
-          label="Data limite"
-          name="expiresIn"
-          placeholder="Selecione a data"
-          startDate={formik.values?.offer?.offerPriceDates[0]}
-          endDate={formik.values?.offer?.offerPriceDates[1]}
-          onChange={(update) =>
-            formik.setFieldValue('offer.offerPriceDates', update)
-          }
-          className="flex-grow flex-1"
-        />
+        {formik.values?.offer?.offerValue !== 0 && (
+          <DatePickerLabel
+            id="expiresIn"
+            label="Data limite"
+            name="expiresIn"
+            placeholder="Selecione a data"
+            startDate={
+              formik.values?.offer?.offerPriceDates[0]
+                ? new Date(formik.values?.offer?.offerPriceDates[0])
+                : null
+            }
+            endDate={
+              formik.values?.offer?.offerPriceDates[1]
+                ? new Date(formik.values?.offer?.offerPriceDates[1])
+                : null
+            }
+            onChange={(update) =>
+              formik.setFieldValue('offer.offerPriceDates', update)
+            }
+            className="flex-grow flex-1"
+          />
+        )}
         <CheckboxToggleLabel
           id="featured"
           name="featured"

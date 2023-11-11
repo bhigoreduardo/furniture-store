@@ -10,7 +10,7 @@ export default function Shipped(props) {
           id="productData.shippingInfo.weight"
           name="productData.shippingInfo.weight"
           type="number"
-          label="Peso"
+          label="Peso (kg)"
           placeholder="Infome o peso"
           error={
             props.formik.touched?.productData?.shippingInfo?.weight &&
@@ -25,7 +25,7 @@ export default function Shipped(props) {
           id="productData.shippingInfo.length"
           name="productData.shippingInfo.length"
           type="number"
-          label="Comprimento"
+          label="Comprimento (cm)"
           placeholder="Infome o comprimento"
           error={
             props.formik.touched?.productData?.shippingInfo?.length &&
@@ -42,7 +42,7 @@ export default function Shipped(props) {
           id="productData.shippingInfo.width"
           name="productData.shippingInfo.width"
           type="number"
-          label="Largura"
+          label="Largura (cm)"
           placeholder="Infome a largura"
           error={
             props.formik.touched?.productData?.shippingInfo?.width &&
@@ -57,7 +57,7 @@ export default function Shipped(props) {
           id="productData.shippingInfo.height"
           name="productData.shippingInfo.height"
           type="number"
-          label="Altura"
+          label="Altura (cm)"
           placeholder="Infome a altura"
           error={
             props.formik.touched?.productData?.shippingInfo?.height &&
@@ -72,7 +72,7 @@ export default function Shipped(props) {
           id="productData.shippingInfo.timeDelivery"
           name="productData.shippingInfo.timeDelivery"
           type="number"
-          label="Tempo de entrega"
+          label="Tempo de entrega (dias)"
           placeholder="Infome o tempo de entrega"
           error={
             props.formik.touched?.productData?.shippingInfo?.timeDelivery &&
