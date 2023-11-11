@@ -14,7 +14,7 @@ import CheckboxToggleLabel from '../../../components/ui/input/checkboxtoggle-lab
 
 export default function Form() {
   const { id } = useParams()
-  const { setIsLoading } = useApp()
+  const { setIsLoading, setRefetch } = useApp()
   const navigate = useNavigate()
   const customer = useCustomer(id)
   const formik = useFormik({
@@ -27,7 +27,8 @@ export default function Form() {
       `/customers/${customer._id}/toggle-status`,
       values,
       setIsLoading,
-      toast
+      toast,
+      setRefetch
     )
   }
 

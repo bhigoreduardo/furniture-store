@@ -12,10 +12,17 @@ import FormBrands from '../../../components/ui/form/admin/form-brands'
 export default function Form() {
   const navigate = useNavigate()
   const { id } = useParams()
-  const { setIsLoading } = useApp()
+  const { setIsLoading, setRefetch } = useApp()
   const data = useBrand(id)
   const handleDelete = async () => {
-    await del(`/brands/${id}`, {}, setIsLoading, toast)
+    const { success } = await del(
+      `/brands/${id}`,
+      {},
+      setIsLoading,
+      toast,
+      setRefetch
+    )
+    if (success) navigate(-1)
   }
 
   return (

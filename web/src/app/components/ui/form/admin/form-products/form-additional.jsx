@@ -61,7 +61,9 @@ export default function FormAdditional(props) {
           label="Detalhe"
           placeholder="Informe a descrição"
           onChange={(value) =>
-            props.formik.setFieldValue('additional.detail', value)
+            value.split('<br>')?.length === 2
+              ? props.formik.setFieldValue('additional.detail', '')
+              : props.formik.setFieldValue('additional.detail', value)
           }
           value={props.formik.values?.additional?.detail}
           error={

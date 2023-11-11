@@ -1,7 +1,7 @@
 import slugify from 'slugify'
 
-import ColorModel from '../models/color.model.js'
 import { filterSorted } from '../utils/format.js'
+import ColorModel from '../models/color.model.js'
 
 export const save = async (req, res) => {
   await ColorModel.create({
@@ -12,16 +12,6 @@ export const save = async (req, res) => {
     success: true,
     message: 'Cor criada com sucesso',
   })
-}
-
-export const findAll = async (req, res) => {
-  const allFinded = await ColorModel.find({})
-  return res.status(200).json(allFinded)
-}
-
-export const findById = async (req, res) => {
-  const finded = await ColorModel.findById(req.params.id)
-  return res.status(200).json(finded)
 }
 
 export const update = async (req, res) => {
@@ -35,6 +25,11 @@ export const update = async (req, res) => {
   return res
     .status(200)
     .json({ success: true, message: 'Cor atualizada com sucesso' })
+}
+
+export const findAll = async (req, res) => {
+  const allFinded = await ColorModel.find({})
+  return res.status(200).json(allFinded)
 }
 
 export const search = async (req, res) => {
@@ -55,6 +50,11 @@ export const search = async (req, res) => {
     limit,
     sort: filterSorted(query.priority),
   })
+  return res.status(200).json(finded)
+}
+
+export const findById = async (req, res) => {
+  const finded = await ColorModel.findById(req.params.id)
   return res.status(200).json(finded)
 }
 

@@ -12,10 +12,17 @@ import FormColors from '../../../components/ui/form/admin/form-colors'
 export default function Form() {
   const navigate = useNavigate()
   const { id } = useParams()
-  const { setIsLoading } = useApp()
+  const { setIsLoading, setRefetch } = useApp()
   const data = useColor(id)
   const handleDelete = async () => {
-    await del(`/colors/${id}`, {}, setIsLoading, toast)
+    const { success } = await del(
+      `/colors/${id}`,
+      {},
+      setIsLoading,
+      toast,
+      setRefetch
+    )
+    if (success) navigate(-1)
   }
 
   return (

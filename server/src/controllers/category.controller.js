@@ -1,56 +1,53 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
-import fs from 'fs'
 import slugify from 'slugify'
 
+import { filterSorted } from '../utils/format.js'
+import { removeServerImage } from '../utils/helper.js'
 import CategoryModel from '../models/category.model.js'
 import ErrorHandler from '../utils/ErrorHandler.js'
-import { filterSorted } from '../utils/format.js'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+export const save = async (req, res, next) => {
+  const { image } = req.body
+  try {
+    await CategoryModel.create({
+      ...req.body,
+      parent: req.body.parent || null,
+      slug: slugify(req.body.name).toLowerCase(),
+    })
+    return res.status(201).json({
+      success: true,
+      message: 'Categoria criada com sucesso',
+    })
+  } catch (error) {
+    removeServerImage(image)
+    next(error)
+  }
+}
 
-export const save = async (req, res) => {
-  await CategoryModel.create({
-    ...req.body,
-    parent: req.body.parent || null,
-    slug: slugify(req.body.name).toLowerCase(),
-  })
-  return res.status(201).json({
-    success: true,
-    message: 'Categoria criada com sucesso',
-  })
+export const update = async (req, res) => {
+  const { image } = req.body
+  try {
+    const finded = await CategoryModel.findById(req.params.id)
+    if (!finded) throw new ErrorHandler('Categoria não cadastrada', 422)
+
+    if (image !== finded.image) removeServerImage(finded.image)
+
+    await CategoryModel.findByIdAndUpdate(req.params.id, {
+      ...req.body,
+      parent: req.body.parent || undefined,
+      slug: slugify(req.body.name).toLowerCase(),
+    })
+    return res
+      .status(200)
+      .json({ success: true, message: 'Categoria atualizada com sucesso' })
+  } catch (error) {
+    removeServerImage(image)
+    next(error)
+  }
 }
 
 export const findAll = async (req, res) => {
   const allFinded = await CategoryModel.find({})
   return res.status(200).json(allFinded)
-}
-
-export const findById = async (req, res) => {
-  const finded = await CategoryModel.findById(req.params.id)
-  return res.status(200).json(finded)
-}
-
-export const update = async (req, res) => {
-  const finded = await CategoryModel.findById(req.params.id)
-  if (!finded) throw new ErrorHandler('Categoria não cadastrada', 422)
-
-  if (req.body.image !== finded.image) {
-    const pathfile = path.join(__dirname, '../public/images/' + finded.image)
-    fs.unlink(pathfile, function (err) {
-      if (err) throw new ErrorHandler('Falha na atualização da imagem', 500)
-    })
-  }
-
-  await CategoryModel.findByIdAndUpdate(req.params.id, {
-    ...req.body,
-    parent: req.body.parent || undefined,
-    slug: slugify(req.body.name).toLowerCase(),
-  })
-  return res
-    .status(200)
-    .json({ success: true, message: 'Categoria atualizada com sucesso' })
 }
 
 export const search = async (req, res) => {
@@ -74,15 +71,15 @@ export const search = async (req, res) => {
   return res.status(200).json(finded)
 }
 
+export const findById = async (req, res) => {
+  const finded = await CategoryModel.findById(req.params.id)
+  return res.status(200).json(finded)
+}
+
 export const remove = async (req, res) => {
   const finded = await CategoryModel.findById(req.params.id)
   if (!finded) throw new ErrorHandler('Categoria não cadastrada', 422)
-
-  const pathfile = path.join(__dirname, '../public/images/' + finded.image)
-  fs.unlink(pathfile, function (err) {
-    if (err) throw new ErrorHandler('Falha na remoção da imagem', 500)
-  })
-
+  removeServerImage(finded.image)
   await CategoryModel.findByIdAndDelete(req.params.id)
   return res.status(200).json({ success: true, message: 'Categoria removida' })
 }

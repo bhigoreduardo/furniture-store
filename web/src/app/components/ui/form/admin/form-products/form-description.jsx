@@ -61,7 +61,9 @@ export default function FormDescription(props) {
           label="Detalhe"
           placeholder="Informe a descrição"
           onChange={(value) =>
-            props.formik.setFieldValue('description.overview', value)
+            value.split('<br>')?.length === 2
+              ? props.formik.setFieldValue('description.overview', '')
+              : props.formik.setFieldValue('description.overview', value)
           }
           value={props.formik.values?.description?.overview}
           error={

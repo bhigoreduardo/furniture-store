@@ -12,10 +12,17 @@ import Heading from '../../../components/ui/heading'
 export default function Form() {
   const navigate = useNavigate()
   const { id } = useParams()
-  const { setIsLoading } = useApp()
+  const { setIsLoading, setRefetch } = useApp()
   const data = useCategory(id)
   const handleDelete = async () => {
-    await del(`/categories/${id}`, {}, setIsLoading, toast)
+    const { success } = await del(
+      `/categories/${id}`,
+      {},
+      setIsLoading,
+      toast,
+      setRefetch
+    )
+    if (success) navigate(-1)
   }
 
   return (

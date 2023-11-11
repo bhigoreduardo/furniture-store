@@ -11,7 +11,8 @@ const toolbarOptions = [
   ['blockquote'],
   [{ color: [] }, { background: [] }],
   [{ align: [] }],
-
+  [{ list: 'ordered' }, { list: 'bullet' }],
+  [{ indent: '-1' }, { indent: '+1' }],
   ['link', 'image', 'video'],
   ['clean'],
 ]
@@ -23,7 +24,7 @@ export default function TextRich({ id, placeholder, className, ...props }) {
       theme="snow"
       placeholder={placeholder}
       modules={{ toolbar: toolbarOptions }}
-      className={mergeClassName('bg-white h-[250px] rounded-sm', className)}
+      className={mergeClassName('border', className)}
       {...props}
     />
   )
