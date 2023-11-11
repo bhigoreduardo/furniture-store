@@ -1,5 +1,6 @@
 import DOMPurify from 'dompurify'
 import truncHtml from 'trunc-html'
+import { removeMask } from './mask'
 
 export const mergeClassName = (first, last) => first + ' ' + last
 
@@ -56,12 +57,12 @@ export const currencyPrice = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
 })
 
-export const optionsFullLocaleDate = {
-  weekday: 'long',
+export const optionsFullLocaleDate = (isWeek = true) => ({
+  ...(!isWeek ? '' : { weekday: 'long' }),
   year: 'numeric',
   month: 'long',
   day: 'numeric',
-}
+})
 
 export const optionsShortLocaleDate = {
   year: 'numeric',
@@ -74,11 +75,18 @@ export const typeOfString = (element) => typeof element === 'string'
 export function createMarkup(html, limit) {
   if (limit) {
     return {
-      __html: DOMPurify.sanitize(truncHtml(html, limit).html)
+      __html: DOMPurify.sanitize(truncHtml(html, limit).html),
     }
   }
 
   return {
-    __html: DOMPurify.sanitize(html)
+    __html: DOMPurify.sanitize(html),
   }
+}
+
+export const removeDataMask = (values, arr) => {
+  arr.forEach((item) => {
+    values[item] = removeMask(values[item])
+  })
+  return values
 }

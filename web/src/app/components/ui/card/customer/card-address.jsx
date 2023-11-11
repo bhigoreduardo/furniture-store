@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom'
 
+import { zipCodeMask } from '../../../../../utils/mask'
 import Button from '../../button/button'
 import Heading from '../../heading'
 
@@ -31,7 +32,7 @@ export default function CardAddress({ address, to }) {
             </p>
             <p className="text-sm text-gray-600">
               <span className="font-semibold text-gray-900">CEP: </span>
-              {address.zipCode}
+              {zipCodeMask(address.zipCode)}
             </p>
             {address.complement && (
               <p className="text-sm text-gray-600">

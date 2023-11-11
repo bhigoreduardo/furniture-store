@@ -7,6 +7,7 @@ import {
   optionsShortLocaleDate,
 } from '../../format'
 import { Fragment } from 'react'
+import { mobileMask, zipCodeMask } from '../../mask'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
 
@@ -371,6 +372,7 @@ export const customerColumns = [
   {
     accessorKey: 'whatsApp',
     header: 'Contato',
+    cell: ({ row }) => mobileMask(row?.original?.whatsApp),
   },
   {
     accessorKey: 'address',
@@ -385,7 +387,7 @@ export const customerColumns = [
           </span>
           <span>
             {row?.original?.address?.city}/{row?.original?.address?.state},{' '}
-            {row?.original?.address?.zipCode}
+            {zipCodeMask(row?.original?.address?.zipCode)}
           </span>
           <span>{row?.original?.address?.complement}</span>
         </div>
@@ -431,6 +433,7 @@ export const userColumns = [
   {
     accessorKey: 'whatsApp',
     header: 'Contato',
+    cell: ({ row }) => mobileMask(row?.original?.whatsApp),
   },
   {
     accessorKey: 'address',
@@ -445,12 +448,12 @@ export const userColumns = [
           </span>
           <span>
             {row?.original?.address?.city}/{row?.original?.address?.state},{' '}
-            {row?.original?.address?.zipCode}
+            {zipCodeMask(row?.original?.address?.zipCode)}
           </span>
           <span>{row?.original?.address?.complement}</span>
         </div>
       ) : (
-        <span>-</span>
+        '-'
       )
     },
   },

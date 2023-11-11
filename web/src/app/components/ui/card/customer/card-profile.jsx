@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom'
 
+import { cpfMask, mobileMask } from '../../../../../utils/mask'
+import { optionsFullLocaleDate } from '../../../../../utils/format'
 import Button from '../../button/button'
 import Heading from '../../heading'
 
@@ -20,7 +22,7 @@ export default function CardProfile({ user, to }) {
             <span className="font-semibold text-base-text-gray-900">
               {user.name}
             </span>
-            <p className="text-sm text-gray-600">{user.cpf}</p>
+            <p className="text-sm text-gray-600">{cpfMask(user.cpf)}</p>
           </div>
         </div>
         <div className="flex flex-col gap-2">
@@ -30,11 +32,15 @@ export default function CardProfile({ user, to }) {
           </p>
           <p className="text-sm text-gray-600">
             <span className="font-semibold text-gray-900">WhatsApp: </span>
-            {user.whatsApp}
+            {mobileMask(user.whatsApp)}
           </p>
           <p className="text-sm text-gray-600">
             <span className="font-semibold text-gray-900">Membro desde: </span>
-            {user.createdAt}
+
+            {new Date(user.createdAt).toLocaleDateString(
+              'pt-BR',
+              optionsFullLocaleDate(false)
+            )}
           </p>
         </div>
         <Button

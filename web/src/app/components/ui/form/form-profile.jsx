@@ -4,7 +4,8 @@ import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
-import { formDataUpload } from '../../../../utils/format'
+import { formDataUpload, removeDataMask } from '../../../../utils/format'
+import { cpfMask, mobileMask } from '../../../../utils/mask'
 import { post, put } from '../../../../libs/fetcher'
 import useApp from '../../../../hooks/use-app'
 import useUser from '../../../../hooks/use-user'
@@ -39,6 +40,7 @@ export default function FormProfile({ user, isAdmin = false, endPoint }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
+    values = removeDataMask(values, ['cpf', 'whatsApp'])
     let response
     if (Object.keys(user)?.length !== 0) {
       delete values.email
@@ -104,9 +106,11 @@ export default function FormProfile({ user, isAdmin = false, endPoint }) {
               placeholder="Infome o CPF"
               name="cpf"
               error={formik.touched.cpf && formik.errors.cpf}
-              onChange={formik.handleChange}
+              onChange={(e) =>
+                formik.setFieldValue('cpf', cpfMask(e.target.value))
+              }
               onBlur={formik.handleBlur}
-              value={formik.values.cpf}
+              value={cpfMask(formik.values.cpf)}
               className="flex-grow"
             />
             <InputLabel
@@ -115,9 +119,11 @@ export default function FormProfile({ user, isAdmin = false, endPoint }) {
               placeholder="Infome seu whatsApp"
               name="whatsApp"
               error={formik.touched.whatsApp && formik.errors.whatsApp}
-              onChange={formik.handleChange}
+              onChange={(e) =>
+                formik.setFieldValue('whatsApp', mobileMask(e.target.value))
+              }
               onBlur={formik.handleBlur}
-              value={formik.values.whatsApp}
+              value={mobileMask(formik.values.whatsApp)}
               className="flex-grow"
             />
           </div>

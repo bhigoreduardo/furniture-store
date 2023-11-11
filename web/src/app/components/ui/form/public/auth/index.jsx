@@ -5,6 +5,8 @@ import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
+import { cpfMask, mobileMask } from '../../../../../../utils/mask'
+import { removeDataMask } from '../../../../../../utils/format'
 import { post } from '../../../../../../libs/fetcher'
 import useUser from '../../../../../../hooks/use-user'
 import useApp from '../../../../../../hooks/use-app'
@@ -33,7 +35,7 @@ const validationSignUpSchema = validationSignInSchema.shape({
     .string()
     .oneOf([yup.ref('password'), null], 'Senhas devem ser iguais')
     .required('Repetir senha é obrigatório'),
-  terms: yup.bool().required('Termos é obrigatório'),
+  terms: yup.bool().oneOf([true], 'Termos é obrigatório'),
 })
 const initialSignUpValues = {
   ...initialSignInValues,
@@ -41,7 +43,7 @@ const initialSignUpValues = {
   cpf: '',
   whatsApp: '',
   repeatPassword: '',
-  terms: '',
+  terms: false,
 }
 
 export default function FormAuth() {
@@ -61,6 +63,7 @@ export default function FormAuth() {
   })
   const handleSubmit = async (values) => {
     const endPoint = isNonLogin ? '/customers/sign-up' : '/customers/sign-in'
+    values = isNonLogin ? removeDataMask(values, ['cpf', 'whatsApp']) : values
     const { info, success, user, token } = await post(
       endPoint,
       values,
@@ -69,10 +72,12 @@ export default function FormAuth() {
     )
     setInfo(info)
     setSuccess(success)
-    if (success && !isNonLogin) {
-      handleUpdateUser(user, token)
-      navigate('/conta')
+    if (success) {
       formik.resetForm()
+      if (!isNonLogin) {
+        handleUpdateUser(user, token)
+        navigate('/conta')
+      }
     }
   }
 
@@ -123,9 +128,11 @@ export default function FormAuth() {
               placeholder="CPF"
               name="cpf"
               error={formik.touched.cpf && formik.errors.cpf}
-              onChange={formik.handleChange}
+              onChange={(e) =>
+                formik.setFieldValue('cpf', cpfMask(e.target.value))
+              }
               onBlur={formik.handleBlur}
-              value={formik.values.cpf}
+              value={cpfMask(formik.values.cpf)}
             />
           </>
         )}
@@ -148,9 +155,11 @@ export default function FormAuth() {
             placeholder="WhatsApp"
             name="whatsApp"
             error={formik.touched.whatsApp && formik.errors.whatsApp}
-            onChange={formik.handleChange}
+            onChange={(e) =>
+              formik.setFieldValue('whatsApp', mobileMask(e.target.value))
+            }
             onBlur={formik.handleBlur}
-            value={formik.values.whatsApp}
+            value={mobileMask(formik.values.whatsApp)}
           />
         )}
         <PasswordLabel
@@ -200,6 +209,7 @@ export default function FormAuth() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.terms}
+              checked={formik.values.terms}
             />
           </>
         )}

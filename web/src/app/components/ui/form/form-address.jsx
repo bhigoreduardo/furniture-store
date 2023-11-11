@@ -4,6 +4,8 @@ import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
+import { zipCodeMask } from '../../../../utils/mask'
+import { removeDataMask } from '../../../../utils/format'
 import { put } from '../../../../libs/fetcher'
 import useApp from '../../../../hooks/use-app'
 import useUser from '../../../../hooks/use-user'
@@ -11,31 +13,25 @@ import InputLabel from '../input/input-label'
 import Button from '../button/button'
 
 const validationSchema = yup.object().shape({
-  address: yup
-    .object({
-      street: yup.string().required('Rua é obrigatório'),
-      neighborhood: yup.string().required('Bairro é obrigatório'),
-      city: yup.string().required('Cidade é obrigatório'),
-      state: yup
-        .string()
-        .max(2, 'Informe somente a UF. Ex.: MT')
-        .required('Estado é obrigatório'),
-      number: yup.string().optional(),
-      zipCode: yup.string().required('CEP é obrigatório'),
-      complement: yup.string().optional(),
-    })
-    .required('Endereço é obrigatório'),
+  street: yup.string().required('Rua é obrigatório'),
+  neighborhood: yup.string().required('Bairro é obrigatório'),
+  city: yup.string().required('Cidade é obrigatório'),
+  state: yup
+    .string()
+    .max(2, 'Informe somente a UF. Ex.: SP')
+    .required('Estado é obrigatório'),
+  number: yup.string().optional(),
+  zipCode: yup.string().required('CEP é obrigatório'),
+  complement: yup.string().optional(),
 })
 const initialValues = {
-  address: {
-    street: '',
-    neighborhood: '',
-    city: '',
-    state: '',
-    number: '',
-    zipCode: '',
-    complement: '',
-  },
+  street: '',
+  neighborhood: '',
+  city: '',
+  state: '',
+  number: '',
+  zipCode: '',
+  complement: '',
 }
 
 export default function FormAddress({ user, isAdmin = false, endPoint }) {
@@ -44,18 +40,19 @@ export default function FormAddress({ user, isAdmin = false, endPoint }) {
   const { handleUpdateUser } = useUser()
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: user?.address ? { address: user.address } : initialValues,
+    initialValues: user?.address ? user.address : initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
+    validationSchema.cast(values, { stripUnknown: true })
     const {
       user: userData,
       token,
       success,
     } = await put(
       endPoint,
-      validationSchema.cast(values, { stripUnknown: true }),
+      { address: removeDataMask(values, ['zipCode']) },
       setIsLoading,
       toast
     )
@@ -71,101 +68,86 @@ export default function FormAddress({ user, isAdmin = false, endPoint }) {
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
           <InputLabel
-            id="address.street"
+            id="street"
             label="Rua"
             placeholder="Infome nome da rua"
-            name="address.street"
-            error={
-              formik.touched?.address?.street && formik.errors?.address?.street
-            }
+            name="street"
+            error={formik.touched?.street && formik.errors?.street}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values?.address?.street}
+            value={formik.values?.street}
             className="flex-grow"
           />
           <InputLabel
-            id="address.neighborhood"
+            id="neighborhood"
             label="Bairro"
             placeholder="Infome nome do bairro"
-            name="address.neighborhood"
-            error={
-              formik.touched?.address?.neighborhood &&
-              formik.errors?.address?.neighborhood
-            }
+            name="neighborhood"
+            error={formik.touched?.neighborhood && formik.errors?.neighborhood}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values?.address?.neighborhood}
+            value={formik.values?.neighborhood}
             className="flex-grow"
           />
         </div>
         <div className="flex gap-4">
           <InputLabel
-            id="address.city"
+            id="city"
             label="Cidade"
             placeholder="Infome nome da cidade"
-            name="address.city"
-            error={
-              formik.touched?.address?.city && formik.errors?.address?.city
-            }
+            name="city"
+            error={formik.touched?.city && formik.errors?.city}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values?.address?.city}
+            value={formik.values?.city}
             className="flex-grow"
           />
           <InputLabel
-            id="address.state"
+            id="state"
             label="Estado"
             placeholder="Infome nome do estado"
-            name="address.state"
-            error={
-              formik.touched?.address?.state && formik.errors?.address?.state
-            }
+            name="state"
+            error={formik.touched?.state && formik.errors?.state}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values?.address?.state}
+            value={formik.values?.state}
             className="flex-grow"
           />
         </div>
         <div className="flex gap-4">
           <InputLabel
-            id="address.number"
+            id="number"
             label="Número"
             placeholder="Infome o número"
-            name="address.number"
-            error={
-              formik.touched?.address?.number && formik.errors?.address?.number
-            }
+            name="number"
+            error={formik.touched?.number && formik.errors?.number}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values?.address?.number}
+            value={formik.values?.number}
             className="flex-grow"
           />
           <InputLabel
-            id="address.zipCode"
+            id="zipCode"
             label="CEP"
             placeholder="Infome o CEP"
-            name="address.zipCode"
-            error={
-              formik.touched?.address?.zipCode &&
-              formik.errors?.address?.zipCode
+            name="zipCode"
+            error={formik.touched?.zipCode && formik.errors?.zipCode}
+            onChange={(e) =>
+              formik.setFieldValue('zipCode', zipCodeMask(e.target.value))
             }
-            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values?.address?.zipCode}
+            value={zipCodeMask(formik.values?.zipCode)}
             className="flex-grow"
           />
           <InputLabel
-            id="address.complement"
+            id="complement"
             label="Complemento"
             placeholder="Infome o complemento"
-            name="address.complement"
-            error={
-              formik.touched?.address?.complement &&
-              formik.errors?.address?.complement
-            }
+            name="complement"
+            error={formik.touched?.complement && formik.errors?.complement}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values?.address?.complement}
+            value={formik.values?.complement}
             className="flex-grow"
           />
         </div>
