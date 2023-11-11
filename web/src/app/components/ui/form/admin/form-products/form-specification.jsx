@@ -83,7 +83,6 @@ export default function FormSpecification(props) {
             onChange={(value) => formik.setFieldValue('description', value)}
             value={formik.values.description}
             error={formik.touched.description && formik.errors.description}
-            onBlur={formik.handleBlur}
             className="mb-6"
           />
         </div>

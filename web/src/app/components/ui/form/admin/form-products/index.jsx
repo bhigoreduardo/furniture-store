@@ -1,12 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 
 import { formDataUpload, typeOfString } from '../../../../../../utils/format'
-import { post } from '../../../../../../libs/fetcher'
+import { post, put } from '../../../../../../libs/fetcher'
 import useApp from '../../../../../../hooks/use-app'
 import Button from '../../../button/button'
 import FormAdditional from './form-additional'
@@ -161,14 +162,24 @@ const initialValues = {
 }
 
 export default function FormProducts({ data }) {
-  const { setIsLoading } = useApp()
+  const navigate = useNavigate()
+  const { setIsLoading, setRefetch } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: data || initialValues,
+    initialValues: data
+      ? {
+          ...data,
+          cover: data?.productData?.media?.cover,
+          backCover: data?.productData?.media?.backCover,
+          gallery: data?.productData?.media?.gallery,
+          video: data?.productData?.media?.video,
+        }
+      : initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
+    let response
     validationSchema.cast(values, { stripUnknown: true })
     const imageEndpoint = '/products/save-image'
     let { cover, backCover, gallery } = values
@@ -207,12 +218,31 @@ export default function FormProducts({ data }) {
     )
     gallery = galleryUrls
 
-    await post(
-      '/products',
-      { ...values, cover, backCover, gallery },
-      setIsLoading,
-      toast
-    )
+    if (data && Object.keys(data)?.length !== 0) {
+      delete values._id
+      delete values.__v
+      delete values.createdAt
+      delete values.updatedAt
+      delete values.productData.media
+      delete values.rangePrice
+      response = await put(
+        `/products/${data._id}`,
+        { ...values, cover, backCover, gallery },
+        setIsLoading,
+        toast
+      )
+    } else
+      response = await post(
+        '/products',
+        { ...values, cover, backCover, gallery },
+        setIsLoading,
+        toast
+      )
+
+    if (response?.success) {
+      setRefetch(true)
+      navigate(-1)
+    }
   }
 
   return (

@@ -68,7 +68,6 @@ export default function FormAdditional(props) {
             props.formik.touched?.additional?.detail &&
             props.formik.errors?.additional?.detail
           }
-          onBlur={props.formik.handleBlur}
           className="mb-6"
         />
         <div className="flex flex-col">
@@ -106,7 +105,6 @@ export default function FormAdditional(props) {
             onChange={(value) => formik.setFieldValue('description', value)}
             value={formik.values.description}
             error={formik.touched.description && formik.errors.description}
-            onBlur={formik.handleBlur}
             className="mb-6"
           />
         </div>

@@ -6,6 +6,7 @@ import {
   currencyPrice,
   optionsShortLocaleDate,
 } from '../../format'
+import { Fragment } from 'react'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
 
@@ -149,26 +150,73 @@ export const productColumns = [
   {
     accessorKey: 'product',
     header: 'Produto',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <img
+          src={`${serverPublicImages}/${row?.original?.productData?.media?.cover}`}
+          alt={row?.original?.name}
+          className="h-14 w-14 rounded-full bg-gray-500 object-contain"
+        />
+        <p className="flex flex-col">
+          <span className="font-semibold text-sm text-gray-900 line-clamp-1">
+            {row?.original?.name}
+          </span>
+          <span className="text-xs">
+            Categoria:{' '}
+            {row?.original?.category?.map((item, i) => (
+              <Fragment key={item._id}>
+                {item.name}
+                {row?.original?.category?.length === i + 1 ? '' : '/'}
+              </Fragment>
+            ))}
+          </span>
+        </p>
+      </div>
+    ),
   },
   {
     accessorKey: 'sku',
     header: 'SKU',
+    cell: ({ row }) => row?.original?.sku || '-',
   },
   {
     accessorKey: 'stock',
     header: 'Estoque',
+    cell: ({ row }) =>
+      row?.original?.productData?.inventory?.info?.reduce(
+        (acc, cur) => cur.stock + acc,
+        0
+      ),
   },
   {
     accessorKey: 'price',
     header: 'Preço',
+    cell: ({ row }) => (
+      <div className="flex flex-col text-xs">
+        <p>
+          <span className="font-semibold">Mínimo:</span>{' '}
+          {currencyPrice.format(row?.original?.rangePrice?.min)}
+        </p>
+        <p>
+          <span className="font-semibold">Médio:</span>{' '}
+          {currencyPrice.format(row?.original?.rangePrice?.avg)}
+        </p>
+        <p>
+          <span className="font-semibold">Máximo:</span>{' '}
+          {currencyPrice.format(row?.original?.rangePrice?.max)}
+        </p>
+      </div>
+    ),
   },
   {
     accessorKey: 'sales',
     header: 'Vendas',
+    cell: ({ row }) => row?.original?.sales ?? '-',
   },
   {
     accessorKey: 'reviews',
     header: 'Avaliações',
+    cell: ({ row }) => row?.original?.reviews ?? '-',
   },
   {
     accessorKey: 'actions',

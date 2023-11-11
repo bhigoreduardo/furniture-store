@@ -2,12 +2,14 @@ import { useNavigate } from 'react-router-dom'
 import { PlusCircle } from 'phosphor-react'
 
 import { productColumns } from '../../../../utils/constants/admin'
+import { useFilterProducts } from '../../../../hooks/use-product'
 import Button from '../../../components/ui/button/button'
 import FilterProduct from '../../../components/ui/filter/admin/filter-product'
 import TableData from '../../../components/ui/table/table-data'
 
 export default function Products() {
   const navigate = useNavigate()
+  const { docs, total, pages } = useFilterProducts()
 
   return (
     <section className="flex-grow flex flex-col gap-6">
@@ -23,7 +25,9 @@ export default function Products() {
           />
         }
         columns={productColumns}
-        data={[]}
+        data={docs}
+        total={total}
+        pages={pages}
       />
     </section>
   )

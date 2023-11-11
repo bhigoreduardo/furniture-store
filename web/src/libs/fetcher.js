@@ -1,10 +1,11 @@
 import api from './api'
 
-export const get = async (endPoint, setIsLoading, toast) => {
+export const get = async (endPoint, setIsLoading, toast, setRefetch) => {
   try {
     setIsLoading(true)
     const { data } = await api.get(endPoint)
     if (data?.success) toast && toast.success(data?.message)
+    setRefetch && setRefetch(false)
     return data
   } catch (err) {
     const error = err?.response?.data

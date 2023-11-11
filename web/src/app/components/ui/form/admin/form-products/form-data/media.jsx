@@ -86,7 +86,7 @@ export default function Media(props) {
                   <div className="flex items-center justify-center w-full h-full overflow-hidden">
                     <img
                       src={
-                        typeof value === 'string'
+                        typeof item === 'string'
                           ? `${
                               import.meta.env.VITE_SERVER_PUBLIC_IMAGES
                             }/${item}`

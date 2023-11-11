@@ -5,3 +5,4 @@ FIXME:
   - FORMDATA: MENSAGEM DE ERRO DO TEXT RICH
   - Upload de image:
     Rota de validação dos dados está após o upload da imagem, irá deixar arquivos residuais de categoria e marca
+  - Filtro de busca em arrays dentro de um obj no mongoose

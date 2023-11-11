@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import mongoosePaginate from 'mongoose-paginate'
 
 const StepEnumType = {
   Draft: 'draft',
@@ -114,12 +115,12 @@ const ProductSchema = new mongoose.Schema(
       _id: false,
     },
     category: {
-      type: [{ type: mongoose.Types.ObjectId, ref: 'Category' }],
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
       min: [1, 'Pelo menos 1 categoria é obrigatório'],
       required: [true, 'Categoria é obrigatório'],
     },
     brand: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Brand',
       required: [true, 'Marca é obrigatório'],
     },
@@ -134,5 +135,7 @@ const ProductSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+ProductSchema.plugin(mongoosePaginate)
 
 export default mongoose.model('Product', ProductSchema)
