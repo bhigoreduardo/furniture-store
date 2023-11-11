@@ -12,10 +12,17 @@ import FormProducts from '../../../components/ui/form/admin/form-products'
 export default function Form() {
   const navigate = useNavigate()
   const { id } = useParams()
-  const { setIsLoading } = useApp()
+  const { setIsLoading, setRefetch } = useApp()
   const data = useProduct(id)
   const handleDelete = async () => {
-    await del(`/products/${id}`, {}, setIsLoading, toast)
+    const { success } = await del(
+      `/products/${id}`,
+      {},
+      setIsLoading,
+      toast,
+      setRefetch
+    )
+    if (success) navigate(-1)
   }
 
   return (

@@ -3,7 +3,6 @@ import { PlusCircle } from 'phosphor-react'
 
 import { userColumns } from '../../../../utils/constants/admin'
 import { useFilterUsers } from '../../../../hooks/admin/use-user'
-import useApp from '../../../../hooks/use-app'
 import Button from '../../../components/ui/button/button'
 import FilterUser from '../../../components/ui/filter/admin/filter-user'
 import TableData from '../../../components/ui/table/table-data'
@@ -11,8 +10,6 @@ import TableData from '../../../components/ui/table/table-data'
 export default function Users() {
   const navigate = useNavigate()
   const { docs, total, pages } = useFilterUsers()
-  const { setRefetch } = useApp()
-  setRefetch(false)
 
   return (
     <section className="flex-grow flex flex-col gap-6">

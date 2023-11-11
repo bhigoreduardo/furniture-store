@@ -6,7 +6,7 @@ import useFilter from './use-filter'
 import useApp from './use-app'
 
 export function useFilterCategories() {
-  const { setIsLoading, refetch } = useApp()
+  const { setIsLoading, refetch, setRefetch } = useApp()
   const { search, priority, page, perPage } = useFilter()
 
   const { data } = useQuery({
@@ -15,7 +15,8 @@ export function useFilterCategories() {
       await get(
         `/categories/search?search=${search}&priority=${priority}&page=${page}&perPage=${perPage}`,
         setIsLoading,
-        toast
+        toast,
+        setRefetch
       ),
     staleTime: refetch ? 0 : 1000 * 60 * 1,
   })

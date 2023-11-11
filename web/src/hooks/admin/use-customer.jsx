@@ -6,7 +6,7 @@ import useFilter from '../use-filter'
 import useApp from '../use-app'
 
 export function useCustomers() {
-  const { setIsLoading } = useApp()
+  const { setIsLoading, refetch, setRefetch } = useApp()
   const { search, priority, page, perPage } = useFilter()
 
   const { data } = useQuery({
@@ -23,9 +23,10 @@ export function useCustomers() {
       await get(
         `/customers/search?search=${search}&priority=${priority}&page=${page}&perPage=${perPage}`,
         setIsLoading,
-        toast
+        toast,
+        setRefetch
       ),
-    staleTime: 1000 * 60 * 1,
+    staleTime: refetch ? 0 : 1000 * 60 * 1,
   })
 
   return { ...data }
