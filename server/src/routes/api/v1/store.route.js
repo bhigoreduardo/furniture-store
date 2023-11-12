@@ -2,8 +2,10 @@ import express from 'express'
 import { validate } from 'express-validation'
 
 import { useError } from '../../../utils/ErrorHandler.js'
+import { adminAuth, userAuth } from '../../../middlewares/auth.middleware.js'
 import * as storeMiddleware from '../../../middlewares/store.middleware.js'
 import * as storeController from '../../../controllers/store.controller.js'
+import upload from '../../../config/multer.js'
 
 const router = express.Router()
 
@@ -26,6 +28,21 @@ router.post(
   '/recovery-password',
   validate(storeMiddleware.recoveryPassword),
   useError(storeController.recoveryPassword)
+)
+router.put(
+  '/update',
+  useError(userAuth),
+  useError(adminAuth),
+  upload.single('image'),
+  validate(storeMiddleware.update),
+  useError(storeController.update)
+)
+router.patch(
+  '/change-password',
+  useError(userAuth),
+  useError(adminAuth),
+  validate(storeMiddleware.changePassword),
+  useError(storeController.changePassword)
 )
 
 export default router

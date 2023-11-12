@@ -25,7 +25,7 @@ export default function Header() {
             </button>
             <Button
               label="Acessar loja"
-              icon={<GlobeSimple size={20} className="text-white" />}
+              icon={<GlobeSimple size={20} weight="duotone" className="text-white" />}
               className="flex-row-reverse bg-orange-600 text-white !py-1 !px-2"
             />
           </div>
@@ -35,14 +35,14 @@ export default function Header() {
                 content="4"
                 className="absolute -top-4 left-3 bg-red-500 text-white"
               />
-              <ChatTeardropDots size={24} className="text-white" />
+              <ChatTeardropDots size={24} weight="duotone" className="text-white" />
             </button>
             <button className="relative">
               <Badge
                 content="+99"
                 className="absolute -top-4 left-3 bg-red-500 text-white"
               />
-              <BellSimpleRinging size={24} className="text-white" />
+              <BellSimpleRinging size={24} weight="duotone" className="text-white" />
             </button>
             <button>
               <img

@@ -1,7 +1,12 @@
 /* eslint-disable react/prop-types */
+import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
+import { put } from '../../../../../../libs/fetcher'
+import useApp from '../../../../../../hooks/use-app'
+import useUser from '../../../../../../hooks/use-user'
 import Button from '../../../button/button'
 import InputLabel from '../../../input/input-label'
 
@@ -58,17 +63,38 @@ const initialValues = {
   youtube: '',
 }
 
-export default function FormSocial({ user }) {
+export default function FormSocial({ user, endPoint }) {
+  const [info, setInfo] = useState('')
+  const { setIsLoading } = useApp()
+  const { handleUpdateUser } = useUser()
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: user?.socialMedia ?? initialValues,
+    initialValues: user ? { ...user?.socialMedia } : initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
-  const handleSubmit = async (values) => console.log(values)
+  const handleSubmit = async (values) => {
+    if (!Object.keys(values).filter((item) => values[item] !== '')?.length > 0)
+      setInfo('Informe ao menos uma rede social para salvar')
+    else {
+      const { user, token } = await put(
+        endPoint,
+        { socialMedia: values },
+        setIsLoading,
+        toast,
+        null
+      )
+      handleUpdateUser(user, token)
+    }
+  }
   return (
     <form className="flex flex-col gap-6 px-6" onSubmit={formik.handleSubmit}>
       <div className="flex-grow flex flex-col gap-4">
+        {info && (
+          <span className="flex pt-2 justify-center text-xs text-blue-500">
+            {info}
+          </span>
+        )}
         <div className="flex gap-4">
           <InputLabel
             id="facebook"

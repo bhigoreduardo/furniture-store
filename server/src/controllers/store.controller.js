@@ -1,6 +1,7 @@
+import { removeServerImage } from '../utils/helper.js'
+import { sendInfoEmail } from '../utils/sendEmail.js'
 import StoreModel from '../models/store.model.js'
 import ErrorHandler from '../utils/ErrorHandler.js'
-import { sendInfoEmail } from '../utils/sendEmail.js'
 
 export const signUp = async (req, res) => {
   if (req.body.password !== req.body.repeatPassword)
@@ -75,6 +76,46 @@ export const recoveryPassword = async (req, res) => {
 
   finded.setPassword(req.body.password)
   finded.clearRecoveryPassword()
+  await finded.save()
+  return res.status(200).json({
+    success: true,
+    message: 'Senha alterada com sucesso',
+  })
+}
+
+export const update = async (req, res) => {
+  const { image } = req.body
+
+  try {
+    const finded = await StoreModel.findById(req.userId)
+    if (!finded) throw new ErrorHandler('Usuário não cadastrado', 422)
+    await StoreModel.findByIdAndUpdate(req.userId, { ...req.body })
+    if (
+      typeof image !== 'undefined' &&
+      typeof finded.image !== 'undefined' &&
+      finded.image !== image
+    )
+      removeServerImage(finded.image)
+    const findedUpdate = await StoreModel.findById(req.userId)
+    return res.status(200).json({
+      success: true,
+      message: 'Atualização realizada com sucesso',
+      ...findedUpdate.sendAuth(),
+    })
+  } catch (error) {
+    if (typeof image !== 'undefined') removeServerImage(image)
+    next(error)
+  }
+}
+
+export const changePassword = async (req, res) => {
+  if (req.body.newPassword !== req.body.repeatPassword)
+    throw new ErrorHandler('Senhas inválidas', 400)
+  const finded = await StoreModel.findById(req.userId)
+  if (!finded.validatePassword(req.body.password))
+    throw new ErrorHandler('Credenciais incorretas', 422)
+
+  finded.setPassword(req.body.newPassword)
   await finded.save()
   return res.status(200).json({
     success: true,

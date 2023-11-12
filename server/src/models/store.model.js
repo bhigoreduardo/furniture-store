@@ -54,36 +54,14 @@ const StoreSchema = new mongoose.Schema(
       },
       _id: false,
     },
-    paymentMethod: {
-      type: {
-        name: {
-          type: String,
-          required: [true, 'Nome do pagamento é obrigatório'],
-        },
-        image: {
-          type: String,
-          required: [true, 'Imagem do pagamento é obrigatório'],
-        },
-        installments: {
-          quantity: {
-            type: Number,
-            required: [true, 'Quantidade de parcela é obrigatório'],
-          },
-          fees: { type: Number },
-        },
-      },
-      _id: false,
-    },
     socialMedia: {
       type: {
-        name: {
-          type: String,
-          required: [true, 'Nome da rede social é obrigatório'],
-        },
-        url: {
-          type: String,
-          required: [true, 'Perfil da rede social é obrigatório'],
-        },
+        facebook: { type: String },
+        instagram: { type: String },
+        twitter: { type: String },
+        linkedin: { type: String },
+        pinterest: { type: String },
+        youtube: { type: String },
       },
       _id: false,
     },
@@ -141,18 +119,19 @@ StoreSchema.methods.sendAuth = function () {
       _id: this._id,
       name: this.name,
       email: this.email,
+      contactEmail: this.contactEmail,
       phone: this.phone,
       whatsApp: this.whatsApp,
-      logo: this.logo,
+      image: this.image,
       cnpj: this.cnpj,
       ie: this.ie,
       clockAvailable: this.clockAvailable,
       site: this.site,
       description: this.description,
       address: this.address,
-      paymentMethod: this.paymentMethod,
       socialMedia: this.socialMedia,
       status: this.status,
+      available: this.available,
     },
     token: this.generateToken(),
   }

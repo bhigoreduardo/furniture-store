@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-// import { toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
@@ -9,11 +9,14 @@ import {
   mobileMask,
   phoneMask,
 } from '../../../../../../utils/mask'
+import { formDataUpload, removeDataMask } from '../../../../../../utils/format'
+import { put } from '../../../../../../libs/fetcher'
+import useApp from '../../../../../../hooks/use-app'
+import useUser from '../../../../../../hooks/use-user'
 import Button from '../../../button/button'
 import FileLabel from '../../../input/file-label'
 import InputLabel from '../../../input/input-label'
 import TextAreaLabel from '../../../input/textarea-label'
-import { removeDataMask } from '../../../../../../utils/format'
 
 const validationSchema = yup.object().shape({
   image: yup.string().required('Imagem é obrigatório'),
@@ -44,6 +47,8 @@ const validationSchema = yup.object().shape({
 })
 
 export default function FormStore({ user }) {
+  const { setIsLoading } = useApp()
+  const { handleUpdateUser } = useUser()
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -64,7 +69,15 @@ export default function FormStore({ user }) {
   })
   const handleSubmit = async (values) => {
     values = removeDataMask(values, ['phone', 'whatsApp', 'cnpj', 'ie'])
-    console.log(values)
+    if (typeof values.image !== 'string') values = formDataUpload(values)
+    const { user, token } = await put(
+      '/stores/update',
+      values,
+      setIsLoading,
+      toast,
+      null
+    )
+    handleUpdateUser(user, token)
   }
 
   return (
@@ -205,7 +218,7 @@ export default function FormStore({ user }) {
             id="description"
             label="Descrição"
             name="description"
-            hint="Breve resumo sobre a loja, tente usar até no máximo 200 caracteres"
+            hint="Breve resumo sobre a loja, tente usar até no máximo 500 caracteres"
             placeholder="Informe a descrição"
             error={formik.touched.description && formik.errors.description}
             onChange={formik.handleChange}
