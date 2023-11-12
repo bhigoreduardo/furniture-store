@@ -181,7 +181,7 @@ export default function FormProducts({ data }) {
   const handleSubmit = async (values) => {
     let response
     validationSchema.cast(values, { stripUnknown: true })
-    const imageEndpoint = '/products/save-image'
+    const imageEndpoint = '/save-image'
     let { cover, backCover, gallery } = values
     if (!typeOfString(cover)) {
       const { image } = await post(

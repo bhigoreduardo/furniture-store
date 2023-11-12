@@ -16,14 +16,6 @@ const updateStorageGallery = (firstGallery, secondGallery) => {
   })
 }
 
-export const saveImage = async (req, res) => {
-  return res.status(201).json({
-    success: true,
-    message: 'Imagem salva com sucesso',
-    image: req.body.image,
-  })
-}
-
 export const save = async (req, res, next) => {
   const {
     cover,
@@ -73,11 +65,11 @@ export const save = async (req, res, next) => {
     removeServerImage(cover)
     removeServerImage(backCover)
     gallery.forEach((item) => removeServerImage(item))
-    if (media) await MediaModel.findByIdAndRemove(media._id)
+    if (media) await MediaModel.findByIdAndDelete(media._id)
     if (infoDetails)
       await Promise.all(
         infoDetails.map(
-          async (item) => await InventoryModel.findByIdAndRemove(item._id)
+          async (item) => await InventoryModel.findByIdAndDelete(item._id)
         )
       )
     next(error)
@@ -117,7 +109,7 @@ export const update = async (req, res) => {
   updateStorageGallery(gallery, finded.productData.media.gallery)
   await Promise.all(
     finded.productData.inventory.info.map(
-      async (item) => await InventoryModel.findByIdAndRemove(item.toString())
+      async (item) => await InventoryModel.findByIdAndDelete(item.toString())
     )
   )
   const { infoDetails, rangePrice } = await saveInventoryInfo(info)
@@ -226,25 +218,12 @@ export const remove = async (req, res) => {
   removeServerImage(finded.productData.media.cover)
   removeServerImage(finded.productData.media.backCover)
   finded.productData.media.gallery.forEach((item) => removeServerImage(item))
-  await MediaModel.findByIdAndRemove(finded.productData.media._id.toString())
+  await MediaModel.findByIdAndDelete(finded.productData.media._id.toString())
   await Promise.all(
     finded.productData.inventory.info.map(
-      async (item) => await InventoryModel.findByIdAndRemove(item.toString())
+      async (item) => await InventoryModel.findByIdAndDelete(item.toString())
     )
   )
-  await ProductModel.findByIdAndRemove(req.params.id)
+  await ProductModel.findByIdAndDelete(req.params.id)
   return res.status(200).json({ success: true, message: 'Produto removido' })
 }
-
-// import qs from 'querystring'
-// var body = ''
-
-// req.on('data', function (data) {
-//   body += data
-
-//   if (body.length > 1e6) req.connection.destroy()
-// })
-// req.on('end', function () {
-//   var post = qs.parse(body)
-//   console.log(post)
-// })
