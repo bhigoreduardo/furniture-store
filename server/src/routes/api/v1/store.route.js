@@ -50,5 +50,6 @@ router.patch(
   useError(adminAuth),
   useError(storeController.toggleAvailable)
 )
+router.get('/', useError(storeController.findAll))
 
 export default router

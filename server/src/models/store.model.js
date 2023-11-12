@@ -136,6 +136,26 @@ StoreSchema.methods.sendAuth = function () {
     token: this.generateToken(),
   }
 }
+StoreSchema.methods.sendPublic = function () {
+  return {
+    _id: this._id,
+      name: this.name,
+      email: this.email,
+      contactEmail: this.contactEmail,
+      phone: this.phone,
+      whatsApp: this.whatsApp,
+      image: this.image,
+      cnpj: this.cnpj,
+      ie: this.ie,
+      clockAvailable: this.clockAvailable,
+      site: this.site,
+      description: this.description,
+      address: this.address,
+      socialMedia: this.socialMedia,
+      status: this.status,
+      available: this.available,
+  }
+}
 StoreSchema.methods.generateRecoveryPassword = function () {
   const resetToken = crypto.randomBytes(16).toString('hex')
 

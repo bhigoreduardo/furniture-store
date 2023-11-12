@@ -1,6 +1,7 @@
 import Layout from '../layouts/public'
 import DashboardLayout from '../layouts/public/dashboard'
 
+import Maintenance from '../pages/public/maintenance'
 import Auth from '../pages/public/auth'
 import SignUpConfirm from '../pages/public/auth/sign-up-confirm'
 import ActivatedToken from '../pages/public/auth/activated-token'
@@ -12,6 +13,10 @@ import Dashboard from '../pages/public/dashboard'
 import Setting from '../pages/public/dashboard/setting'
 
 const router = [
+  {
+    path: '/manutencao',
+    element: <Maintenance />,
+  },
   {
     path: '/',
     element: <Layout />,

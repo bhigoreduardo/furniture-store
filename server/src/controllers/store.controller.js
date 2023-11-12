@@ -134,3 +134,8 @@ export const toggleAvailable = async (req, res) => {
     ...finded.sendAuth(),
   })
 }
+
+export const findAll = async (req, res) => {
+  const finded = await StoreModel.findOne({}, {}, { sort: { created_at: -1 } })
+  return res.status(200).json(finded.sendPublic())
+}
