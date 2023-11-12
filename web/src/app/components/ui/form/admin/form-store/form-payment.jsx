@@ -1,10 +1,15 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { useState } from 'react'
 import { XCircle } from 'phosphor-react'
+import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
 import { paymentColumns } from '../../../../../../utils/constants/admin'
+import { del, post, put } from '../../../../../../libs/fetcher'
+import { formDataUpload, typeOfString } from '../../../../../../utils/format'
+import { usePayments } from '../../../../../../hooks/use-payment'
+import useApp from '../../../../../../hooks/use-app'
 import InputLabel from '../../../input/input-label'
 import CheckboxToggleLabel from '../../../input/checkboxtoggle-label'
 import FileLabel from '../../../input/file-label'
@@ -16,19 +21,13 @@ const validationInstallmentsSchema = yup.object().shape({
   installments: yup.number().required('Quantidade da parcela é obrigatório'),
   fee: yup.number().required('Taxa da parcela é obrigatório'),
 })
-const validationPaymentSchema = yup.object().shape({
+const validationSchema = yup.object().shape({
   image: yup.string().required('Imagem é obrigatório'),
   method: yup.string().required('Método é obrigatório'),
   availableInstallments: yup.bool().required('Parcelas é obrigatório'),
   infoInstallments: yup.array().of(validationInstallmentsSchema).optional(),
 })
-const validationSchema = yup.object().shape({
-  paymentMethod: yup
-    .array()
-    .of(validationPaymentSchema)
-    .min(1, 'Pelo menos 1 forma de pagamento deve ser adicionado'),
-})
-const initialPaymentValues = {
+const initialValues = {
   image: '',
   method: '',
   availableInstallments: false,
@@ -36,60 +35,72 @@ const initialPaymentValues = {
 }
 
 export default function FormPayment() {
+  const payments = usePayments()
+  const { setIsLoading } = useApp()
   const [indexEdit, setIndexEdit] = useState(null)
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: { paymentMethod: [] },
+    initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
-  })
-  const paymentFormik = useFormik({
-    enableReinitialize: true,
-    initialValues: initialPaymentValues,
-    validationSchema: validationPaymentSchema,
-    onSubmit: (values) => {
-      const curValues = formik?.values?.paymentMethod
-      if (indexEdit === null) {
-        formik.setFieldValue('paymentMethod', [...curValues, values])
-      } else {
-        curValues[indexEdit] = values
-        formik.setFieldValue('paymentMethod', [...curValues])
-        setIndexEdit(null)
-      }
-      paymentFormik.resetForm()
-    },
   })
   const installmentsFormik = useFormik({
     enableReinitialize: true,
     initialValues: { installments: '', fee: '' },
     validationSchema: validationInstallmentsSchema,
     onSubmit: (values) => {
-      paymentFormik.setFieldValue('infoInstallments', [
-        ...paymentFormik?.values?.infoInstallments,
+      formik.setFieldValue('infoInstallments', [
+        ...formik?.values?.infoInstallments,
         values,
       ])
       installmentsFormik.resetForm()
     },
   })
-  const handleSubmit = async (values) => console.log(values)
-  const handleEdit = (index) => {
-    const values = formik?.values?.paymentMethod[index]
-    paymentFormik.setFieldValue('image', values.image)
-    paymentFormik.setFieldValue('method', values.method)
-    paymentFormik.setFieldValue(
-      'availableInstallments',
-      values.availableInstallments
-    )
-    paymentFormik.setFieldValue('infoInstallments', values.infoInstallments)
-    setIndexEdit(index)
+  const handleSubmit = async (values) => {
+    let response
+    let { image } = values
+    validationSchema.cast(values, { stripUnknown: true })
+    if (!typeOfString(image)) {
+      const { image: imageUrl } = await post(
+        '/save-image',
+        formDataUpload({ image: image }),
+        setIsLoading
+      )
+      image = imageUrl
+    }
+    if (indexEdit !== null)
+      response = await put(
+        `/payments/${indexEdit}`,
+        { ...values, image },
+        setIsLoading,
+        toast
+      )
+    else
+      response = await post(
+        '/payments',
+        { ...values, image },
+        setIsLoading,
+        toast
+      )
+    if (response?.success) {
+      setIndexEdit(null)
+      formik.resetForm()
+    }
   }
-  const handleDelete = (index) =>
-    formik.setFieldValue('paymentMethod', [
-      ...formik?.values?.paymentMethod?.filter((_, i) => i !== index),
-    ])
+  const handleEdit = (index, id) => {
+    const values = payments[index]
+    formik.setFieldValue('image', values.image)
+    formik.setFieldValue('method', values.method)
+    formik.setFieldValue('availableInstallments', values.availableInstallments)
+    formik.setFieldValue('infoInstallments', values.infoInstallments)
+    setIndexEdit(id)
+  }
+  const handleDelete = async (index) => {
+    await del(`/payments/${index}`, {}, setIsLoading, toast)
+  }
   const handleRemove = (index) =>
-    paymentFormik.setFieldValue('infoInstallments', [
-      ...paymentFormik?.values?.infoInstallments.filter((_, i) => i !== index),
+    formik.setFieldValue('infoInstallments', [
+      ...formik?.values?.infoInstallments.filter((_, i) => i !== index),
     ])
 
   return (
@@ -101,13 +112,11 @@ export default function FormPayment() {
             label="Imagem"
             name="image"
             info="800*800"
-            error={paymentFormik.touched.image && paymentFormik.errors.image}
-            onChange={(e) =>
-              paymentFormik.setFieldValue('image', e.target.files[0])
-            }
-            onBlur={paymentFormik.handleBlur}
-            value={paymentFormik.values.image}
-            onClear={() => paymentFormik.setFieldValue('image', '')}
+            error={formik.touched.image && formik.errors.image}
+            onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
+            onBlur={formik.handleBlur}
+            value={formik.values.image}
+            onClear={() => formik.setFieldValue('image', '')}
           />
           <div className="flex-grow flex flex-col gap-4">
             <div className="flex gap-4">
@@ -116,25 +125,23 @@ export default function FormPayment() {
                 label="Método"
                 placeholder="Infome método"
                 name="method"
-                error={
-                  paymentFormik.touched?.method && paymentFormik.errors?.method
-                }
-                onChange={paymentFormik.handleChange}
-                onBlur={paymentFormik.handleBlur}
-                value={paymentFormik.values?.method}
+                error={formik.touched?.method && formik.errors?.method}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values?.method}
                 className="flex-grow"
               />
               <CheckboxToggleLabel
                 id="availableInstallments"
                 name="availableInstallments"
                 label="Aceita parcela"
-                onChange={paymentFormik.handleChange}
-                value={paymentFormik.values.availableInstallments}
-                checked={paymentFormik.values.availableInstallments}
+                onChange={formik.handleChange}
+                value={formik.values.availableInstallments}
+                checked={formik.values.availableInstallments}
                 className="flex-grow"
               />
             </div>
-            {paymentFormik.values.availableInstallments && (
+            {formik.values.availableInstallments && (
               <div className="flex flex-col gap-4">
                 <div className="flex-grow flex-1 flex gap-4">
                   <InputLabel
@@ -172,8 +179,8 @@ export default function FormPayment() {
                   />
                 </div>
                 <div className="flex flex-wrap justify-start gap-1">
-                  {paymentFormik?.values?.infoInstallments?.length > 0 &&
-                    paymentFormik?.values?.infoInstallments.map((item, i) => (
+                  {formik?.values?.infoInstallments?.length > 0 &&
+                    formik?.values?.infoInstallments.map((item, i) => (
                       <button
                         type="button"
                         key={i}
@@ -203,28 +210,23 @@ export default function FormPayment() {
           </div>
         </div>
         <Button
-          onClick={paymentFormik.handleSubmit}
+          type="submit"
           label={indexEdit !== null ? 'Salvar' : 'Adicionar'}
           className="bg-orange-500 text-white hover:bg-orange-600 w-fit !p-2"
         />
       </div>
       <div className="flex flex-col gap-3 overflow-y-auto max-[300px]">
-        {formik.touched?.paymentMethod && formik.errors?.paymentMethod && (
+        {formik.touched?.payments && formik.errors?.payments && (
           <span className="text-xs text-red-500">
-            {formik.errors?.paymentMethod}
+            {formik.errors?.payments}
           </span>
         )}
         <TableData
           columns={paymentColumns(handleEdit, handleDelete)}
-          data={formik.values?.paymentMethod}
+          data={payments}
           className="!p-0"
         />
       </div>
-      <Button
-        type="submit"
-        label="Salvar"
-        className="bg-orange-500 text-white hover:bg-orange-600 w-fit !p-2"
-      />
     </form>
   )
 }

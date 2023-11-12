@@ -518,14 +518,14 @@ export const paymentColumns = (handleEdit, handleDelete) => [
         <button
           type="button"
           title="Editar"
-          onClick={() => handleEdit(row?.index)}
+          onClick={() => handleEdit(row?.index, row?.original?._id)}
         >
           <PencilLine size={16} />
         </button>
         <button
           type="button"
           title="Excluir"
-          onClick={() => handleDelete(row?.index)}
+          onClick={() => handleDelete(row?.original?._id)}
           className="text-red-500"
         >
           <Trash size={16} />

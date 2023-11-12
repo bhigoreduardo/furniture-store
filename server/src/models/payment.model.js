@@ -9,7 +9,9 @@ const PaymentSchema = new mongoose.Schema({
   },
   availableInstallments: { type: Boolean, default: false },
   infoInstallments: {
-    type: [{ installments: { type: String }, fee: { type: String } }],
+    type: [
+      { installments: { type: Number }, fee: { type: Number }, _id: false },
+    ],
   },
 })
 
