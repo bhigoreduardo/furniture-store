@@ -122,3 +122,15 @@ export const changePassword = async (req, res) => {
     message: 'Senha alterada com sucesso',
   })
 }
+
+export const toggleAvailable = async (req, res) => {
+  await StoreModel.findByIdAndUpdate(req.userId, {
+    available: req.body.available,
+  })
+  const finded = await StoreModel.findById(req.userId)
+  return res.status(200).json({
+    success: true,
+    message: 'Status da loja alterada',
+    ...finded.sendAuth(),
+  })
+}

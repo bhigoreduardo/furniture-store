@@ -44,5 +44,11 @@ router.patch(
   validate(storeMiddleware.changePassword),
   useError(storeController.changePassword)
 )
+router.patch(
+  '/toggle-available',
+  useError(userAuth),
+  useError(adminAuth),
+  useError(storeController.toggleAvailable)
+)
 
 export default router
