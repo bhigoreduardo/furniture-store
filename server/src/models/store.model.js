@@ -14,6 +14,13 @@ const StoreSchema = new mongoose.Schema(
       lowercase: true,
       unique: [true, 'Email já cadastrado'],
     },
+    contactEmail: {
+      type: String,
+      required: [true, 'Email é obrigatório'],
+      match: [/\S+@\S+\.\S+/, 'Informe email válido'],
+      lowercase: true,
+      unique: [true, 'Email já cadastrado'],
+    },
     phone: {
       type: String,
       min: 11,
@@ -26,7 +33,7 @@ const StoreSchema = new mongoose.Schema(
       min: 11,
       max: 11,
     },
-    logo: { type: String },
+    image: { type: String },
     cnpj: { type: String },
     ie: { type: String },
     clockAvailable: { type: String },
@@ -80,7 +87,8 @@ const StoreSchema = new mongoose.Schema(
       },
       _id: false,
     },
-    status: { type: Boolean, default: true },
+    status: { type: Boolean, default: false },
+    available: { type: Boolean, default: false },
     password: {
       type: {
         salt: { type: String },

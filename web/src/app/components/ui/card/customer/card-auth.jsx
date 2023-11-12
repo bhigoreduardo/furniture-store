@@ -103,8 +103,11 @@ export default function CardAuth({ setIsCardAuth, className }) {
           <Button
             label="Criar"
             icon={<ArrowRight size={20} className="text-white" />}
-            onClick={() => navigate('/entrar')}
-            className="text-orange-500 border-orange-100 hover:bg-orange-600 hover:text-white"
+            onClick={() => {
+              navigate('/entrar')
+              setIsCardAuth(false)
+            }}
+            className="text-orange-500 !border-orange-200 hover:bg-orange-600 hover:text-white"
           />
         </div>
       </div>
