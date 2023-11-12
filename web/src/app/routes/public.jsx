@@ -11,6 +11,7 @@ import Tracker from '../pages/public/tracker'
 
 import Dashboard from '../pages/public/dashboard'
 import Setting from '../pages/public/dashboard/setting'
+import NotFound from '../pages/public/not-found'
 
 const router = [
   {
@@ -58,6 +59,10 @@ const router = [
             element: <Setting />,
           },
         ],
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },
