@@ -3,6 +3,8 @@ MERN ecommerce furniture application
 
 FIXME:
   - Filtro de busca em arrays dentro de um obj no mongoose
+  - bug no protected route do layout public
+  - bug do transition
 
 TODO:
   - Condições de loja no ar:

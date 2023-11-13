@@ -19,7 +19,7 @@ const ACTIVE_ITEM = 'text-white !bg-orange-500'
 
 export default function Sidebar() {
   const { pathname } = useLocation()
-  const path = pathname.split('/')[1]
+  const path = pathname.split('/')[2]
 
   return (
     <aside className="w-full max-w-[270px] border border-gray-100 bg-white rounded-sm shadow-md py-2">
@@ -34,7 +34,7 @@ export default function Sidebar() {
         }
         label="Conta"
         title="Conta"
-        className={comparePathname(path, 'conta') && ACTIVE_ITEM}
+        className={comparePathname(path, undefined) && ACTIVE_ITEM}
       />
       <NavItem
         to="pedidos"

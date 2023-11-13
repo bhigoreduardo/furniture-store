@@ -1,7 +1,16 @@
 /* eslint-disable react/prop-types */
-export default function RadioBox({ id, name, ...props }) {
+export default function RadioBox({
+  id,
+  name,
+  w = 4,
+  h = 4,
+  border = 5,
+  bg,
+  title,
+  ...props
+}) {
   return (
-    <label className="relative cursor-pointer w-4 h-4">
+    <label className={`relative cursor-pointer w-${w} h-${h}`}>
       <input
         id={id}
         type="radio"
@@ -9,7 +18,15 @@ export default function RadioBox({ id, name, ...props }) {
         className="peer hidden"
         {...props}
       />
-      <span className="absolute w-4 h-4 border-[2px] bg-white border-gray-300 rounded-full peer-checked:border-orange-500 peer-checked:border-[5px] peer-disabled:bg-gray-200" />
+      <span
+        title={title}
+        className={`absolute inline-block w-${w} h-${h} border-[2px] bg-white border-gray-300 rounded-full peer-checked:border-orange-500 hover:border-orange-600 duration-300 ease-in-out peer-checked:border-[${border}px] peer-disabled:bg-gray-200 p-1`}
+      >
+        <span
+          className="inline-block w-full h-full rounded-full"
+          style={{ backgroundColor: bg }}
+        />
+      </span>
     </label>
   )
 }

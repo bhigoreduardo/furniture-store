@@ -9,19 +9,19 @@ import Copyright from '../../components/ui/copyright'
 export default function Public() {
   const { store } = useApp()
 
-  const ProtectedRoute = ({ children }) => {
-    if (!store?.available) return <Navigate to="/manutencao" />
-    return children
-  }
+  // const ProtectedRoute = ({ children }) => {
+  //   if (!store?.available) return <Navigate to="/manutencao" />
+  //   return children
+  // }
 
   return (
-    <ProtectedRoute>
+    // <ProtectedRoute>
       <main>
         <Header />
         <Outlet />
         <Footer />
         <Copyright />
       </main>
-    </ProtectedRoute>
+    // </ProtectedRoute>
   )
 }

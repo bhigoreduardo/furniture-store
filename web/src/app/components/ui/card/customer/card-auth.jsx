@@ -81,6 +81,7 @@ export default function CardAuth({ setIsCardAuth, className }) {
             btn={
               <Link
                 to="/recuperar-senha"
+                onClick={() => setIsCardAuth(false)}
                 className="font-semibold text-blue-500 hover:text-blue-600"
               >
                 Esqueceu a senha?
@@ -102,7 +103,6 @@ export default function CardAuth({ setIsCardAuth, className }) {
           <span className="text-xs text-gray-600">Não possui uma conta?</span>
           <Button
             label="Criar"
-            icon={<ArrowRight size={20} className="text-white" />}
             onClick={() => {
               navigate('/entrar')
               setIsCardAuth(false)

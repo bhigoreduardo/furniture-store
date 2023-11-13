@@ -90,3 +90,21 @@ export const removeDataMask = (values, arr) => {
   })
   return values
 }
+
+export const createEmptyArr = (len) =>
+  Array.from({ length: len }, (_, k) => k + 1)
+
+  export const getBadgeColor = (badgeColor) => {
+    switch (badgeColor) {
+      case 'green':
+        return 'bg-green-500'
+      case 'red':
+        return 'bg-red-500'
+      case 'yellow':
+        return 'bg-yellow-500'
+      case 'blue':
+        return 'bg-blue-500'
+      default:
+        return null
+    }
+  }
