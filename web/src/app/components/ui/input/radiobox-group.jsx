@@ -24,14 +24,14 @@ export default function RadioBoxGroup({
       <div className="flex gap-1">
         {data?.map((item) => (
           <RadioBox
-            key={item._id}
-            value={item._id}
+            key={item.value}
+            value={item.value}
             name={name}
             w={w}
             h={h}
             border={border}
             bg={item.color}
-            title={item.name}
+            title={item.label}
             {...props}
           />
         ))}

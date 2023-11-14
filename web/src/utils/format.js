@@ -6,10 +6,14 @@ export const mergeClassName = (first, last) => first + ' ' + last
 
 export const sanitizeToken = (token) => token.replace(/[""]/g, '')
 
-export const parsedSelectData = (arr, value, label) =>
+export const parsedSelectData = (arr, value, label, otherProps) =>
   arr.map((item) => ({
     value: item?.[value],
     label: item?.[label],
+    ...(otherProps !== undefined &&
+      otherProps.map((i) => ({
+        [i]: item?.[i],
+      }))),
   }))
 
 export const sanitizeSelectData = (parsedData, arr) =>
@@ -94,17 +98,20 @@ export const removeDataMask = (values, arr) => {
 export const createEmptyArr = (len) =>
   Array.from({ length: len }, (_, k) => k + 1)
 
-  export const getBadgeColor = (badgeColor) => {
-    switch (badgeColor) {
-      case 'green':
-        return 'bg-green-500'
-      case 'red':
-        return 'bg-red-500'
-      case 'yellow':
-        return 'bg-yellow-500'
-      case 'blue':
-        return 'bg-blue-500'
-      default:
-        return null
-    }
+export const getBadgeColor = (badgeColor) => {
+  switch (badgeColor) {
+    case 'green':
+      return 'bg-green-500'
+    case 'red':
+      return 'bg-red-500'
+    case 'yellow':
+      return 'bg-yellow-500'
+    case 'blue':
+      return 'bg-blue-500'
+    default:
+      return null
   }
+}
+
+export const getPercentageDiscountPrice = (min, max) =>
+  Math.ceil(1 - min / max) * 100

@@ -169,6 +169,8 @@ export default function FormProducts({ data }) {
     initialValues: data
       ? {
           ...data,
+          category: data?.category?.map((item) => item._id),
+          brand: data?.brand?._id,
           cover: data?.productData?.media?.cover,
           backCover: data?.productData?.media?.backCover,
           gallery: data?.productData?.media?.gallery,

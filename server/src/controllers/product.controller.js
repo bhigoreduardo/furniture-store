@@ -2,7 +2,10 @@ import { removeServerImage, saveInventoryInfo } from '../utils/helper.js'
 import { filterSorted } from '../utils/format.js'
 import MediaModel from '../models/media.model.js'
 import InventoryModel from '../models/inventory.model.js'
-import ProductModel from '../models/product.model.js'
+import ProductModel, {
+  StepEnumType,
+  VisibilityEnumType,
+} from '../models/product.model.js'
 
 const updateStorageGallery = (firstGallery, secondGallery) => {
   const isFirstGalleryGreater = firstGallery?.length > secondGallery?.length
@@ -132,6 +135,16 @@ export const update = async (req, res) => {
     .json({ success: true, message: 'Produto atualizado com sucesso' })
 }
 
+export const findAll = async (req, res) => {
+  const allFinded = await ProductModel.find({
+    'published.step': StepEnumType.Completed,
+    'published.visibility': VisibilityEnumType.Public,
+  })
+    .select('_id name productData.media rangePrice')
+    .populate('productData.media')
+  return res.status(200).json(allFinded)
+}
+
 export const search = async (req, res) => {
   const query = req.query
   const page = Number(query.page) || 0
@@ -203,7 +216,13 @@ export const search = async (req, res) => {
 
 export const findById = async (req, res) => {
   const finded = await ProductModel.findById(req.params.id).populate([
-    { path: 'productData.inventory.info', select: '-_id -__v' },
+    {
+      path: 'productData.inventory.info',
+      select: '-__v',
+      populate: [{ path: 'color', select: '_id name color' }],
+    },
+    { path: 'category', select: '_id name' },
+    { path: 'brand', select: '_id name' },
     'productData.media',
   ])
   return res.status(200).json(finded)

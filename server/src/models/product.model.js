@@ -1,11 +1,11 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
-const StepEnumType = {
+export const StepEnumType = {
   Draft: 'draft',
   Completed: 'completed',
 }
-const VisibilityEnumType = {
+export const VisibilityEnumType = {
   Private: 'private',
   Public: 'public',
 }

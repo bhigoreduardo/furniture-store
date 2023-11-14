@@ -37,3 +37,15 @@ export function useProduct(id) {
 
   return { ...data }
 }
+
+export function useProducts() {
+  const { setIsLoading } = useApp()
+
+  const { data } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => await get('/products', setIsLoading, toast),
+    staleTime: 1000 * 60 * 1,
+  })
+
+  return data
+}

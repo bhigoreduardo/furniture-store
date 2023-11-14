@@ -5,6 +5,7 @@ export const AppContext = createContext({
   isLoading: false,
   refetch: false,
   store: null,
+  payment: null,
 })
 
 export default function AppContextProvider({ children }) {
@@ -15,9 +16,18 @@ export default function AppContextProvider({ children }) {
       ? JSON.parse(localStorage.getItem('store'))
       : null
   )
+  const [payment, SetPayment] = useState(
+    localStorage?.getItem('payment') !== 'undefined'
+      ? JSON.parse(localStorage.getItem('payment'))
+      : null
+  )
   const handleStore = (storeData) => {
     setStore(storeData)
     localStorage.setItem('store', JSON.stringify(storeData))
+  }
+  const handlePayment = (paymentData) => {
+    SetPayment(paymentData)
+    localStorage.setItem('payment', JSON.stringify(paymentData))
   }
 
   return (
@@ -29,6 +39,8 @@ export default function AppContextProvider({ children }) {
         setRefetch,
         store,
         handleStore,
+        payment,
+        handlePayment,
       }}
     >
       {children}

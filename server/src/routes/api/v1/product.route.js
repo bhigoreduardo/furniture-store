@@ -15,6 +15,7 @@ router.put(
   // validate(categoryMiddleware.update),
   useError(productController.update)
 )
+router.get('/', useError(productController.findAll))
 router.get('/search', useError(productController.search))
 router.get('/:id', useError(productController.findById))
 router.delete(

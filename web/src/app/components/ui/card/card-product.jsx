@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom'
 import { Eye, Heart, ShoppingCartSimple } from 'phosphor-react'
 import ReactStars from 'react-rating-stars-component'
 
@@ -7,12 +8,17 @@ import Badge from '../badge'
 import Button from '../button/button'
 
 export default function CardProduct({
+  id,
   badge,
   badgeColor,
   reviews,
   name,
+  cover,
+  backCover,
   rangePrice,
 }) {
+  const navigate = useNavigate()
+
   return (
     <article className="relative flex flex-col gap-1 p-2 border border-gray-100 rounded-sm hover:shadow-md hover:scale-105 duration-300 ease-in-out">
       {badge && (
@@ -23,11 +29,16 @@ export default function CardProduct({
           content={badge}
         />
       )}
-      <div className="group relative flex items-center justify-center h-[180px] w-full">
+      <div className="group relative flex items-center justify-center h-[180px] w-full overflow-hidden">
         <img
-          src="https://images.tcdn.com.br/img/img_prod/1178996/cadeira_com_braco_imperio_813_1_8c4be413182044fc74a357c81c4bf0cf.png"
-          alt="Imagem"
-          className="h-full w-fit object-cover"
+          src={`${import.meta.env.VITE_SERVER_PUBLIC_IMAGES}/${cover}`}
+          alt={name}
+          className="absolute left-0 group-hover:-left-[100%] h-full w-full object-cover duration-300 ease-in-out"
+        />
+        <img
+          src={`${import.meta.env.VITE_SERVER_PUBLIC_IMAGES}/${backCover}`}
+          alt={name}
+          className="absolute -right-[100%] group-hover:right-0 h-full w-full object-cover duration-300 ease-in-out"
         />
         <div className="hidden absolute top-0 right-0 left-0 bottom-0 group-hover:flex items-center justify-center gap-2 bg-black w-full h-full bg-opacity-20 duration-300 ease-in-out">
           <Button
@@ -41,6 +52,7 @@ export default function CardProduct({
                 className="!transition-all !duration-0"
               />
             }
+            onClick={() => navigate(`/produto/${id}`)}
             className="bg-white hover:bg-orange-500 text-gray-900 hover:text-white !w-10 !h-10 !p-0 !rounded-full"
           />
           <Button
