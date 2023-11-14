@@ -272,8 +272,7 @@ export default function Stocked(props) {
           data={props.formik.values?.productData?.inventory?.info?.map(
             (item) => ({
               ...item,
-              // color: parsedColors.find((i) => i.value === item.color._id)?.label,
-              color: item.color.name,
+              color: parsedColors.find((i) => i.value === item.color)?.label,
             })
           )}
           className="!p-0"

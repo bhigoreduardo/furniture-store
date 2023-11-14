@@ -8,7 +8,7 @@ export default function Logo({ className }) {
   const { isSidebar } = useAdmin()
 
   return (
-    <Link className={mergeClassName('flex items-center gap-2', className)}>
+    <Link className={mergeClassName('flex items-center gap-2 duration-300 ease-in-out', className)}>
       <img
         src="../../../../public/images/icon-logo.svg"
         alt="Furniture"

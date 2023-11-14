@@ -11,7 +11,7 @@ import Overview from './overview'
 
 export default function Product() {
   const { id } = useParams()
-  const product = useProduct(id)
+  const product = useProduct(id, true)
   const [tabInformation, setTabInformation] = useState('description')
   const getActiveTab = (tab) => tab === tabInformation
 
@@ -29,7 +29,7 @@ export default function Product() {
         inventory={product?.productData?.inventory?.info}
       />
       <Container className="flex flex-col">
-        <div className="flex items-center justify-center border border-gray-100">
+        <div className="flex items-center justify-center border border-gray-200">
           <Tab
             label="Descrição"
             className="uppercase !px-6"
@@ -75,6 +75,11 @@ export default function Product() {
             description={null}
             otherInfos={product?.specification}
           />
+        )}
+        {tabInformation === 'reviews' && (
+          <div className="flex items-center justify-center border border-gray-200 p-10">
+            <span className="text-base text-gray-400">Sem avaliações</span>
+          </div>
         )}
       </Container>
     </section>

@@ -11,10 +11,26 @@ export const parsedSelectData = (arr, value, label, otherProps) =>
     value: item?.[value],
     label: item?.[label],
     ...(otherProps !== undefined &&
-      otherProps.map((i) => ({
-        [i]: item?.[i],
-      }))),
+      otherProps.map((i) => ({ [i]: item?.[i] }))),
   }))
+
+const recursion = (index, inputArr, node) => {
+  if (index >= inputArr.length) return
+  if (Array.isArray(inputArr[index])) {
+    recursion(0, inputArr[index], node)
+  } else {
+    node.push(inputArr[index])
+  }
+
+  recursion(index + 1, inputArr, node)
+}
+
+export const flattenArray = (inputArr) => {
+  if (inputArr === undefined) return
+  const node = []
+  recursion(0, inputArr, node)
+  return node
+}
 
 export const sanitizeSelectData = (parsedData, arr) =>
   parsedData.filter((item) => !arr.includes(item.value))

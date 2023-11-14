@@ -24,13 +24,16 @@ export const useFilterProducts = () => {
   return { ...data }
 }
 
-export function useProduct(id) {
+export function useProduct(id, isPopulateColor) {
   const { setIsLoading } = useApp()
+  const endPoint = isPopulateColor
+    ? `/products/${id}?color=true`
+    : `/products/${id}`
 
   const { data } = useQuery({
     queryKey: ['product', id],
     queryFn: async () => {
-      if (id) return await get(`/products/${id}`, setIsLoading, toast)
+      if (id) return await get(endPoint, setIsLoading, toast)
       return null
     },
   })

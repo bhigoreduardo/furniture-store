@@ -55,7 +55,7 @@ export default function MiddleNav() {
         {isCardAuth && (
           <CardAuth
             setIsCardAuth={setIsCardAuth}
-            className="absolute right-6 top-[calc(100%-10px)]"
+            className="absolute right-6 top-[calc(100%-10px)] z-20"
           />
         )}
       </Container>

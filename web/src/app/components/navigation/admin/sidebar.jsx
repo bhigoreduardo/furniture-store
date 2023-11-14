@@ -31,11 +31,11 @@ export default function Sidebar() {
     <aside
       className={`w-full ${
         isSidebar ? 'max-w-[270px]' : 'max-w-[50px]'
-      } border border-gray-100 bg-white rounded-sm shadow-md py-2`}
+      } border border-gray-100 bg-white rounded-sm shadow-md py-2 duration-300 ease-in-out`}
     >
       <NavItem
         to=""
-        icon={<Stack size={18} className="!transition-all !duration-0" />}
+        icon={<Stack size={18} />}
         label="Painel"
         title="Painel"
         className={comparePathname(path, undefined) && ACTIVE_ITEM}
@@ -43,7 +43,7 @@ export default function Sidebar() {
       {!isStore && (
         <NavItem
           to="clientes"
-          icon={<UserList size={18} className="!transition-all !duration-0" />}
+          icon={<UserList size={18} />}
           label="Clientes"
           title="Clientes"
           className={comparePathname(path, 'clientes') && ACTIVE_ITEM}
@@ -51,42 +51,42 @@ export default function Sidebar() {
       )}
       <NavItem
         to="categorias"
-        icon={<Tag size={18} className="!transition-all !duration-0" />}
+        icon={<Tag size={18} />}
         label="Categorias"
         title="Categorias"
         className={comparePathname(path, 'categorias') && ACTIVE_ITEM}
       />
       <NavItem
         to="cores"
-        icon={<PaintBrush size={18} className="!transition-all !duration-0" />}
+        icon={<PaintBrush size={18} />}
         label="Cores"
         title="Cores"
         className={comparePathname(path, 'cores') && ACTIVE_ITEM}
       />
       <NavItem
         to="marcas"
-        icon={<Lifebuoy size={18} className="!transition-all !duration-0" />}
+        icon={<Lifebuoy size={18} />}
         label="Marcas"
         title="Marcas"
         className={comparePathname(path, 'marcas') && ACTIVE_ITEM}
       />
       <NavItem
         to="produtos"
-        icon={<Armchair size={18} className="!transition-all !duration-0" />}
+        icon={<Armchair size={18} />}
         label="Produtos"
         title="Produtos"
         className={comparePathname(path, 'produtos') && ACTIVE_ITEM}
       />
       <NavItem
         to="pedidos"
-        icon={<ArchiveBox size={18} className="!transition-all !duration-0" />}
+        icon={<ArchiveBox size={18} />}
         label="Pedidos"
         title="Pedidos"
         className={comparePathname(path, 'pedidos') && ACTIVE_ITEM}
       />
       <NavItem
         to="mensagens"
-        icon={<ChatDots size={18} className="!transition-all !duration-0" />}
+        icon={<ChatDots size={18} />}
         label="Mensagens"
         title="Mensagens"
         className={comparePathname(path, 'mensagens') && ACTIVE_ITEM}
@@ -95,37 +95,28 @@ export default function Sidebar() {
         <>
           <NavItem
             to="loja"
-            icon={
-              <Storefront size={18} className="!transition-all !duration-0" />
-            }
+            icon={<Storefront size={18} />}
             label="Loja"
             title="Loja"
             className={comparePathname(path, 'loja') && ACTIVE_ITEM}
           />
           <NavItem
             to="usuarios"
-            icon={
-              <UsersThree size={18} className="!transition-all !duration-0" />
-            }
+            icon={<UsersThree size={18} />}
             label="Usuários"
             title="Usuários"
             className={comparePathname(path, 'usuarios') && ACTIVE_ITEM}
           />
           <NavItem
             to="layout"
-            icon={<Layout size={18} className="!transition-all !duration-0" />}
+            icon={<Layout size={18} />}
             label="Layout"
             title="Layout"
             className={comparePathname(path, 'layout') && ACTIVE_ITEM}
           />
           <NavItem
             to="ofertas"
-            icon={
-              <CurrencyCircleDollar
-                size={18}
-                className="!transition-all !duration-0"
-              />
-            }
+            icon={<CurrencyCircleDollar size={18} />}
             label="Ofertas/Cupons"
             title="Ofertas/Cupons"
             className={comparePathname(path, 'ofertas') && ACTIVE_ITEM}
@@ -133,7 +124,7 @@ export default function Sidebar() {
         </>
       )}
       <NavItem
-        icon={<SignOut size={18} className="!transition-all !duration-0" />}
+        icon={<SignOut size={18} />}
         label="Sair"
         className="text-red-500"
         title="Sair"

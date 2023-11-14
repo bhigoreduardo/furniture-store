@@ -215,11 +215,14 @@ export const search = async (req, res) => {
 }
 
 export const findById = async (req, res) => {
+  const query = req.query
   const finded = await ProductModel.findById(req.params.id).populate([
     {
       path: 'productData.inventory.info',
       select: '-__v',
-      populate: [{ path: 'color', select: '_id name color' }],
+      ...(query.color && {
+        populate: [{ path: 'color', select: '_id name color' }],
+      }),
     },
     { path: 'category', select: '_id name' },
     { path: 'brand', select: '_id name' },

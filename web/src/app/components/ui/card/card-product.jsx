@@ -40,7 +40,7 @@ export default function CardProduct({
           alt={name}
           className="absolute -right-[100%] group-hover:right-0 h-full w-full object-cover duration-300 ease-in-out"
         />
-        <div className="hidden absolute top-0 right-0 left-0 bottom-0 group-hover:flex items-center justify-center gap-2 bg-black w-full h-full bg-opacity-20 duration-300 ease-in-out">
+        <div className="hidden absolute top-0 right-0 left-0 bottom-0 group-hover:flex items-center justify-center gap-2 bg-black w-full h-full bg-opacity-50 duration-300 ease-in-out">
           <Button
             icon={<Heart size={16} className="!transition-all !duration-0" />}
             className="bg-white hover:bg-orange-500 text-gray-900 hover:text-white !w-10 !h-10 !p-0 !rounded-full"

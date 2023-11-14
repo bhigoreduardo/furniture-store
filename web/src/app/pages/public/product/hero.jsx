@@ -20,6 +20,7 @@ import useApp from '../../../../hooks/use-app'
 
 export default function Hero({
   gallery,
+  reviews,
   name,
   sku,
   status,
@@ -53,9 +54,10 @@ export default function Hero({
         </div>
         <div className="relative">
           <Slider
+            perView={6}
             loop={gallery?.length >= 7}
-            onSlideChange={(swiper) => setImage(gallery[swiper?.activeIndex])}
-            onActiveIndexChange={(swiper) => console.log(swiper?.activeIndex)}
+            // onSlideChange={(swiper) => setImage(gallery[swiper?.activeIndex])}
+            // onSlideChange={(swiper) => console.log(swiper?.activeIndex)}
           >
             {(swiperRef) =>
               gallery?.map((item, i) => (
@@ -94,17 +96,25 @@ export default function Hero({
 
       <div className="flex-1 flex flex-col gap-6 justify-between">
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-1">
-            <ReactStars
-              count={5}
-              size={20}
-              value={4.7}
-              edit={false}
-              activeColor="#FA8232"
-            />
-            <span className="font-semibold text-sm text-gray-900">4.7</span>
-            <span className="text-sm text-gray-400">(13981 Avaliações)</span>
-          </div>
+          {reviews !== undefined ? (
+            <div className="flex items-center gap-1">
+              <ReactStars
+                count={5}
+                size={20}
+                value={reviews?.avg}
+                edit={false}
+                activeColor="#FA8232"
+              />
+              <span className="font-semibold text-sm text-gray-900">
+                {reviews?.avg}
+              </span>
+              <span className="text-sm text-gray-400">
+                ({reviews?.amount} Avaliações)
+              </span>
+            </div>
+          ) : (
+            <span className="text-sm text-gray-400">Sem avaliações</span>
+          )}
           <h2 className="font-semibold text-xl text-gray-900">{name}</h2>
         </div>
 
