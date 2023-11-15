@@ -23,7 +23,7 @@ export default function Header() {
   const { setIsLoading } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: { available: user.available || false },
+    initialValues: { available: user?.available || false },
     onSubmit: async (values) => {
       const { user, token } = await patch(
         '/stores/toggle-available',

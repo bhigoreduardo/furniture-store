@@ -5,9 +5,9 @@ import {
   createMarkup,
   currencyPrice,
   optionsShortLocaleDate,
-} from '../../format'
+} from '../format'
 import { Fragment } from 'react'
-import { mobileMask, zipCodeMask } from '../../mask'
+import { mobileMask, zipCodeMask } from '../mask'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
 

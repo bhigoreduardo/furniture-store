@@ -1,6 +1,6 @@
 import { XCircle } from 'phosphor-react'
-import { currencyPrice } from '../../format'
-import Count from '../../../app/components/ui/button/count'
+import { currencyPrice } from '../format'
+import Count from '../../app/components/ui/button/count'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
 

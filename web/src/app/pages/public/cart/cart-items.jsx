@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, ArrowRight } from 'phosphor-react'
 
 import { currencyPrice } from '../../../../utils/format'
-import { cartColumns } from '../../../../utils/constants/admin/public'
+import { cartColumns } from '../../../../utils/constants/public'
 import Button from '../../../components/ui/button/button'
 import Container from '../../../components/ui/container'
 import TableData from '../../../components/ui/table/table-data'
