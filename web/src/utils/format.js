@@ -11,7 +11,7 @@ export const parsedSelectData = (arr, value, label, otherProps) =>
     value: item?.[value],
     label: item?.[label],
     ...(otherProps !== undefined &&
-      otherProps.map((i) => ({ [i]: item?.[i] }))),
+      otherProps.map((i) => ({ [i]: item?.[i] })))[0],
   }))
 
 const recursion = (index, inputArr, node) => {

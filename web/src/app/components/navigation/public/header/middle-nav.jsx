@@ -6,6 +6,7 @@ import {
   User,
 } from 'phosphor-react'
 
+import useLocalStorage from '../../../../../hooks/use-localStorage'
 import Container from '../../../ui/container'
 import Input from '../../../ui/input/input'
 import Logo from '../../../ui/logo'
@@ -13,6 +14,7 @@ import CardAuth from '../../../ui/card/customer/card-auth'
 
 export default function MiddleNav() {
   const [isCardAuth, setIsCardAuth] = useState(false)
+  const { value: cartItems } = useLocalStorage('cart-items')
 
   return (
     <div className="bg-blue-900 text-white border-b border-gray-600">
@@ -33,9 +35,11 @@ export default function MiddleNav() {
         />
         <div className="flex items-center justify-between gap-4">
           <button className="relative">
-            <span className="absolute -top-2 left-3 flex items-center justify-center font-semibold text-blue-900 text-xs h-4 w-4 rounded-full bg-white border border-blue-900">
-              4
-            </span>
+            {cartItems?.length > 0 && (
+              <span className="absolute -top-2 left-3 flex items-center justify-center font-semibold text-blue-900 text-xs h-4 w-4 rounded-full bg-white border border-blue-900">
+                {cartItems.length}
+              </span>
+            )}
             <ShoppingCartSimple
               size={20}
               weight="duotone"

@@ -19,6 +19,7 @@ export default function Product() {
     <section className="flex flex-col gap-10">
       <Breadcrumb />
       <Hero
+        id={id}
         gallery={product?.productData?.media?.gallery}
         name={product.name}
         sku={product.sku}

@@ -2,23 +2,23 @@
 import { Fragment, useEffect, useState } from 'react'
 import { SwiperSlide } from 'swiper/react'
 import { ArrowsClockwise, Heart, ShoppingCartSimple } from 'phosphor-react'
+import { toast } from 'react-toastify'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
 import ReactStars from 'react-rating-stars-component'
 
-import {
-  currencyPrice,
-  getBadgeColor,
-  getPercentageDiscountPrice,
-  parsedSelectData,
-} from '../../../../utils/format'
+import { parsedSelectData } from '../../../../utils/format'
 import Slider from '../../../components/ui/slider'
-import Badge from '../../../components/ui/badge'
 import RadioBoxGroup from '../../../components/ui/input/radiobox-group'
 import Count from '../../../components/ui/button/count'
 import Button from '../../../components/ui/button/button'
 import Container from '../../../components/ui/container'
 import useApp from '../../../../hooks/use-app'
+import RangePrice from '../../../components/ui/range-price'
+import useLocalStorage from '../../../../hooks/use-localStorage'
 
 export default function Hero({
+  id,
   gallery,
   reviews,
   name,
@@ -31,6 +31,7 @@ export default function Hero({
 }) {
   const [image, setImage] = useState('')
   const { payment } = useApp()
+  const { value: cartItems, handleUpdate } = useLocalStorage('cart-items', [])
   const parsedColor =
     inventory &&
     parsedSelectData(
@@ -42,6 +43,42 @@ export default function Hero({
   useEffect(() => {
     if (gallery?.length > 0) setImage(gallery[0])
   }, [gallery])
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: { product: id, color: '', quantity: 1 },
+    validationSchema: yup
+      .object()
+      .shape({ color: yup.string().required('Cor é obrigatório') }),
+    onSubmit: (values) => handleUpdateCart(values),
+  })
+  const handleUpdateCart = (values) => {
+    if (!cartItems?.length) {
+      handleUpdate([values])
+    } else {
+      const findIndex = cartItems.findIndex(
+        (item) => item.product === values.product && item.color === values.color
+      )
+
+      if (findIndex !== -1) {
+        const quantity = cartItems[findIndex].quantity
+        if (quantity + values.quantity > stock) {
+          toast.error('Limite de estoque atingido')
+          formik.resetForm()
+          return
+        }
+        cartItems[findIndex].quantity += values.quantity
+      } else cartItems.push(values)
+      handleUpdate(cartItems)
+    }
+    toast.success('Produto adicionado ao carrinho')
+    formik.resetForm()
+  }
+  const inventoryInfo = {
+    ...inventory?.filter((item) => item.color._id === formik.values.color),
+  }[0]
+  const min = inventoryInfo?.offer?.offerPrice
+  const max = inventoryInfo?.price
+  const stock = inventoryInfo?.stock
 
   return (
     <Container className="grid grid-cols-2 gap-10">
@@ -148,39 +185,42 @@ export default function Hero({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 font-normal text-2xl border-b border-gray-200 pb-4">
-          {rangePrice?.max !== rangePrice?.min && (
-            <span className="text-blue-500">
-              {currencyPrice.format(rangePrice?.min)}
-            </span>
-          )}
-          <span
-            className={`${
-              rangePrice?.max !== rangePrice?.min
-                ? 'text-gray-400 line-through'
-                : 'text-blue-500'
-            } `}
-          >
-            {currencyPrice.format(rangePrice?.max)}
-          </span>
-          {rangePrice?.max !== rangePrice?.min && (
-            <Badge
-              className={`text-white uppercase ${getBadgeColor('yellow')}`}
-              content={`${getPercentageDiscountPrice(
-                rangePrice.min,
-                rangePrice.max
-              )}% Off`}
-            />
+        <RangePrice
+          rangePrice={
+            typeof max === 'undefined' ? rangePrice : { max: max, min: min }
+          }
+        />
+
+        <div className="flex flex-col gap-2">
+          <RadioBoxGroup
+            id="color"
+            label="Cor"
+            name="color"
+            data={parsedColor}
+            error={formik.touched?.color && formik.errors?.color}
+            onChange={({ target: { value } }) =>
+              formik.setFieldValue('color', value)
+            }
+            onBlur={formik.handleBlur}
+          />
+          {stock && (
+            <p className="text-xs text-gray-600">
+              <span className="font-semibold">Unidades:</span> {stock}
+            </p>
           )}
         </div>
 
-        <RadioBoxGroup label="Cor" name="color" data={parsedColor} />
-
         <div className="flex gap-4">
-          <Count className="min-w-[160px]" />
+          <Count
+            stock={stock}
+            formik={formik}
+            value={formik.values.quantity}
+            className="min-w-[160px]"
+          />
           <Button
             label="Adicionar ao carrinho"
             icon={<ShoppingCartSimple size={20} className="text-white" />}
+            onClick={formik.handleSubmit}
             className="bg-orange-500 text-white hover:bg-orange-600 w-full"
           />
         </div>
