@@ -130,4 +130,4 @@ export const getBadgeColor = (badgeColor) => {
 }
 
 export const getPercentageDiscountPrice = (min, max) =>
-  Math.ceil(1 - min / max) * 100
+  Math.ceil((1 - min / max) * 100)

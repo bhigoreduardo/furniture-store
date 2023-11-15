@@ -18,6 +18,7 @@ import RangePrice from '../../../components/ui/range-price'
 
 export default function Hero({
   id,
+  cover,
   gallery,
   reviews,
   name,
@@ -43,13 +44,23 @@ export default function Hero({
   }, [gallery])
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: { product: id, color: '', quantity: 1 },
+    initialValues: {
+      product: id,
+      name,
+      cover,
+      color: '',
+      bg: '',
+      colorName: '',
+      quantity: 1,
+      price: '',
+    },
     validationSchema: yup
       .object()
       .shape({ color: yup.string().required('Cor é obrigatório') }),
     onSubmit: (values) => handleUpdateCart(values),
   })
   const handleUpdateCart = (values) => {
+    values.price = min || max
     if (!cartItems?.length) {
       handleCartItems([values])
     } else {
@@ -66,7 +77,7 @@ export default function Hero({
         }
         cartItems[findIndex].quantity += values.quantity
       } else cartItems.push(values)
-      handleCartItems(cartItems)
+      handleCartItems([...cartItems])
     }
     toast.success('Produto adicionado ao carrinho')
     formik.resetForm()
@@ -196,9 +207,13 @@ export default function Hero({
             name="color"
             data={parsedColor}
             error={formik.touched?.color && formik.errors?.color}
-            onChange={({ target: { value } }) =>
+            onChange={({ target: { value } }) => {
+              const color = parsedColor?.find((item) => item.value === value)
               formik.setFieldValue('color', value)
-            }
+              formik.setFieldValue('bg', color?.color)
+              formik.setFieldValue('colorName', color?.label)
+            }}
+            selectedValue={formik.values.color}
             onBlur={formik.handleBlur}
           />
           {stock && (

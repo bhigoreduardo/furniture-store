@@ -20,6 +20,7 @@ export default function Product() {
       <Breadcrumb />
       <Hero
         id={id}
+        cover={product?.productData?.media?.cover}
         gallery={product?.productData?.media?.gallery}
         name={product.name}
         sku={product.sku}

@@ -11,6 +11,7 @@ export default function RadioBoxGroup({
   w = 10,
   h = 10,
   border = 1,
+  selectedValue,
   ...props
 }) {
   return (
@@ -32,6 +33,7 @@ export default function RadioBoxGroup({
             border={border}
             bg={item.color}
             title={item.label}
+            checked={item.value === selectedValue}
             {...props}
           />
         ))}
