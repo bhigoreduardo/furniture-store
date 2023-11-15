@@ -1,34 +1,31 @@
 /* eslint-disable react/prop-types */
 import { createContext, useState } from 'react'
 
+import useLocalStorage from '../../hooks/use-localStorage'
+
 export const AppContext = createContext({
   isLoading: false,
   refetch: false,
   store: null,
   payment: null,
+  cartItems: [],
 })
 
 export default function AppContextProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false)
   const [refetch, setRefetch] = useState(false)
-  const [store, setStore] = useState(
-    localStorage?.getItem('store') !== 'undefined'
-      ? JSON.parse(localStorage.getItem('store'))
-      : null
+  const { value: store, handleUpdate: handleStore } = useLocalStorage(
+    'store',
+    null
   )
-  const [payment, SetPayment] = useState(
-    localStorage?.getItem('payment') !== 'undefined'
-      ? JSON.parse(localStorage.getItem('payment'))
-      : null
+  const { value: payment, handleUpdate: handlePayment } = useLocalStorage(
+    'payment',
+    null
   )
-  const handleStore = (storeData) => {
-    setStore(storeData)
-    localStorage.setItem('store', JSON.stringify(storeData))
-  }
-  const handlePayment = (paymentData) => {
-    SetPayment(paymentData)
-    localStorage.setItem('payment', JSON.stringify(paymentData))
-  }
+  const { value: cartItems, handleUpdate: handleCartItems } = useLocalStorage(
+    'cart-items',
+    []
+  )
 
   return (
     <AppContext.Provider
@@ -41,6 +38,8 @@ export default function AppContextProvider({ children }) {
         handleStore,
         payment,
         handlePayment,
+        cartItems,
+        handleCartItems,
       }}
     >
       {children}

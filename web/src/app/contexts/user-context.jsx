@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState } from 'react'
+import { createContext } from 'react'
+import useLocalStorage from '../../hooks/use-localStorage'
 
 export const UserContext = createContext({
   user: null,
@@ -7,21 +8,17 @@ export const UserContext = createContext({
 })
 
 export default function UserContextProvider({ children }) {
-  const [user, setUser] = useState(
-    localStorage?.getItem('user')
-      ? JSON.parse(localStorage.getItem('user'))
-      : null
+  const { value: user, handleUpdate: handleUser } = useLocalStorage(
+    'user',
+    null
   )
-  const [token, setToken] = useState(
-    localStorage?.getItem('token')
-      ? JSON.parse(localStorage.getItem('token'))
-      : null
+  const { value: token, handleUpdate: handleToken } = useLocalStorage(
+    'token',
+    null
   )
-  const handleUpdateUser = (user, token) => {
-    setUser(user)
-    setToken(token)
-    localStorage.setItem('user', JSON.stringify(user))
-    localStorage.setItem('token', JSON.stringify(token))
+  const handleUpdateUser = (userData, tokenData) => {
+    handleUser(userData)
+    handleToken(tokenData)
   }
 
   return (

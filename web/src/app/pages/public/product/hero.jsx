@@ -15,7 +15,6 @@ import Button from '../../../components/ui/button/button'
 import Container from '../../../components/ui/container'
 import useApp from '../../../../hooks/use-app'
 import RangePrice from '../../../components/ui/range-price'
-import useLocalStorage from '../../../../hooks/use-localStorage'
 
 export default function Hero({
   id,
@@ -30,8 +29,7 @@ export default function Hero({
   inventory,
 }) {
   const [image, setImage] = useState('')
-  const { payment } = useApp()
-  const { value: cartItems, handleUpdate } = useLocalStorage('cart-items', [])
+  const { payment, cartItems, handleCartItems } = useApp()
   const parsedColor =
     inventory &&
     parsedSelectData(
@@ -53,7 +51,7 @@ export default function Hero({
   })
   const handleUpdateCart = (values) => {
     if (!cartItems?.length) {
-      handleUpdate([values])
+      handleCartItems([values])
     } else {
       const findIndex = cartItems.findIndex(
         (item) => item.product === values.product && item.color === values.color
@@ -68,7 +66,7 @@ export default function Hero({
         }
         cartItems[findIndex].quantity += values.quantity
       } else cartItems.push(values)
-      handleUpdate(cartItems)
+      handleCartItems(cartItems)
     }
     toast.success('Produto adicionado ao carrinho')
     formik.resetForm()

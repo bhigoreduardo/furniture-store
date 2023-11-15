@@ -6,7 +6,7 @@ import {
   User,
 } from 'phosphor-react'
 
-import useLocalStorage from '../../../../../hooks/use-localStorage'
+import useApp from '../../../../../hooks/use-app'
 import Container from '../../../ui/container'
 import Input from '../../../ui/input/input'
 import Logo from '../../../ui/logo'
@@ -14,7 +14,7 @@ import CardAuth from '../../../ui/card/customer/card-auth'
 
 export default function MiddleNav() {
   const [isCardAuth, setIsCardAuth] = useState(false)
-  const { value: cartItems } = useLocalStorage('cart-items')
+  const { cartItems } = useApp()
 
   return (
     <div className="bg-blue-900 text-white border-b border-gray-600">
