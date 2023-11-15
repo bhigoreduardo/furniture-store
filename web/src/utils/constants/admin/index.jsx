@@ -481,9 +481,7 @@ export const paymentColumns = (handleEdit, handleDelete) => [
           className="h-6 w-6 rounded-full"
           src={
             typeof row?.original?.image === 'string'
-              ? `${import.meta.env.VITE_SERVER_PUBLIC_IMAGES}/${
-                  row?.original?.image
-                }`
+              ? `${serverPublicImages}/${row?.original?.image}`
               : window.URL.createObjectURL(row?.original?.image)
           }
         />

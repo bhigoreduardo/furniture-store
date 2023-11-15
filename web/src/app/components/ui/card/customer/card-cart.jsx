@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
 import { currencyPrice, mergeClassName } from '../../../../../utils/format'
@@ -7,6 +8,7 @@ import Button from '../../button/button'
 import CartItem from '../../cart-item'
 
 export default function CardCart({ setIsCardCart, className }) {
+  const navigate = useNavigate()
   const { cartItems } = useApp()
   const subAmount = cartItems.reduce(
     (acc, cur) => acc + cur.price * cur.quantity,
@@ -49,7 +51,7 @@ export default function CardCart({ setIsCardCart, className }) {
             label="Carrinho"
             onClick={() => {
               setIsCardCart(false)
-              // navigate('/carrinho')
+              navigate('/carrinho')
             }}
             className="text-orange-500 !border-orange-200 hover:bg-orange-600 hover:text-white"
           />

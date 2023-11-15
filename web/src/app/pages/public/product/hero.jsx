@@ -53,6 +53,8 @@ export default function Hero({
       colorName: '',
       quantity: 1,
       price: '',
+      regularPrice: '',
+      stock: '',
     },
     validationSchema: yup
       .object()
@@ -60,7 +62,10 @@ export default function Hero({
     onSubmit: (values) => handleUpdateCart(values),
   })
   const handleUpdateCart = (values) => {
-    values.price = min || max
+    const [price, regularPrice] = [min || max, max]
+    values.price = price
+    values.regularPrice = regularPrice
+    values.stock = stock
     if (!cartItems?.length) {
       handleCartItems([values])
     } else {
@@ -88,6 +93,17 @@ export default function Hero({
   const min = inventoryInfo?.offer?.offerPrice
   const max = inventoryInfo?.price
   const stock = inventoryInfo?.stock
+  const handleDecrease = () => {
+    if (!stock || formik.values.quantity === 1) return
+    formik.values.quantity > 1 && formik.setFieldValue('quantity', formik.values.quantity - 1)
+  }
+  const handleIncrease = () => {
+    if (!stock || formik.values.quantity === stock) return
+    formik.setFieldValue('quantity', formik.values.quantity + 1)
+  }
+  useEffect(() => {
+    if (formik.values.quantity > stock) formik.setFieldValue('quantity', stock)
+  }, [stock]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container className="grid grid-cols-2 gap-10">
@@ -225,8 +241,8 @@ export default function Hero({
 
         <div className="flex gap-4">
           <Count
-            stock={stock}
-            formik={formik}
+            handleDecrease={handleDecrease}
+            handleIncrease={handleIncrease}
             value={formik.values.quantity}
             className="min-w-[160px]"
           />

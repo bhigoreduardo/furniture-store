@@ -15,6 +15,7 @@ import Product from '../pages/public/product'
 import Tracker from '../pages/public/tracker'
 import Maintenance from '../pages/public/maintenance'
 import NotFound from '../pages/public/not-found'
+import Cart from '../pages/public/cart'
 
 const router = [
   {
@@ -28,6 +29,10 @@ const router = [
       {
         path: 'produto/:id',
         element: <Product />,
+      },
+      {
+        path: 'carrinho',
+        element: <Cart />,
       },
       {
         path: '/entrar',
