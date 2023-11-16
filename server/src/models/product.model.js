@@ -131,7 +131,9 @@ const ProductSchema = new mongoose.Schema(
       default: true,
       required: [true, 'Status do produto é obrigatório'],
     },
-    // sales/amountSales/reviews/reviewsAvg
+    sales: { type: Number, default: 0 },
+    amountSales: { type: Number, default: 0 },
+    // reviews/reviewsAvg
   },
   { timestamps: true }
 )

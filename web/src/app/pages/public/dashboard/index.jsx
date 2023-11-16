@@ -14,7 +14,7 @@ export default function Dashboard() {
   return (
     <section className="flex-grow flex flex-col gap-6">
       <div className="flex flex-col gap-3">
-        <h4 className="text-xl text-gray-900">Olá, {user.name}</h4>
+        <h4 className="text-xl text-gray-900">Olá, {user?.name}</h4>
         <p className="text-sm text-gray-700">
           No painel da sua conta. você pode verificar e visualizar facilmente
           seus{' '}

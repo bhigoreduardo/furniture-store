@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const OfferTypeEnum = {
+  Default: '',
   Percentage: 'percentage',
   Money: 'money',
 }
@@ -15,7 +16,11 @@ const InventorySchema = new mongoose.Schema({
   offer: {
     type: {
       offerValue: { type: Number },
-      offerType: { type: String },
+      offerType: {
+        type: String,
+        enum: OfferTypeEnum,
+        default: OfferTypeEnum.Default,
+      },
       offerPrice: { type: Number },
       offerPriceDates: { type: [{ type: Date }] },
     },

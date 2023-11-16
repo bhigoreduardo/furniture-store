@@ -32,21 +32,42 @@ export function errors(err, req, res, next) {
 
     if (type.includes('required'))
       message = `Valor do campo: '${field}' é obrigatório`
-
     else if (type.includes('empty'))
       message = `Valor do campo: '${field}' não pode ser vazio`
-
     else if (type.includes('email'))
       message = `Valor do campo: '${field}' deve ser email válido`
-
     else if (['length', 'min', 'max'].some((value) => type.includes(value)))
       message = `Valor do campo: '${field}' contém quantidade de caracteres inválido`
-
     else if (type.includes('unknown'))
       message = `Valor do campo: '${field}' não é aceito`
 
     err = new ErrorHandler(message, 422)
   }
+
+  // switch (err.type) {
+  //   case 'StripeCardError':
+  //     // A declined card error
+  //     err.message; // => e.g. "Your card's expiration year is invalid."
+  //     break;
+  //   case 'StripeRateLimitError':
+  //     // Too many requests made to the API too quickly
+  //     break;
+  //   case 'StripeInvalidRequestError':
+  //     // Invalid parameters were supplied to Stripe's API
+  //     break;
+  //   case 'StripeAPIError':
+  //     // An error occurred internally with Stripe's API
+  //     break;
+  //   case 'StripeConnectionError':
+  //     // Some kind of error occurred during the HTTPS communication
+  //     break;
+  //   case 'StripeAuthenticationError':
+  //     // You probably used an incorrect API key
+  //     break;
+  //   default:
+  //     // Handle any other types of unexpected errors
+  //     break;
+  // }
 
   return res
     .status(err.statusCode)

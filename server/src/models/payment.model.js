@@ -7,6 +7,7 @@ const PaymentSchema = new mongoose.Schema({
     required: [true, 'Método é obrigatório'],
     unique: true,
   },
+  availableGateway: { type: Boolean, default: false },
   availableInstallments: { type: Boolean, default: false },
   infoInstallments: {
     type: [

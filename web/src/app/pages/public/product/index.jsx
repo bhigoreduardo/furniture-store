@@ -29,6 +29,7 @@ export default function Product() {
         category={product.category}
         rangePrice={product.rangePrice}
         inventory={product?.productData?.inventory?.info}
+        shippingInfo={product?.productData?.shippingInfo}
       />
       <Container className="flex flex-col">
         <div className="flex items-center justify-center border border-gray-200">

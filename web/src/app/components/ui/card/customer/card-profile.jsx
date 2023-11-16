@@ -20,24 +20,24 @@ export default function CardProfile({ user, to }) {
           />
           <div className="flex flex-col">
             <span className="font-semibold text-base-text-gray-900">
-              {user.name}
+              {user?.name}
             </span>
-            <p className="text-sm text-gray-600">{cpfMask(user.cpf)}</p>
+            <p className="text-sm text-gray-600">{cpfMask(user?.cpf)}</p>
           </div>
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-sm text-gray-600">
             <span className="font-semibold text-gray-900">Email: </span>
-            {user.email}
+            {user?.email}
           </p>
           <p className="text-sm text-gray-600">
             <span className="font-semibold text-gray-900">WhatsApp: </span>
-            {mobileMask(user.whatsApp)}
+            {mobileMask(user?.whatsApp)}
           </p>
           <p className="text-sm text-gray-600">
             <span className="font-semibold text-gray-900">Membro desde: </span>
 
-            {new Date(user.createdAt).toLocaleDateString(
+            {new Date(user?.createdAt).toLocaleDateString(
               'pt-BR',
               optionsFullLocaleDate(false)
             )}

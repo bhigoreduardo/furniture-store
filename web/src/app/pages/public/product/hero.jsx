@@ -28,6 +28,7 @@ export default function Hero({
   category,
   rangePrice,
   inventory,
+  shippingInfo,
 }) {
   const [image, setImage] = useState('')
   const { payment, cartItems, handleCartItems } = useApp()
@@ -55,6 +56,7 @@ export default function Hero({
       price: '',
       regularPrice: '',
       stock: '',
+      fee: shippingInfo?.fee,
     },
     validationSchema: yup
       .object()
@@ -95,7 +97,8 @@ export default function Hero({
   const stock = inventoryInfo?.stock
   const handleDecrease = () => {
     if (!stock || formik.values.quantity === 1) return
-    formik.values.quantity > 1 && formik.setFieldValue('quantity', formik.values.quantity - 1)
+    formik.values.quantity > 1 &&
+      formik.setFieldValue('quantity', formik.values.quantity - 1)
   }
   const handleIncrease = () => {
     if (!stock || formik.values.quantity === stock) return
@@ -275,13 +278,31 @@ export default function Hero({
           <span className="text-sm text-gray-900">Formas de pagamento</span>
           <div className="flex items-center gap-1">
             {payment?.map((item) => (
-              <img
+              <div
                 key={item._id}
-                src={`${import.meta.env.VITE_SERVER_PUBLIC_IMAGES}/${
-                  item.image
-                }`}
-                className="h-7 w-10 p-1 object-contain bg-gray-100 border border-gray-400 rounded-sm"
-              />
+                className="group relative h-7 w-10 p-1 bg-white border border-gray-200 rounded-sm cursor-pointer"
+              >
+                <img
+                  src={`${import.meta.env.VITE_SERVER_PUBLIC_IMAGES}/${
+                    item.image
+                  }`}
+                  className="w-full h-full object-contain"
+                />
+                <div className="hidden absolute top-[calc(100%+10px)] left-0 p-1 bg-white border border-gray-200 group-hover:flex flex-col text-xs text-gray-600">
+                  {item?.availableInstallments ? (
+                    item.infoInstallments.map((item, i) => (
+                      <span key={i} className="inline-block w-[100px] text-center">
+                        {item.installments}x{' '}
+                        {Number(item.fee) !== 0
+                          ? `+ ${item.fee}%a.m.`
+                          : 'sem juros'}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="inline-block w-[50px] text-center">à vista</span>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         </div>

@@ -16,6 +16,8 @@ import Tracker from '../pages/public/tracker'
 import Maintenance from '../pages/public/maintenance'
 import NotFound from '../pages/public/not-found'
 import Cart from '../pages/public/cart'
+import Checkout from '../pages/public/checkout'
+import CheckoutSuccess from '../pages/public/checkout/checkout-success'
 
 const router = [
   {
@@ -27,12 +29,20 @@ const router = [
         element: <Home />,
       },
       {
-        path: 'produto/:id',
+        path: '/produto/:id',
         element: <Product />,
       },
       {
-        path: 'carrinho',
+        path: '/carrinho',
         element: <Cart />,
+      },
+      {
+        path: '/finalizar-compra',
+        element: <Checkout />,
+      },
+      {
+        path: '/compra-concluida',
+        element: <CheckoutSuccess />,
       },
       {
         path: '/entrar',

@@ -43,7 +43,7 @@ export default function CardCart({ setIsCardCart, className }) {
             icon={<ArrowRight size={20} className="text-white" />}
             onClick={() => {
               setIsCardCart(false)
-              // navigate('/finalizar-compra')
+              navigate('/finalizar-compra')
             }}
             className="bg-orange-500 text-white hover:bg-orange-600"
           />

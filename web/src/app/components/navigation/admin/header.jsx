@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import {
   List,
   GlobeSimple,
@@ -18,6 +19,7 @@ import Badge from '../../ui/badge'
 import CheckboxToggleLabel from '../../ui/input/checkboxtoggle-label'
 
 export default function Header() {
+  const navigate = useNavigate()
   const { isSidebar, toggleSidebar } = useAdmin()
   const { user, handleUpdateUser } = useUser()
   const { setIsLoading } = useApp()
@@ -48,6 +50,7 @@ export default function Header() {
             </button>
             <Button
               label="Acessar loja"
+              onClick={() => navigate('/')}
               icon={
                 <GlobeSimple
                   size={20}

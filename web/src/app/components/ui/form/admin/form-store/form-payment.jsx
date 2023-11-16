@@ -24,12 +24,14 @@ const validationInstallmentsSchema = yup.object().shape({
 const validationSchema = yup.object().shape({
   image: yup.string().required('Imagem é obrigatório'),
   method: yup.string().required('Método é obrigatório'),
+  availableGateway: yup.bool().required('Gateway é obrigatório'),
   availableInstallments: yup.bool().required('Parcelas é obrigatório'),
   infoInstallments: yup.array().of(validationInstallmentsSchema).optional(),
 })
 const initialValues = {
   image: '',
   method: '',
+  availableGateway: false,
   availableInstallments: false,
   infoInstallments: [],
 }
@@ -91,6 +93,7 @@ export default function FormPayment() {
     const values = payments[index]
     formik.setFieldValue('image', values.image)
     formik.setFieldValue('method', values.method)
+    formik.setFieldValue('availableGateway', values.availableGateway)
     formik.setFieldValue('availableInstallments', values.availableInstallments)
     formik.setFieldValue('infoInstallments', values.infoInstallments)
     setIndexEdit(id)
@@ -129,6 +132,15 @@ export default function FormPayment() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values?.method}
+                className="flex-grow"
+              />
+              <CheckboxToggleLabel
+                id="availableGateway"
+                name="availableGateway"
+                label="Integrado com gateway"
+                onChange={formik.handleChange}
+                value={formik.values.availableGateway}
+                checked={formik.values.availableGateway}
                 className="flex-grow"
               />
               <CheckboxToggleLabel

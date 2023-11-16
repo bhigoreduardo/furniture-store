@@ -13,6 +13,7 @@ export default function CartItem({
   price,
   bg,
   colorName,
+  isCheckout = false,
 }) {
   const { cartItems, handleCartItems } = useApp()
   const handleRemove = () => {
@@ -49,9 +50,11 @@ export default function CartItem({
           </span>
         </p>
       </div>
-      <button type="button" onClick={handleRemove}>
-        <X size={20} className="text-gray-600" />
-      </button>
+      {!isCheckout && (
+        <button type="button" onClick={handleRemove}>
+          <X size={20} className="text-gray-600" />
+        </button>
+      )}
     </article>
   )
 }

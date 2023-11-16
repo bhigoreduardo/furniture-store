@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, ArrowRight } from 'phosphor-react'
 
-import { currencyPrice } from '../../../../utils/format'
+import { cartCalculate, currencyPrice } from '../../../../utils/format'
 import { cartColumns } from '../../../../utils/constants/public'
 import Button from '../../../components/ui/button/button'
 import Container from '../../../components/ui/container'
@@ -38,10 +38,7 @@ export default function CartItems() {
     handleCartItems([...cartItems])
   }
   const handleClear = () => handleCartItems([])
-  const subAmount = cartItems.reduce(
-    (acc, cur) => acc + cur.price * cur.quantity,
-    0
-  )
+  const { subAmount, discount, shippingFee } = cartCalculate(cartItems)
 
   return (
     <Container className="flex items-start gap-6 py-[100px]">
@@ -84,32 +81,26 @@ export default function CartItems() {
             <p className="flex items-center justify-between text-xs text-gray-900">
               <span className="font-normal">Entrega:</span>
               <span className="font-semibold">
-                {currencyPrice.format(subAmount)}
+                {currencyPrice.format(shippingFee)}
               </span>
             </p>
             <p className="flex items-center justify-between text-xs text-gray-900">
               <span className="font-normal">Desconto:</span>
               <span className="font-semibold">
-                {currencyPrice.format(subAmount)}
-              </span>
-            </p>
-            <p className="flex items-center justify-between text-xs text-gray-900">
-              <span className="font-normal">Taxa:</span>
-              <span className="font-semibold">
-                {currencyPrice.format(subAmount)}
+                {currencyPrice.format(discount - subAmount)}
               </span>
             </p>
           </div>
           <p className="flex items-center justify-between text-sm text-gray-900 border-t border-gray-200 px-6 pt-3">
             <span className="font-normal">Total:</span>
             <span className="font-semibold">
-              {currencyPrice.format(subAmount)}
+              {currencyPrice.format(subAmount + shippingFee)}
             </span>
           </p>
           <Button
             label="Finalizar compra"
             icon={<ArrowRight size={20} className="text-white" />}
-            // onClick={() => navigate('/finalizar-compra')}
+            onClick={() => navigate('/finalizar-compra')}
             className="bg-orange-500 text-white hover:bg-orange-600 mx-6"
           />
         </div>

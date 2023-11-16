@@ -16,10 +16,8 @@ const StoreSchema = new mongoose.Schema(
     },
     contactEmail: {
       type: String,
-      required: [true, 'Email é obrigatório'],
       match: [/\S+@\S+\.\S+/, 'Informe email válido'],
       lowercase: true,
-      unique: [true, 'Email já cadastrado'],
     },
     phone: {
       type: String,
@@ -139,21 +137,21 @@ StoreSchema.methods.sendAuth = function () {
 StoreSchema.methods.sendPublic = function () {
   return {
     _id: this._id,
-      name: this.name,
-      email: this.email,
-      contactEmail: this.contactEmail,
-      phone: this.phone,
-      whatsApp: this.whatsApp,
-      image: this.image,
-      cnpj: this.cnpj,
-      ie: this.ie,
-      clockAvailable: this.clockAvailable,
-      site: this.site,
-      description: this.description,
-      address: this.address,
-      socialMedia: this.socialMedia,
-      status: this.status,
-      available: this.available,
+    name: this.name,
+    email: this.email,
+    contactEmail: this.contactEmail,
+    phone: this.phone,
+    whatsApp: this.whatsApp,
+    image: this.image,
+    cnpj: this.cnpj,
+    ie: this.ie,
+    clockAvailable: this.clockAvailable,
+    site: this.site,
+    description: this.description,
+    address: this.address,
+    socialMedia: this.socialMedia,
+    status: this.status,
+    available: this.available,
   }
 }
 StoreSchema.methods.generateRecoveryPassword = function () {

@@ -11,6 +11,7 @@ import brand from './brand.route.js'
 import user from './user.route.js'
 import product from './product.route.js'
 import payment from './payment.route.js'
+import order from './order.route.js'
 
 const router = express.Router()
 
@@ -34,5 +35,6 @@ router.use('/brands', brand)
 router.use('/users', user)
 router.use('/products', product)
 router.use('/payments', payment)
+router.use('/orders', order)
 
 export default router

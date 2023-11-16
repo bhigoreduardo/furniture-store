@@ -1,7 +1,7 @@
 export default {
   COMPANY_NAME: process.env.COMPANY_NAME || 'Furniture',
   NODE_ENV: process.env.NODE_ENV || 'dev',
-  
+
   MONGO_IP: process.env.MONGO_IP || 'mongo',
   MONGO_PORT: process.env.MONGO_PORT || 27017,
   MONGO_USER: process.env.MONGO_USER,
@@ -21,4 +21,6 @@ export default {
   SMTP_EMAIL_PORT: process.env.SMTP_EMAIL_PORT,
   SMTP_EMAIL_USER: process.env.SMTP_EMAIL_USER,
   SMTP_EMAIL_PASS: process.env.SMTP_EMAIL_PASS,
+
+  STRIPE_PRIVATE_KEY: process.env.STRIPE_PRIVATE_KEY,
 }
