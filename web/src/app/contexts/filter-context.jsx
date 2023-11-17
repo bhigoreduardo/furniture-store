@@ -11,6 +11,8 @@ export const FilterContext = createContext({
   category: '',
   brand: '',
   chatStatus: true,
+  orderStatus: '',
+  dateRange: '',
 })
 
 export default function FilterContextProvider({ children }) {
@@ -23,6 +25,9 @@ export default function FilterContextProvider({ children }) {
   const [category, setCategory] = useState('')
   const [brand, setBrand] = useState('')
   const [chatStatus, setChatStatus] = useState(true)
+  const [orderStatus, setOrderStatus] = useState('')
+  const [dateRange, setDateRange] = useState([null, null])
+  const [startDate, endDate] = dateRange
 
   const handleClear = () => {
     setSearch('')
@@ -33,21 +38,39 @@ export default function FilterContextProvider({ children }) {
     setActived(true)
     setCategory('')
     setBrand('')
+    setOrderStatus('')
+    setDateRange([null, null])
   }
 
   return (
-    <FilterContext.Provider value={{
-      search, setSearch,
-      priority, setPriority,
-      page, setPage,
-      perPage, setPerPage,
-      featured, setFeatured,
-      actived, setActived,
-      category, setCategory,
-      brand, setBrand,
-      chatStatus, setChatStatus,
-      handleClear,
-    }}>
+    <FilterContext.Provider
+      value={{
+        search,
+        setSearch,
+        priority,
+        setPriority,
+        page,
+        setPage,
+        perPage,
+        setPerPage,
+        featured,
+        setFeatured,
+        actived,
+        setActived,
+        category,
+        setCategory,
+        brand,
+        setBrand,
+        chatStatus,
+        setChatStatus,
+        orderStatus,
+        setOrderStatus,
+        startDate,
+        endDate,
+        setDateRange,
+        handleClear,
+      }}
+    >
       {children}
     </FilterContext.Provider>
   )

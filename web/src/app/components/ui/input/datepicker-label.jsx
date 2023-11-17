@@ -15,12 +15,14 @@ export default function DatePickerLabel({
 }) {
   return (
     <div className={mergeClassName('flex flex-col gap-2', className)}>
-      <span className="flex items-center justify-between">
-        <div className="flex items-center gap-1 relative text-sm text-gray-900">
-          {label && <label htmlFor={id}>{label}</label>}
-          {hint && <IconHint hint={hint} />}
-        </div>
-      </span>
+      {label && (
+        <span className="flex items-center justify-between">
+          <div className="flex items-center gap-1 relative text-sm text-gray-900">
+            {label && <label htmlFor={id}>{label}</label>}
+            {hint && <IconHint hint={hint} />}
+          </div>
+        </span>
+      )}
       <DatePickerUI
         id={id}
         name={name}

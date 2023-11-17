@@ -21,7 +21,7 @@ export default function DatePickerUI({ id, name, className, ...props }) {
         dateFormat="dd/MM/yy"
         isClearable={true}
         monthsShown={2}
-        withPortal
+        // withPortal
         // openToDate={new Date("1993/09/28")}
         placeholderText="Selecione a data"
         renderCustomHeader={({

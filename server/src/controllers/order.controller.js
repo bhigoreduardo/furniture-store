@@ -5,10 +5,14 @@ import ProductModel from '../models/product.model.js'
 import PaymentModel from '../models/payment.model.js'
 import OrderModel, { StatusEnumType } from '../models/order.model.js'
 import InventoryModel from '../models/inventory.model.js'
+import CustomerModel from '../models/customer.model.js'
 import ErrorHandler from '../utils/ErrorHandler.js'
 
 export const save = async (req, res) => {
   const {
+    name,
+    email,
+    whatsApp,
     address,
     cart,
     payment: { method, availableInstallments },
@@ -77,15 +81,26 @@ export const save = async (req, res) => {
   }
   const amountCart = items.reduce((acc, cur) => acc + cur.subAmount, 0)
   const amount = amountCart * (1 + fee / 100)
+  const cartQuantity = cart.reduce((acc, cur) => acc + cur.quantity, 0)
 
-  await OrderModel.create({
-    customer: req.userId,
+  const order = await OrderModel.create({
+    customer: {
+      user: req.userId,
+      name,
+      email,
+      whatsApp,
+    },
     code: new mongoose.Types.ObjectId().toString().slice(16),
     cart: items,
     address,
-    payment: { method, fee, amount },
+    payment: { method, fee, amount, cartQuantity },
     status: [{ history: StatusEnumType.Created }],
     obs: req.body.obs,
+  })
+
+  await CustomerModel.findByIdAndUpdate(req.userId, {
+    $push: { orders: order },
+    $inc: { amountSpend: amount },
   })
 
   // enviar notificação da compra para loja
@@ -123,4 +138,51 @@ export const save = async (req, res) => {
   return res
     .status(201)
     .json({ success: true, message: 'Pedido criado com sucesso' })
+}
+
+export const search = async (req, res) => {
+  const query = req.query
+  const page = Number(query.page) || 0
+  const limit = Number(query.perPage) || 10
+  const filter = {
+    ...(query.search && {
+      $or: [
+        { 'customer.name': { $regex: query.search, $options: 'i' } },
+        { 'customer.email': { $regex: query.search, $options: 'i' } },
+        { 'customer.whatsApp': { $regex: query.search, $options: 'i' } },
+        { code: { $regex: query.search, $options: 'i' } },
+        { 'address.street': { $regex: query.search, $options: 'i' } },
+        { 'address.neighborhood': { $regex: query.search, $options: 'i' } },
+        { 'address.city': { $regex: query.search, $options: 'i' } },
+        { 'address.state': { $regex: query.search, $options: 'i' } },
+        { 'address.zipCode': { $regex: query.search, $options: 'i' } },
+        { 'address.complement': { $regex: query.search, $options: 'i' } },
+        // ...(typeof query.search === 'number' && {
+        //   'payment.method': { $regex: Number(query.search), $options: 'i' },
+        //   'payment.fee': { $regex: Number(query.search), $options: 'i' },
+        //   'payment.amount': { $regex: Number(query.search), $options: 'i' },
+        // }),
+      ],
+    }),
+    // ...(query.orderStatus && { $or: [] }),
+    ...((query.startDate || query.endDate) && {
+      createdAt: {
+        ...(query.startDate && { $gte: query.startDate }),
+        ...(query.endDate && { $lte: query.endDate }),
+      },
+    }),
+  }
+  const finded = await OrderModel.paginate(filter, {
+    page,
+    limit,
+    select: '_id customer code status payment createdAt',
+    populate: [
+      { path: 'customer.user', select: 'image' },
+      {
+        path: 'payment',
+        populate: [{ path: 'method', select: '_id image method' }],
+      },
+    ],
+  })
+  return res.status(200).json(finded)
 }

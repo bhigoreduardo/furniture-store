@@ -12,5 +12,6 @@ router.post(
   useError(customerAuth),
   useError(orderController.save)
 )
+router.get('/search', useError(orderController.search))
 
 export default router

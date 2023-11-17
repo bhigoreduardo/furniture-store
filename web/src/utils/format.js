@@ -1,6 +1,7 @@
 import DOMPurify from 'dompurify'
 import truncHtml from 'trunc-html'
 import { removeMask } from './mask'
+import { OrderStatusEnumType } from '../types/enum-type'
 
 export const mergeClassName = (first, last) => first + ' ' + last
 
@@ -88,6 +89,8 @@ export const optionsShortLocaleDate = {
   year: 'numeric',
   month: 'numeric',
   day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
 }
 
 export const typeOfString = (element) => typeof element === 'string'
@@ -144,4 +147,42 @@ export const cartCalculate = (cartItems) => {
   })
 
   return { subAmount, shippingFee, discount }
+}
+
+export const getOrderStatusColor = (orderStatus) => {
+  switch (orderStatus) {
+    case OrderStatusEnumType.Created:
+      return 'text-blue-500'
+    case OrderStatusEnumType.Pending:
+      return 'text-purple-500'
+    case OrderStatusEnumType.Paid:
+      return 'text-yellow-500'
+    case OrderStatusEnumType.Canceled:
+      return 'text-red-500'
+    case OrderStatusEnumType.Progress:
+      return 'text-orange-500'
+    case OrderStatusEnumType.Traffic:
+      return 'text-fuchsia-500'
+    case OrderStatusEnumType.Delivered:
+      return 'text-green-500'
+  }
+}
+
+export const translateOrderStatus = (orderStatus) => {
+  switch (orderStatus) {
+    case OrderStatusEnumType.Created:
+      return 'Criado'
+    case OrderStatusEnumType.Pending:
+      return 'Pendente'
+    case OrderStatusEnumType.Paid:
+      return 'Pago'
+    case OrderStatusEnumType.Canceled:
+      return 'Cancelado'
+    case OrderStatusEnumType.Progress:
+      return 'Embalando'
+    case OrderStatusEnumType.Traffic:
+      return 'Em trânsito'
+    case OrderStatusEnumType.Delivered:
+      return 'Entregue'
+  }
 }

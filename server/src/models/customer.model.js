@@ -5,60 +5,96 @@ import mongoosePaginate from 'mongoose-paginate'
 
 import config from '../config/index.js'
 
-const CustomerSchema = new mongoose.Schema({
-  name: { type: String, required: [true, 'Nome é obrigatório'], min: [2, 'Nome deve possuir pelo menos 2 caracteres'], max: [200, 'Nome deve possuir até 200 caracteres'] },
-  email: { type: String, required: [true, 'Email é obrigatório'], match: [/\S+@\S+\.\S+/, 'Informe email válido'], lowercase: true, unique: [true, 'Email já cadastrado'] },
-  cpf: { type: String, required: [true, 'CPF é obrigatório'], unique: [true, 'CPF já cadastrado'], min: 11, max: 11 },
-  whatsApp: { type: String, required: [true, 'Celular é obrigatório'], unique: [true, 'Celular já cadastrado'], min: 11, max: 11 },
-  image: { type: String },
-  address: {
-    type: {
-      street: { type: String, required: [true, 'Rua é obrigatório'] },
-      neighborhood: { type: String, required: [true, 'Bairro é obrigatório'] },
-      city: { type: String, required: [true, 'Cidade é obrigatório'] },
-      state: { type: String, required: [true, 'Estado é obrigatório'] },
-      number: { type: String },
-      zipCode: { type: String, required: [true, 'CEP é obrigatório'] },
-      complement: { type: String },
+const CustomerSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Nome é obrigatório'],
+      min: [2, 'Nome deve possuir pelo menos 2 caracteres'],
+      max: [200, 'Nome deve possuir até 200 caracteres'],
     },
-    _id: false,
-  },
-  terms: { type: Boolean, required: [true, 'Termos é obrigatório'] },
-  status: { type: Boolean, default: true },
-  activated: {
-    type: {
-      activatedStatus: Boolean,
-      activatedToken: String,
-      activatedTokenExpire: Date,
-      activatedChangedAt: Date,
+    email: {
+      type: String,
+      required: [true, 'Email é obrigatório'],
+      match: [/\S+@\S+\.\S+/, 'Informe email válido'],
+      lowercase: true,
+      unique: [true, 'Email já cadastrado'],
     },
-    _id: false,
-  },
-  password: {
-    type: {
-      salt: { type: String },
-      hash: { type: String },
+    cpf: {
+      type: String,
+      required: [true, 'CPF é obrigatório'],
+      unique: [true, 'CPF já cadastrado'],
+      min: 11,
+      max: 11,
     },
-    default: {},
-    required: [true, 'Senha é obrigatório'],
-    _id: false,
-  },
-  recoveryPassword: {
-    type: {
-      passwordResetToken: String,
-      passwordResetExpires: Date,
-      passwordChangedAt: Date,
+    whatsApp: {
+      type: String,
+      required: [true, 'Celular é obrigatório'],
+      unique: [true, 'Celular já cadastrado'],
+      min: 11,
+      max: 11,
     },
-    default: {},
-    _id: false,
+    image: { type: String, defalut: '' },
+    address: {
+      type: {
+        street: { type: String, required: [true, 'Rua é obrigatório'] },
+        neighborhood: {
+          type: String,
+          required: [true, 'Bairro é obrigatório'],
+        },
+        city: { type: String, required: [true, 'Cidade é obrigatório'] },
+        state: { type: String, required: [true, 'Estado é obrigatório'] },
+        number: { type: String, default: '' },
+        zipCode: { type: String, required: [true, 'CEP é obrigatório'] },
+        complement: { type: String, default: '' },
+      },
+      _id: false,
+    },
+    terms: { type: Boolean, required: [true, 'Termos é obrigatório'] },
+    status: { type: Boolean, default: true },
+    activated: {
+      type: {
+        activatedStatus: Boolean,
+        activatedToken: String,
+        activatedTokenExpire: Date,
+        activatedChangedAt: Date,
+      },
+      _id: false,
+    },
+    password: {
+      type: {
+        salt: { type: String },
+        hash: { type: String },
+      },
+      default: {},
+      required: [true, 'Senha é obrigatório'],
+      _id: false,
+    },
+    recoveryPassword: {
+      type: {
+        passwordResetToken: String,
+        passwordResetExpires: Date,
+        passwordChangedAt: Date,
+      },
+      default: {},
+      _id: false,
+    },
+    chatStatus: { type: Boolean, default: false },
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
+    amountSpend: { type: Number, default: 0 },
+    favorits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+    history: {
+      type: [
+        {
+          [Date]: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+        },
+      ],
+      default: [],
+    },
+    compare: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
   },
-  chatStatus: { type: Boolean, default: false },
-  // orders,
-  // amountSpend,
-  // favorits,
-  // history,
-  // compare,
-}, { timestamps: true })
+  { timestamps: true }
+)
 
 CustomerSchema.methods.setPassword = async function (password) {
   this.password.salt = crypto.randomBytes(16).toString('hex')
@@ -120,6 +156,10 @@ CustomerSchema.methods.sendAuth = function () {
       terms: this.terms,
       status: this.status,
       chatStatus: this.chatStatus,
+      orders: this.orders,
+      favorits: this.favorits,
+      history: this.history,
+      compare: this.compare,
       activated: this.activated,
       createdAt: this.createdAt,
     },
@@ -138,6 +178,11 @@ CustomerSchema.methods.sendPublic = function () {
     terms: this.terms,
     status: this.status,
     chatStatus: this.chatStatus,
+    orders: this.orders,
+    amountSpend: this.amountSpend,
+    favorits: this.favorits,
+    history: this.history,
+    compare: this.compare,
     createdAt: this.createdAt,
   }
 }

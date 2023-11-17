@@ -14,9 +14,29 @@ export const StatusEnumType = {
 const OrderSchema = new mongoose.Schema(
   {
     customer: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Customer',
-      required: [true, 'Cliente é obrigatório'],
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Customer',
+        required: [true, 'Cliente é obrigatório'],
+      },
+      name: {
+        type: String,
+        required: [true, 'Nome é obrigatório'],
+        min: [2, 'Nome deve possuir pelo menos 2 caracteres'],
+        max: [200, 'Nome deve possuir até 200 caracteres'],
+      },
+      email: {
+        type: String,
+        required: [true, 'Email é obrigatório'],
+        match: [/\S+@\S+\.\S+/, 'Informe email válido'],
+        lowercase: true,
+      },
+      whatsApp: {
+        type: String,
+        required: [true, 'Celular é obrigatório'],
+        min: 11,
+        max: 11,
+      },
     },
     code: { type: String, required: [true, 'Código do pedido é obrigatório'] },
     cart: {
@@ -81,13 +101,18 @@ const OrderSchema = new mongoose.Schema(
     payment: {
       type: {
         method: {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Payment',
           required: [true, 'Método pagamento é obrigatório'],
         },
         fee: { type: Number, default: 0 },
         amount: {
           type: Number,
           required: [true, 'Total pedido é obrigatório'],
+        },
+        cartQuantity: {
+          type: Number,
+          required: [true, 'Quantidade de itens é obrigatório'],
         },
       },
       required: true,

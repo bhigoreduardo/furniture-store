@@ -1,12 +1,14 @@
+import { Fragment } from 'react'
 import { ArrowRight, PencilLine, Trash } from 'phosphor-react'
 import { Link } from 'react-router-dom'
 
 import {
   createMarkup,
   currencyPrice,
+  getOrderStatusColor,
   optionsShortLocaleDate,
+  translateOrderStatus,
 } from '../format'
-import { Fragment } from 'react'
 import { mobileMask, zipCodeMask } from '../mask'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
@@ -529,6 +531,86 @@ export const paymentColumns = (handleEdit, handleDelete) => [
           <Trash size={16} />
         </button>
       </div>
+    ),
+  },
+]
+
+export const orderColumns = [
+  {
+    accessorKey: 'code',
+    header: 'Código',
+    cell: ({ row }) => (
+      <span className="font-semibold text-sm text-gray-900">
+        {row?.original?.code}
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'customer',
+    header: 'Cliente',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <img
+          src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          alt={row?.original?.customer?.name}
+          className="h-6 w-6 rounded-full bg-gray-500 object-contain"
+          // src={`${serverPublicImages}/${row?.original?.customer?.image}`}
+        />
+        <span className="font-semibold text-sm text-gray-900">
+          {row?.original?.customer?.name}
+        </span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => {
+      const history = row?.original?.status[0]?.history
+
+      return (
+        <span
+          className={`font-semibold uppercase ${getOrderStatusColor(history)}`}
+        >
+          {translateOrderStatus(history)}
+        </span>
+      )
+    },
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Data',
+    cell: ({ row }) =>
+      new Date(row?.original?.createdAt).toLocaleDateString(
+        'pt-BR',
+        optionsShortLocaleDate
+      ),
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Total',
+    cell: ({ row }) => (
+      <span>
+        {currencyPrice.format(row?.original?.payment?.amount)} (
+        {row?.original?.payment?.cartQuantity})
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'payment',
+    header: 'Forma de pagamento',
+    cell: ({ row }) => row?.original?.payment?.method?.method,
+  },
+  {
+    accessorKey: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <Link
+        to={`editar/${row.original?._id}`}
+        className="flex items-center gap-1 text-sm text-blue-500"
+      >
+        Vê detalhes <ArrowRight size={14} />
+      </Link>
     ),
   },
 ]

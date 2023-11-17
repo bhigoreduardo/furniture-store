@@ -20,6 +20,7 @@ import CustomersForm from '../pages/admin/customers/form'
 import Users from '../pages/admin/users'
 import UsersForm from '../pages/admin/users/form'
 import Store from '../pages/admin/store'
+import Orders from '../pages/admin/orders'
 
 const children = [
   {
@@ -73,6 +74,10 @@ const children = [
           { path: 'cadastrar', element: <ProductsForm /> },
           { path: 'editar/:id', element: <ProductsForm /> },
         ],
+      },
+      {
+        path: 'pedidos',
+        children: [{ path: '', element: <Orders /> }],
       },
     ],
   },
