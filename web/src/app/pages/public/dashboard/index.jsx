@@ -1,14 +1,19 @@
-import { Package, Receipt, Rocket } from 'phosphor-react'
-import { Link } from 'react-router-dom'
+import { ArrowRight, Package, Receipt, Rocket } from 'phosphor-react'
+import { Link, useNavigate } from 'react-router-dom'
 
+import { orderColumns } from '../../../../utils/constants/public'
+import { useFilterOrders } from '../../../../hooks/use-order'
 import useUser from '../../../../hooks/use-user'
-
 import CardOverview from '../../../components/ui/card/card-overview'
 import CardProfile from '../../../components/ui/card/customer/card-profile'
 import CardAddress from '../../../components/ui/card/customer/card-address'
+import TableData from '../../../components/ui/table/table-data'
+import Button from '../../../components/ui/button/button'
 
 export default function Dashboard() {
+  const navigate = useNavigate()
   const { user } = useUser()
+  const { docs: orders } = useFilterOrders()
   const address = user?.address
 
   return (
@@ -61,6 +66,20 @@ export default function Dashboard() {
           />
         </div>
       </div>
+
+      <TableData
+        title="Pedidos recentes"
+        btn={
+          <Button
+            label="Vê todos"
+            icon={<ArrowRight size={14} />}
+            className="!gap-1 font-semibold text-sm text-orange-500 hover:bg-orange-500 hover:text-white !py-2 normal-case"
+            onClick={() => navigate('/conta/pedidos')}
+          />
+        }
+        columns={orderColumns}
+        data={orders}
+      />
     </section>
   )
 }

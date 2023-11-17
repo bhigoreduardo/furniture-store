@@ -84,5 +84,11 @@ router.patch(
   useError(adminAuth),
   useError(customerController.toggleStatus)
 )
+router.get(
+  '/search/orders/',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.searchOrders)
+)
 
 export default router

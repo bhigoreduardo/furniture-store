@@ -1,5 +1,12 @@
-import { XCircle } from 'phosphor-react'
-import { currencyPrice } from '../format'
+import { Link } from 'react-router-dom'
+import { ArrowRight, XCircle } from 'phosphor-react'
+
+import {
+  currencyPrice,
+  getOrderStatusColor,
+  optionsShortLocaleDate,
+  translateOrderStatus,
+} from '../format'
 import Count from '../../app/components/ui/button/count'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
@@ -81,5 +88,68 @@ export const cartColumns = (handleDelete, handleDecrease, handleIncrease) => [
     header: 'Sub-Total',
     cell: ({ row }) =>
       currencyPrice.format(row?.original?.price * row?.original?.quantity),
+  },
+]
+
+export const orderColumns = [
+  {
+    accessorKey: 'code',
+    header: 'Código',
+    cell: ({ row }) => (
+      <span className="font-semibold text-sm text-gray-900">
+        {row?.original?.code}
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => {
+      const history = row?.original?.status[0]?.history
+
+      return (
+        <span
+          className={`font-semibold uppercase ${getOrderStatusColor(history)}`}
+        >
+          {translateOrderStatus(history)}
+        </span>
+      )
+    },
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'Data',
+    cell: ({ row }) =>
+      new Date(row?.original?.createdAt).toLocaleDateString(
+        'pt-BR',
+        optionsShortLocaleDate
+      ),
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Total',
+    cell: ({ row }) => (
+      <span>
+        {currencyPrice.format(row?.original?.payment?.amount)} (
+        {row?.original?.payment?.cartQuantity})
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'payment',
+    header: 'Forma de pagamento',
+    cell: ({ row }) => row?.original?.payment?.method?.method,
+  },
+  {
+    accessorKey: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <Link
+        to={`pedidos/detalhe/${row.original?._id}`}
+        className="flex items-center gap-1 text-sm text-blue-500"
+      >
+        Vê detalhes <ArrowRight size={14} />
+      </Link>
+    ),
   },
 ]

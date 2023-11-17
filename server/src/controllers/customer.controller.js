@@ -1,4 +1,5 @@
 import CustomerModel from '../models/customer.model.js'
+import OrderModel from '../models/order.model.js'
 import ErrorHandler from '../utils/ErrorHandler.js'
 import { filterSorted } from '../utils/format.js'
 import { sendInfoEmail } from '../utils/sendEmail.js'
@@ -231,4 +232,44 @@ export const toggleStatus = async (req, res) => {
     success: true,
     message: 'Atualização realizada com sucesso',
   })
+}
+
+export const searchOrders = async (req, res) => {
+  const query = req.query
+  const page = Number(query.page) || 0
+  const limit = Number(query.perPage) || 10
+  const filter = {
+    ...(query.search && {
+      $or: [
+        { code: { $regex: query.search, $options: 'i' } },
+        // ...(typeof query.search === 'number' && {
+        //   'payment.method': { $regex: Number(query.search), $options: 'i' },
+        //   'payment.fee': { $regex: Number(query.search), $options: 'i' },
+        //   'payment.amount': { $regex: Number(query.search), $options: 'i' },
+        // }),
+      ],
+    }),
+    // ...(query.orderStatus && { $or: [] }),
+    ...((query.startDate || query.endDate) && {
+      createdAt: {
+        ...(query.startDate && { $gte: query.startDate }),
+        ...(query.endDate && { $lte: query.endDate }),
+      },
+    }),
+  }
+  const finded = await OrderModel.paginate(
+    { ...filter, 'customer.user': req.userId },
+    {
+      page,
+      limit,
+      select: '_id code status payment createdAt',
+      populate: [
+        {
+          path: 'payment',
+          populate: [{ path: 'method', select: '_id image method' }],
+        },
+      ],
+    }
+  )
+  return res.status(200).json(finded)
 }

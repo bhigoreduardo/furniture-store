@@ -1,12 +1,12 @@
 import { ArrowsClockwise } from 'phosphor-react'
 
-import { perPage as perPageType } from '../../../../../types/filter-type'
-import { orderStatus as statusType } from '../../../../../types/product-type'
-import Button from '../../button/button'
-import Input from '../../input/input'
-import useFilter from '../../../../../hooks/use-filter'
-import Select from '../../input/select'
-import DatePickerLabel from '../../input/datepicker-label'
+import { perPage as perPageType } from '../../../../types/filter-type'
+import { orderStatus as statusType } from '../../../../types/product-type'
+import Button from '../button/button'
+import Input from '../input/input'
+import useFilter from '../../../../hooks/use-filter'
+import Select from '../input/select'
+import DatePickerLabel from '../input/datepicker-label'
 
 export default function FitlerOrder() {
   const {

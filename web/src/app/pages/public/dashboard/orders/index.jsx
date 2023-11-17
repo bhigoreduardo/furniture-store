@@ -1,7 +1,7 @@
-import { useFilterOrders } from '../../../hooks/admin/use-order'
-import { orderColumns } from '../../../utils/constants/admin'
-import FitlerOrder from '../../components/ui/filter/filter-order'
-import TableData from '../../components/ui/table/table-data'
+import { useFilterOrders } from '../../../../../hooks/use-order'
+import { orderColumns } from '../../../../../utils/constants/public'
+import FitlerOrder from '../../../../components/ui/filter/filter-order'
+import TableData from '../../../../components/ui/table/table-data'
 
 export default function Orders() {
   const { docs, total, pages } = useFilterOrders()
@@ -10,7 +10,7 @@ export default function Orders() {
     <section className="flex-grow flex flex-col gap-6">
       <FitlerOrder />
       <TableData
-        title="Pedidos"
+        title="Pedidos recentes"
         columns={orderColumns}
         data={docs}
         total={total}

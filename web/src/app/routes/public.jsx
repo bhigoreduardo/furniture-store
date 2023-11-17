@@ -18,6 +18,7 @@ import NotFound from '../pages/public/not-found'
 import Cart from '../pages/public/cart'
 import Checkout from '../pages/public/checkout'
 import CheckoutSuccess from '../pages/public/checkout/checkout-success'
+import Orders from '../pages/public/dashboard/orders'
 
 const router = [
   {
@@ -75,6 +76,10 @@ const router = [
           {
             path: '',
             element: <Dashboard />,
+          },
+          {
+            path: 'pedidos',
+            element: <Orders />,
           },
           {
             path: 'configuracao',
