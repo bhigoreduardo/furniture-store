@@ -146,7 +146,7 @@ export const orderColumns = [
     header: 'Ações',
     cell: ({ row }) => (
       <Link
-        to={`detalhe/${row.original?._id}`}
+        to={`/conta/pedidos/detalhe/${row.original?._id}`}
         className="flex items-center gap-1 text-sm text-blue-500"
       >
         Vê detalhes <ArrowRight size={14} />

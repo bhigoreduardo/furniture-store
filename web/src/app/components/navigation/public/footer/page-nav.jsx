@@ -5,12 +5,12 @@ export default function PageNav() {
     <div className="flex flex-col gap-3 w-[200px]">
       <h4 className="font-semibold text-white text-base uppercase">Páginas</h4>
       <div className="flex flex-col gap-2">
-        <FooterLink label="Início" />
-        <FooterLink label="Loja" />
-        <FooterLink label="Rastrear" />
-        <FooterLink label="Compare" />
-        <FooterLink label="Contato" />
-        <FooterLink label="Sobre" />
+        <FooterLink label="Início" to="/" />
+        <FooterLink label="Loja" to="/produtos" />
+        <FooterLink label="Rastrear" to="/rastrear" />
+        <FooterLink label="Compare" to="/compare" />
+        <FooterLink label="Contato" to="/contato" />
+        <FooterLink label="Sobre" to="/sobre" />
       </div>
     </div>
   )

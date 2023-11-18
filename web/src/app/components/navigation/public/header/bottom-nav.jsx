@@ -8,11 +8,17 @@ import {
   PhoneCall,
   Storefront,
 } from 'phosphor-react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
+import { comparePathname } from '../../../../../utils/format'
+import { phoneMask } from '../../../../../utils/mask'
+import useApp from '../../../../../hooks/use-app'
 import Container from '../../../ui/container'
 
 export default function BottomNav() {
+  const { store } = useApp()
+  const { pathname } = useLocation()
+
   return (
     <div className="bg-white border border-gray-300">
       <Container className="flex items-center justify-between py-2">
@@ -22,39 +28,81 @@ export default function BottomNav() {
             <CaretDown size={16} className="text-gray-900" />
           </button>
 
-          <Link className="flex items-center gap-1 text-sm text-orange-500">
+          <Link
+            to="/"
+            className={`flex items-center gap-1 text-sm ${
+              comparePathname(pathname, '/')
+                ? 'text-orange-500'
+                : 'text-gray-600'
+            } hover:text-orange-600 duration-300 ease-in-out`}
+          >
             <House size={16} weight="duotone" />
             Início
           </Link>
-          <Link className="flex items-center gap-1 text-sm text-gray-600">
+          <Link
+            to="/produtos"
+            className={`flex items-center gap-1 text-sm ${
+              comparePathname(pathname, '/produtos')
+                ? 'text-orange-500'
+                : 'text-gray-600'
+            } hover:text-orange-600 duration-300 ease-in-out`}
+          >
             <Storefront size={16} weight="duotone" />
-            Loja
+            Produtos
           </Link>
           <Link
             to="/rastrear"
-            className="flex items-center gap-1 text-sm text-gray-600"
+            className={`flex items-center gap-1 text-sm ${
+              comparePathname(pathname, '/rastrear')
+                ? 'text-orange-500'
+                : 'text-gray-600'
+            } hover:text-orange-600 duration-300 ease-in-out`}
           >
             <MapPinLine size={16} weight="duotone" />
             Rastrear
           </Link>
-          <Link className="flex items-center gap-1 text-sm text-gray-600">
+          <Link
+            to="/compare"
+            className={`flex items-center gap-1 text-sm ${
+              comparePathname(pathname, '/compare')
+                ? 'text-orange-500'
+                : 'text-gray-600'
+            } hover:text-orange-600 duration-300 ease-in-out`}
+          >
             <ArrowsCounterClockwise size={16} weight="duotone" />
             Compare
           </Link>
-          <Link className="flex items-center gap-1 text-sm text-gray-600">
+          <Link
+            to="/contato"
+            className={`flex items-center gap-1 text-sm ${
+              comparePathname(pathname, '/contato')
+                ? 'text-orange-500'
+                : 'text-gray-600'
+            } hover:text-orange-600 duration-300 ease-in-out`}
+          >
             <Headphones size={16} weight="duotone" />
             Contato
           </Link>
-          <Link className="flex items-center gap-1 text-sm text-gray-600">
+          <Link
+            to="/sobre"
+            className={`flex items-center gap-1 text-sm ${
+              comparePathname(pathname, '/sobre')
+                ? 'text-orange-500'
+                : 'text-gray-600'
+            } hover:text-orange-600 duration-300 ease-in-out`}
+          >
             <Note size={16} weight="duotone" />
             Sobre
           </Link>
         </nav>
 
-        <button className="flex items-center gap-2 text-gray-900 text-sm">
+        <a
+          href={`tel:${store?.whatsApp}`}
+          className="flex items-center gap-2 text-gray-900 text-sm"
+        >
           <PhoneCall size={18} />
-          (11) 9 9980-1902
-        </button>
+          {phoneMask(store?.phone)}
+        </a>
       </Container>
     </div>
   )

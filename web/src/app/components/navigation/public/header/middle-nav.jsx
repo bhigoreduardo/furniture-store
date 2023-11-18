@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Heart,
   MagnifyingGlass,
@@ -7,6 +8,7 @@ import {
 } from 'phosphor-react'
 
 import useApp from '../../../../../hooks/use-app'
+import useUser from '../../../../../hooks/use-user'
 import Container from '../../../ui/container'
 import Input from '../../../ui/input/input'
 import Logo from '../../../ui/logo'
@@ -14,9 +16,11 @@ import CardAuth from '../../../ui/card/customer/card-auth'
 import CardCart from '../../../ui/card/customer/card-cart'
 
 export default function MiddleNav() {
+  const navigate = useNavigate()
   const [isCardAuth, setIsCardAuth] = useState(false)
   const [isCardCart, setIsCardCart] = useState(false)
   const { cartItems } = useApp()
+  const { user, token } = useUser()
 
   return (
     <div className="bg-blue-900 text-white border-b border-gray-600">
@@ -56,12 +60,21 @@ export default function MiddleNav() {
           <button>
             <Heart size={20} weight="duotone" className="text-white" />
           </button>
-          <button
-            type="button"
-            onClick={() => setIsCardAuth((prevState) => !prevState)}
-          >
-            <User size={20} weight="duotone" className="text-white" />
-          </button>
+          {!user && !token ? (
+            <button
+              type="button"
+              onClick={() => setIsCardAuth((prevState) => !prevState)}
+            >
+              <User size={20} weight="duotone" className="text-white" />
+            </button>
+          ) : (
+            <button type="button" onClick={() => navigate('/conta')}>
+              <img
+                className="h-6 w-6 rounded-full"
+                src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              />
+            </button>
+          )}
         </div>
         {isCardAuth && (
           <CardAuth

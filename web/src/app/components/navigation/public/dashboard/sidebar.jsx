@@ -13,13 +13,16 @@ import {
 } from 'phosphor-react'
 
 import { comparePathname } from '../../../../../utils/format'
+import useUser from '../../../../../hooks/use-user'
 import NavItem from '../../../ui/nav-item'
 
 const ACTIVE_ITEM = 'text-white !bg-orange-500'
 
 export default function Sidebar() {
   const { pathname } = useLocation()
+  const { handleUpdateUser } = useUser()
   const path = pathname.split('/')[2]
+  const logout = () => handleUpdateUser(null, null)
 
   return (
     <aside className="w-full max-w-[270px] border border-gray-100 bg-white rounded-sm shadow-md py-2">
@@ -85,10 +88,12 @@ export default function Sidebar() {
         className={comparePathname(path, 'configuracao') && ACTIVE_ITEM}
       />
       <NavItem
+        to="/"
         icon={<SignOut size={18} />}
         label="Sair"
         className="text-red-500"
         title="Sair"
+        onClick={logout}
       />
     </aside>
   )

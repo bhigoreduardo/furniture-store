@@ -4,7 +4,6 @@ import Container from '../../components/ui/container'
 
 export default function Home() {
   const products = useProducts()
-  console.log(products)
 
   return (
     <Container className="flex flex-col gap-16 py-[100px]">
@@ -19,7 +18,7 @@ export default function Home() {
             rangePrice={item.rangePrice}
           />
         ))}
-        <CardProduct
+        {/* <CardProduct
           badge="Oferta"
           badgeColor="green"
           reviews={{ avg: 3.7, amount: 56767 }}
@@ -54,7 +53,7 @@ export default function Home() {
           // cover="https://images.tcdn.com.br/img/img_prod/1178996/cadeira_com_braco_imperio_813_1_8c4be413182044fc74a357c81c4bf0cf.png"
           // backCover="https://images.tcdn.com.br/img/img_prod/1178996/cadeira_com_braco_imperio_813_1_8c4be413182044fc74a357c81c4bf0cf.png"
           rangePrice={{ min: 442.12, max: 865.99 }}
-        />
+        /> */}
       </div>
     </Container>
   )
