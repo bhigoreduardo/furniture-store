@@ -6,6 +6,7 @@ import PaymentModel from '../models/payment.model.js'
 import OrderModel, { StatusEnumType } from '../models/order.model.js'
 import InventoryModel from '../models/inventory.model.js'
 import CustomerModel from '../models/customer.model.js'
+import ColorModel from '../models/color.model.js'
 import ErrorHandler from '../utils/ErrorHandler.js'
 
 export const save = async (req, res) => {
@@ -54,9 +55,13 @@ export const save = async (req, res) => {
         },
       })
 
+      const color = await ColorModel.findById(inventory.color)
+
       return {
         product: product._id,
         color: inventory.color,
+        bg: color.color,
+        colorName: color.name,
         name: product.name,
         cover: product.productData.media.cover,
         price,
@@ -94,7 +99,7 @@ export const save = async (req, res) => {
     cart: items,
     address,
     payment: { method, fee, amount, cartQuantity },
-    status: [{ history: StatusEnumType.Created }],
+    status: [{ history: StatusEnumType.Created }, { history: StatusEnumType.Pending }],
     obs: req.body.obs,
   })
 

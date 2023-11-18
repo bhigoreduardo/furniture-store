@@ -8,6 +8,7 @@ import {
   translateOrderStatus,
 } from '../format'
 import Count from '../../app/components/ui/button/count'
+import Button from '../../app/components/ui/button/button'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
 
@@ -145,11 +146,84 @@ export const orderColumns = [
     header: 'Ações',
     cell: ({ row }) => (
       <Link
-        to={`pedidos/detalhe/${row.original?._id}`}
+        to={`detalhe/${row.original?._id}`}
         className="flex items-center gap-1 text-sm text-blue-500"
       >
         Vê detalhes <ArrowRight size={14} />
       </Link>
+    ),
+  },
+]
+
+export const cartOrderColumns = [
+  {
+    accessorKey: 'product',
+    header: 'Produto',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-3">
+        <img
+          src={`${serverPublicImages}/${row?.original?.cover}`}
+          alt={row?.original?.name}
+          className="w-16 h-16 object-cover"
+        />
+        <div className="flex flex-col gap-1">
+          <h6 className="font-normal text-sm text-blue-500">
+            {row?.original?.name}
+          </h6>
+          <div className="flex items-center gap-1">
+            <span className="text-sm text-gray-400">Cor:</span>
+            <span
+              className="inline-block w-4 h-4 rounded-full"
+              style={{ backgroundColor: row?.original?.bg }}
+              title={row?.original?.colorName}
+            />
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'price',
+    header: 'Preço',
+    cell: ({ row }) => (
+      <div className="flex flex-col">
+        <div className="flex items-center gap-1">
+          {row?.original?.price !== row?.original?.regularPrice && (
+            <span className="text-gray-400 line-through">
+              {currencyPrice.format(row?.original?.regularPrice)}
+            </span>
+          )}
+          <span className="text-blue-500">
+            {currencyPrice.format(row?.original?.price)}
+          </span>
+        </div>
+        {row?.original?.fee && (
+          <span className="text-xs text-gray-600">
+            Frete: {currencyPrice.format(row?.original?.fee)}
+          </span>
+        )}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'quantity',
+    header: 'Quantidade',
+  },
+  {
+    accessorKey: 'subAmount',
+    header: 'Sub-Total',
+    cell: ({ row }) => currencyPrice.format(row?.original?.subAmount),
+  },
+  {
+    accessorKey: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <Button
+        label="Avaliar"
+        // className="bg-orange-500 text-white hover:bg-orange-600 !py-2 flex-row-reverse uppercase"
+        className="!gap-1 font-semibold text-sm text-orange-500 hover:bg-orange-500 hover:text-white !py-2"
+        // onClick={() => navigate(-1)}
+      />
     ),
   },
 ]

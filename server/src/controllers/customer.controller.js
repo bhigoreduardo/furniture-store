@@ -273,3 +273,11 @@ export const searchOrders = async (req, res) => {
   )
   return res.status(200).json(finded)
 }
+
+export const findByIdOrders = async (req, res) => {
+  const finded = await OrderModel.findOne({
+    _id: req.params.id,
+    'customer.user': req.userId,
+  })
+  return res.status(200).json(finded)
+}

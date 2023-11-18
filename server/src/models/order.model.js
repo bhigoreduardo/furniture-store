@@ -52,6 +52,11 @@ const OrderSchema = new mongoose.Schema(
             ref: 'Color',
             required: [true, 'Cor é orbrigatório'],
           },
+          bg: { type: String, required: [true, 'Cor de fundo é obrigatório'] },
+          colorName: {
+            type: String,
+            required: [true, 'Nome da cor é obrigatório'],
+          },
           name: { type: String, required: [true, 'Nome é obrigatório'] },
           cover: { type: String },
           price: {

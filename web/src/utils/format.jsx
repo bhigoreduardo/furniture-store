@@ -2,6 +2,16 @@ import DOMPurify from 'dompurify'
 import truncHtml from 'trunc-html'
 import { removeMask } from './mask'
 import { OrderStatusEnumType } from '../types/enum-type'
+import {
+  CheckCircle,
+  Checks,
+  MapPinLine,
+  Notepad,
+  User,
+  WarningCircle,
+  XCircle,
+} from 'phosphor-react'
+// import { Checks } from 'phosphor-react'
 
 export const mergeClassName = (first, last) => first + ' ' + last
 
@@ -156,7 +166,7 @@ export const getOrderStatusColor = (orderStatus) => {
     case OrderStatusEnumType.Pending:
       return 'text-purple-500'
     case OrderStatusEnumType.Paid:
-      return 'text-yellow-500'
+      return 'text-lime-500'
     case OrderStatusEnumType.Canceled:
       return 'text-red-500'
     case OrderStatusEnumType.Progress:
@@ -184,5 +194,47 @@ export const translateOrderStatus = (orderStatus) => {
       return 'Em trânsito'
     case OrderStatusEnumType.Delivered:
       return 'Entregue'
+  }
+}
+
+export const getOrderHistoryStyle = (orderStatus) => {
+  const node = { dateTime: orderStatus.dateTime }
+  switch (orderStatus.history) {
+    case OrderStatusEnumType.Created:
+      node.bgIcon = 'bg-blue-50'
+      node.icon = <Notepad size={20} className="text-blue-500" />
+      node.text = 'Pedido criado.'
+      return node
+    case OrderStatusEnumType.Pending:
+      node.bgIcon = 'bg-purple-50'
+      node.icon = <WarningCircle size={20} className="text-purple-500" />
+      node.text = 'Pagamento do pedido pendente.'
+      return node
+    case OrderStatusEnumType.Paid:
+      node.bgIcon = 'bg-lime-50'
+      node.icon = <CheckCircle size={20} className="text-lime-500" />
+      node.text = 'Seu pedido foi pago com sucesso.'
+      return node
+    case OrderStatusEnumType.Canceled:
+      node.bgIcon = 'bg-red-50'
+      node.icon = <XCircle size={20} className="text-red-500" />
+      node.text = 'Pedido cancelado.'
+      return node
+    case OrderStatusEnumType.Progress:
+      node.bgIcon = 'bg-orange-50'
+      node.icon = <User size={20} className="text-orange-500" />
+      node.text = 'Seu pedido está sendo empacotado.'
+      return node
+    case OrderStatusEnumType.Traffic:
+      node.bgIcon = 'bg-fuchsia-50'
+      node.icon = <MapPinLine size={20} className="text-fuchsia-500" />
+      node.text = 'Seu pedido está em trânsito para entrega.'
+      return node
+    case OrderStatusEnumType.Delivered:
+      node.bgIcon = 'bg-green-50'
+      node.icon = <Checks size={20} className="text-green-500" />
+      node.text =
+        'Seu pedido foi entregue. Obrigado por comprar na Furniture eCommerce!'
+      return node
   }
 }

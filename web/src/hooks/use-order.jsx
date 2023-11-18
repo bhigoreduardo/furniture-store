@@ -33,3 +33,17 @@ export function useFilterOrders() {
 
   return { ...data }
 }
+
+export function useOrder(id) {
+  const { setIsLoading } = useApp()
+
+  const { data } = useQuery({
+    queryKey: ['order', id],
+    queryFn: async () => {
+      if (id) return await get(`/customers/orders/${id}`, setIsLoading, toast)
+      return null
+    },
+  })
+
+  return { ...data }
+}

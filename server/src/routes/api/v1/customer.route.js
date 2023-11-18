@@ -90,5 +90,11 @@ router.get(
   useError(customerAuth),
   useError(customerController.searchOrders)
 )
+router.get(
+  '/orders/:id',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.findByIdOrders)
+)
 
 export default router

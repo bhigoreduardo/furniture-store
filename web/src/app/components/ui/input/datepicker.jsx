@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
-// import { useState } from 'react'
 import { Calendar } from 'phosphor-react'
-import DatePicker from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
+import ptBR from 'date-fns/locale/pt-BR'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import { mergeClassName } from '../../../../utils/format'
+
+registerLocale('ptBR', ptBR)
 
 export default function DatePickerUI({ id, name, className, ...props }) {
   return (
@@ -21,6 +23,7 @@ export default function DatePickerUI({ id, name, className, ...props }) {
         dateFormat="dd/MM/yy"
         isClearable={true}
         monthsShown={2}
+        locale="ptBR"
         // withPortal
         // openToDate={new Date("1993/09/28")}
         placeholderText="Selecione a data"

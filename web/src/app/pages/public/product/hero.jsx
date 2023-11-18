@@ -108,6 +108,7 @@ export default function Hero({
     if (formik.values.quantity > stock) formik.setFieldValue('quantity', stock)
   }, [stock]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const productStatus = stock !== '' && stock !== undefined ? stock : status
   return (
     <Container className="grid grid-cols-2 gap-10">
       <div className="flex flex-col gap-4">
@@ -190,11 +191,11 @@ export default function Hero({
             </p>
             <p
               className={`flex-1 font-semibold text-xs ${
-                status ? 'text-green-500' : 'text-red-500'
+                productStatus ? 'text-green-500' : 'text-red-500'
               }`}
             >
               <span className="font-normal text-gray-500">Disponilidade:</span>{' '}
-              {status ? 'Em estoque' : 'Fora de estoque'}
+              {productStatus ? 'Em estoque' : 'Fora de estoque'}
             </p>
           </div>
           <div className="flex justify-between">
@@ -235,7 +236,7 @@ export default function Hero({
             selectedValue={formik.values.color}
             onBlur={formik.handleBlur}
           />
-          {stock && (
+          {stock !== '' && stock !== undefined && (
             <p className="text-xs text-gray-600">
               <span className="font-semibold">Unidades:</span> {stock}
             </p>
@@ -254,6 +255,7 @@ export default function Hero({
             icon={<ShoppingCartSimple size={20} className="text-white" />}
             onClick={formik.handleSubmit}
             className="bg-orange-500 text-white hover:bg-orange-600 w-full"
+            disabled={!productStatus}
           />
         </div>
 
@@ -291,7 +293,10 @@ export default function Hero({
                 <div className="hidden absolute top-[calc(100%+10px)] left-0 p-1 bg-white border border-gray-200 group-hover:flex flex-col text-xs text-gray-600">
                   {item?.availableInstallments ? (
                     item.infoInstallments.map((item, i) => (
-                      <span key={i} className="inline-block w-[100px] text-center">
+                      <span
+                        key={i}
+                        className="inline-block w-[100px] text-center"
+                      >
                         {item.installments}x{' '}
                         {Number(item.fee) !== 0
                           ? `+ ${item.fee}%a.m.`
@@ -299,7 +304,9 @@ export default function Hero({
                       </span>
                     ))
                   ) : (
-                    <span className="inline-block w-[50px] text-center">à vista</span>
+                    <span className="inline-block w-[50px] text-center">
+                      à vista
+                    </span>
                   )}
                 </div>
               </div>

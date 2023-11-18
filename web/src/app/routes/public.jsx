@@ -19,6 +19,7 @@ import Cart from '../pages/public/cart'
 import Checkout from '../pages/public/checkout'
 import CheckoutSuccess from '../pages/public/checkout/checkout-success'
 import Orders from '../pages/public/dashboard/orders'
+import Order from '../pages/public/dashboard/orders/form'
 
 const router = [
   {
@@ -79,7 +80,10 @@ const router = [
           },
           {
             path: 'pedidos',
-            element: <Orders />,
+            children: [
+              { path: '', element: <Orders /> },
+              { path: 'detalhe/:id', element: <Order /> },
+            ],
           },
           {
             path: 'configuracao',
