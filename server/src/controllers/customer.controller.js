@@ -1,8 +1,9 @@
-import CustomerModel from '../models/customer.model.js'
-import OrderModel from '../models/order.model.js'
-import ErrorHandler from '../utils/ErrorHandler.js'
 import { filterSorted } from '../utils/format.js'
 import { sendInfoEmail } from '../utils/sendEmail.js'
+import CustomerModel from '../models/customer.model.js'
+import OrderModel from '../models/order.model.js'
+import ProductModel from '../models/product.model.js'
+import ErrorHandler from '../utils/ErrorHandler.js'
 
 export const signUp = async (req, res) => {
   const { password, repeatPassword, ...restBody } = req.body
@@ -284,9 +285,107 @@ export const findByIdOrders = async (req, res) => {
 
 export const findOrderByCode = async (req, res) => {
   const finded = await OrderModel.findOne({
-    'code': req.params.code,
+    code: req.params.code,
     'customer.user': req.userId,
     'customer.email': req.query.email,
   })
   return res.status(200).json(finded)
+}
+
+export const toggleFavorite = async (req, res) => {
+  const { id: productId } = req.body
+  const finded = await CustomerModel.findById(req.userId)
+  if (!finded.favorits.includes(productId)) finded.favorits.push(productId)
+  else
+    finded.favorits = finded.favorits.filter(
+      (item) => item.toString() !== productId
+    )
+
+  await CustomerModel.findByIdAndUpdate(
+    req.userId,
+    { favorits: finded.favorits },
+    { new: true }
+  )
+
+  const findedUpdated = await CustomerModel.findById(req.userId)
+  return res.status(200).json({
+    success: true,
+    message: 'Favoritos atualizado',
+    ...findedUpdated.sendAuth(),
+  })
+}
+
+export const toggleCompare = async (req, res) => {
+  const { id: productId } = req.body
+  const finded = await CustomerModel.findById(req.userId)
+  console.log(finded.compare)
+  // if (finded.compare.get(productId)) finded.compare.delete(productId)
+  // else finded.set(productId)
+  if (!finded.compare.includes(productId)) finded.compare.push(productId)
+  else
+    finded.compare = finded.compare.filter(
+      (item) => item.toString() !== productId
+    )
+
+  await CustomerModel.findByIdAndUpdate(
+    req.userId,
+    { compare: finded.compare },
+    { new: true }
+  )
+
+  const findedUpdated = await CustomerModel.findById(req.userId)
+  return res.status(200).json({
+    success: true,
+    message: 'Comparar atualizado',
+    ...findedUpdated.sendAuth(),
+  })
+}
+
+export const updateHistory = async (req, res) => {
+  const { id: productId } = req.body
+  const today = new Date().toISOString().split('T')[0]
+  const finded = await CustomerModel.findById(req.userId)
+  if (!Object.keys(finded.history).includes(today))
+    finded.history[today] = [productId]
+  else {
+    if (!finded.history[today].includes(productId))
+      finded.history[today].push(productId)
+  }
+
+  await CustomerModel.findByIdAndUpdate(
+    req.userId,
+    { history: finded.history },
+    { new: true }
+  )
+
+  const findedUpdated = await CustomerModel.findById(req.userId)
+  return res.status(200).json({ success: true, ...findedUpdated.sendAuth() })
+}
+
+export const findSearchFavorits = async (req, res) => {
+  const query = req.query
+  const page = Number(query.page) || 0
+  const limit = 10
+
+  const finded = await CustomerModel.findById(req.userId).select('favorits')
+
+  const allFinded = await Promise.all(
+    finded.favorits.map(
+      async (item) =>
+        await ProductModel.paginate(
+          { _id: item },
+          {
+            page,
+            limit,
+            select: '_id name rangePrice productData.media category status',
+            populate: [
+              { path: 'productData.media', select: 'cover' },
+              { path: 'category', select: 'name' },
+            ],
+          }
+        )
+    )
+  )
+
+  return res.status(200).json(...allFinded)
 }

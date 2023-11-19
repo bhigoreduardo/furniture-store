@@ -53,7 +53,7 @@ export default function Sidebar() {
         title="Carrinho"
       />
       <NavItem
-        to="favoritos"
+        to="/favoritos"
         icon={<Heart size={18} weight="duotone" />}
         label="Favoritos"
         title="Favoritos"

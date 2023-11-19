@@ -1,9 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom'
-import { Eye, Heart, ShoppingCartSimple } from 'phosphor-react'
+import {
+  ArrowsCounterClockwise,
+  Heart,
+  ShoppingCartSimple,
+} from 'phosphor-react'
+import { toast } from 'react-toastify'
 import ReactStars from 'react-rating-stars-component'
 
 import { currencyPrice, getBadgeColor } from '../../../../utils/format'
+import { patch } from '../../../../libs/fetcher'
+import useApp from '../../../../hooks/use-app'
+import useUser from '../../../../hooks/use-user'
 import Badge from '../badge'
 import Button from '../button/button'
 
@@ -18,6 +26,20 @@ export default function CardProduct({
   rangePrice,
 }) {
   const navigate = useNavigate()
+  const { setIsLoading } = useApp()
+  const { user, token, handleUpdateUser } = useUser()
+  const isFavorite = user?.favorits.includes(id)
+  const isCompare = user?.compare.includes(id)
+  const handleProduct = async (endpoint) => {
+    if (!user || !token) return navigate('/entrar')
+    const { user: userData, token: tokenData } = await patch(
+      endpoint,
+      { id: id },
+      setIsLoading,
+      toast
+    )
+    handleUpdateUser(userData, tokenData)
+  }
 
   return (
     <article className="relative flex flex-col gap-1 p-2 border border-gray-100 rounded-sm hover:shadow-md hover:scale-105 duration-300 ease-in-out">
@@ -42,22 +64,26 @@ export default function CardProduct({
         />
         <div className="hidden absolute top-0 right-0 left-0 bottom-0 group-hover:flex items-center justify-center gap-2 bg-black w-full h-full bg-opacity-50 duration-300 ease-in-out">
           <Button
-            icon={<Heart size={16} className="!transition-all !duration-0" />}
-            className="bg-white hover:bg-orange-500 text-gray-900 hover:text-white !w-10 !h-10 !p-0 !rounded-full"
+            icon={<Heart size={16} />}
+            onClick={() => handleProduct('/customers/toggle-favorite')}
+            title="Favoritar"
+            className={`${
+              isFavorite ? 'bg-orange-500 text-white' : 'bg-white text-gray-900'
+            } hover:bg-orange-500 hover:text-white !w-10 !h-10 !p-0 !rounded-full`}
           />
           <Button
-            icon={
-              <ShoppingCartSimple
-                size={16}
-                className="!transition-all !duration-0"
-              />
-            }
+            icon={<ShoppingCartSimple size={16} />}
             onClick={() => navigate(`/produto/${id}`)}
+            title="Visualizar"
             className="bg-white hover:bg-orange-500 text-gray-900 hover:text-white !w-10 !h-10 !p-0 !rounded-full"
           />
           <Button
-            icon={<Eye size={16} className="!transition-all !duration-0" />}
-            className="bg-white hover:bg-orange-500 text-gray-900 hover:text-white !w-10 !h-10 !p-0 !rounded-full"
+            icon={<ArrowsCounterClockwise size={16} />}
+            onClick={() => handleProduct('/customers/toggle-compare')}
+            title="Comparar"
+            className={`${
+              isCompare ? 'bg-orange-500 text-white' : 'bg-white text-gray-900'
+            } hover:bg-orange-500 hover:text-white !w-10 !h-10 !p-0 !rounded-full`}
           />
         </div>
       </div>

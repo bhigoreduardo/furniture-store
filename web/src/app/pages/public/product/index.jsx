@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 
 import { useProduct } from '../../../../hooks/use-product'
+import { useHistory } from '../../../../hooks/use-user'
 import Container from '../../../components/ui/container'
 import Breadcrumb from '../../../components/ui/breadcrumb'
 import Tab from '../../../components/ui/button/tab'
@@ -12,6 +13,7 @@ import Overview from './overview'
 export default function Product() {
   const { id } = useParams()
   const product = useProduct(id, true)
+  useHistory(id)
   const [tabInformation, setTabInformation] = useState('description')
   const getActiveTab = (tab) => tab === tabInformation
 

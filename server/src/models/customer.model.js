@@ -82,16 +82,22 @@ const CustomerSchema = new mongoose.Schema(
     chatStatus: { type: Boolean, default: false },
     orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
     amountSpend: { type: Number, default: 0 },
+    historyAvailable: { type: Boolean, default: true },
+    history: { type: Object, default: {} },
     favorits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
-    history: {
-      type: [
-        {
-          [Date]: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
-        },
-      ],
-      default: [],
-    },
     compare: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+    // compare: {
+    //   type: Map,
+    //   of: {
+    //     type: [
+    //       {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: 'Product',
+    //       },
+    //     ],
+    //   },
+    //   default: {},
+    // },
   },
   { timestamps: true }
 )
@@ -157,8 +163,9 @@ CustomerSchema.methods.sendAuth = function () {
       status: this.status,
       chatStatus: this.chatStatus,
       orders: this.orders,
-      favorits: this.favorits,
+      historyAvailable: this.historyAvailable,
       history: this.history,
+      favorits: this.favorits,
       compare: this.compare,
       activated: this.activated,
       createdAt: this.createdAt,

@@ -57,7 +57,7 @@ export default function MiddleNav() {
               className="text-white"
             />
           </button>
-          <button>
+          <button onClick={() => navigate('/favoritos')}>
             <Heart size={20} weight="duotone" className="text-white" />
           </button>
           {!user && !token ? (

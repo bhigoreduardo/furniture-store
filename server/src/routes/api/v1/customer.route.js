@@ -102,5 +102,29 @@ router.get(
   useError(customerAuth),
   useError(customerController.findOrderByCode)
 )
+router.patch(
+  '/toggle-favorite',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.toggleFavorite)
+)
+router.patch(
+  '/toggle-compare',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.toggleCompare)
+)
+router.patch(
+  '/update-history',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.updateHistory)
+)
+router.get(
+  '/favorits/search',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.findSearchFavorits)
+)
 
 export default router

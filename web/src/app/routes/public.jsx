@@ -20,6 +20,7 @@ import Checkout from '../pages/public/checkout'
 import CheckoutSuccess from '../pages/public/checkout/checkout-success'
 import Orders from '../pages/public/dashboard/orders'
 import Order from '../pages/public/dashboard/orders/form'
+import Wishlist from '../pages/public/wishlist'
 
 const router = [
   {
@@ -69,6 +70,10 @@ const router = [
       {
         path: '/rastrear',
         element: <Tracker />,
+      },
+      {
+        path: '/favoritos',
+        element: <Wishlist />,
       },
       {
         path: '/conta',

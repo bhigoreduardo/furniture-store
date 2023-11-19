@@ -52,3 +52,22 @@ export function useProducts() {
 
   return data
 }
+
+export function useFilterFavorits() {
+  const { setIsLoading, refetch, setRefetch } = useApp()
+  const { page } = useFilter()
+
+  const { data } = useQuery({
+    queryKey: ['favorits', page],
+    queryFn: async () =>
+      await get(
+        `/customers/favorits/search?page=${page}`,
+        setIsLoading,
+        toast,
+        setRefetch
+      ),
+    staleTime: refetch ? 0 : 1000 * 60 * 1,
+  })
+
+  return { ...data }
+}

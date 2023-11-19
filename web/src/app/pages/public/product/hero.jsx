@@ -8,12 +8,13 @@ import * as yup from 'yup'
 import ReactStars from 'react-rating-stars-component'
 
 import { parsedSelectData } from '../../../../utils/format'
+import useApp from '../../../../hooks/use-app'
+import useUser from '../../../../hooks/use-user'
 import Slider from '../../../components/ui/slider'
 import RadioBoxGroup from '../../../components/ui/input/radiobox-group'
 import Count from '../../../components/ui/button/count'
 import Button from '../../../components/ui/button/button'
 import Container from '../../../components/ui/container'
-import useApp from '../../../../hooks/use-app'
 import RangePrice from '../../../components/ui/range-price'
 
 export default function Hero({
@@ -32,6 +33,10 @@ export default function Hero({
 }) {
   const [image, setImage] = useState('')
   const { payment, cartItems, handleCartItems } = useApp()
+  const { user } = useUser()
+  const isFavorite = user?.favorits.includes(id)
+  const isCompare = user?.compare.includes(id)
+  // const isCompare = Boolean(user?.compare[id])
   const parsedColor =
     inventory &&
     parsedSelectData(
@@ -262,17 +267,21 @@ export default function Hero({
         <div className="flex items-center justify-center gap-4">
           <button
             type="button"
-            className="flex items-center gap-1 text-sm text-gray-900 hover:text-orange-500 duration-300 ease-in-out"
+            className={`${
+              isFavorite ? 'text-orange-500' : 'text-gray-900'
+            } flex items-center gap-1 text-sm hover:text-orange-500 duration-300 ease-in-out`}
           >
             <Heart size={16} weight="duotone" />
-            Adicionar aos favoritos
+            {isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
           </button>
           <button
             type="button"
-            className="flex items-center gap-1 text-sm text-gray-900 hover:text-orange-500 duration-300 ease-in-out"
+            className={`${
+              isCompare ? 'text-orange-500' : 'text-gray-900'
+            } flex items-center gap-1 text-sm hover:text-orange-500 duration-300 ease-in-out`}
           >
             <ArrowsClockwise size={16} />
-            Adicionar aos compare
+            {isCompare ? 'Remover dos compare' : 'Adicionar aos compare'}
           </button>
         </div>
 
@@ -282,6 +291,7 @@ export default function Hero({
             {payment?.map((item) => (
               <div
                 key={item._id}
+                title={item.method}
                 className="group relative h-7 w-10 p-1 bg-white border border-gray-200 rounded-sm cursor-pointer"
               >
                 <img
