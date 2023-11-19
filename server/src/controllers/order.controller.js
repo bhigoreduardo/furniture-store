@@ -99,7 +99,10 @@ export const save = async (req, res) => {
     cart: items,
     address,
     payment: { method, fee, amount, cartQuantity },
-    status: [{ history: StatusEnumType.Created }, { history: StatusEnumType.Pending }],
+    status: [
+      { history: StatusEnumType.Created },
+      { history: StatusEnumType.Pending },
+    ],
     obs: req.body.obs,
   })
 

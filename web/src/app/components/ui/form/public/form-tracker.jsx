@@ -1,7 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useFormik } from 'formik'
-import * as yup from 'yup'
+import { toast } from 'react-toastify'
 import { ArrowRight } from 'phosphor-react'
+import * as yup from 'yup'
 
+import { get } from '../../../../../libs/fetcher'
+import useApp from '../../../../../hooks/use-app'
 import Button from '../../button/button'
 import InputLabel from '../../input/input-label'
 
@@ -10,24 +14,32 @@ const validationSchema = yup.object().shape({
     .string()
     .matches(/\S+@\S+\.\S+/, 'Informe email válido')
     .required('Email é obrigatório'),
-  _id: yup
+  code: yup
     .string()
-    .length(24, 'Número do pedido possui 24 caracteres')
+    .length(8, 'Número do pedido possui 8 caracteres')
     .required('Número do pedido é obrigatório'),
 })
 const initialValues = {
   email: '',
-  _id: '',
+  code: '',
 }
 
-export default function FormTracker() {
+export default function FormTracker({ setData }) {
+  const { setIsLoading } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
-  const handleSubmit = async (values) => console.log(values)
+  const handleSubmit = async (values) => {
+    const data = await get(
+      `/customers/search/orders/${values.code}?email=${values.email}`,
+      setIsLoading,
+      toast
+    )
+    setData(data)
+  }
   return (
     <form
       className="w-full flex flex-col gap-6 px-8 py-6 max-w-[800px]"
@@ -46,15 +58,15 @@ export default function FormTracker() {
 
       <div className="flex gap-4">
         <InputLabel
-          id="_id"
+          id="code"
           label="Número do pedido"
           placeholder="Informe o número do pedido"
-          name="_id"
+          name="code"
           hint="Número do pedido foi enviado para seu email durante a compra"
-          error={formik.touched._id && formik.errors._id}
+          error={formik.touched.code && formik.errors.code}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values._id}
+          value={formik.values.code}
           className="flex-grow"
         />
         <InputLabel

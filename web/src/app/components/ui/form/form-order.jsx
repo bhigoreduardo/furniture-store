@@ -31,7 +31,7 @@ export default function FormOrder({ data }) {
             <h6 className="text-xl text-gray-900">#{data.code}</h6>
             <p className="flex items-center gap-2 text-sm text-gray-600">
               <span>{data?.payment?.cartQuantity} produtos</span>
-              <span>.</span>
+              <span className="w-1 h-1 bg-gray-600 rounded-full" />
               <span>
                 Data: {createdAt.toLocaleDateString('pt-BR', customOptionsDate)}
               </span>

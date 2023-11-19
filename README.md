@@ -11,6 +11,7 @@ FIXME:
   - Colocar máscara no cartão de crédito
   - Filtro do history no order aggregation: https://stackoverflow.com/questions/38808154/mongodb-filter-on-value-of-the-last-element-in-an-array
   - Bug do reload na conta do customer
+  - Refresh token: https://github.com/bhigoreduardo/react-app/blob/main/code-hero/schedule-app/client/src/libs/apis.ts
 
 TODO:
   - Condições de loja no ar:
