@@ -413,3 +413,20 @@ export const findAllCompare = async (req, res) => {
 
   return res.status(200).json(allFinded)
 }
+
+export const findSearchHistory = async (req, res) => {
+  const finded = await CustomerModel.findById(req.userId).select('history')
+  const keys = Object.keys(finded.history)
+
+  const allFinded = []
+  keys?.length > 0 &&
+    keys.map((key) =>
+      finded.history[key].map(async (item) => {
+        const finded = await ProductModel.findById(item).select('name')
+        console.log(finded)
+        allFinded.push(finded)
+      })
+    )
+
+  return res.status(200).json(allFinded)
+}

@@ -127,6 +127,12 @@ router.get(
   useError(customerController.findAllCompare)
 )
 router.get(
+  '/history/search',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.findSearchHistory)
+)
+router.get(
   '/:id',
   useError(userAuth),
   useError(adminAuth),

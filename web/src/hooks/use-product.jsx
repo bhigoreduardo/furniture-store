@@ -83,3 +83,22 @@ export function useCompare() {
 
   return data
 }
+
+export function useFilterHistory() {
+  const { setIsLoading, refetch, setRefetch } = useApp()
+  const { page, perPage } = useFilter()
+
+  const { data } = useQuery({
+    queryKey: ['history', page],
+    queryFn: async () =>
+      await get(
+        `/customers/history/search?page=${page}&perPage=${perPage}`,
+        setIsLoading,
+        toast,
+        setRefetch
+      ),
+    staleTime: refetch ? 0 : 1000 * 60 * 1,
+  })
+
+  return { ...data }
+}

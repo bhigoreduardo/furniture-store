@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { orderColumns } from '../../../../utils/constants/public'
 import { useFilterOrders } from '../../../../hooks/use-order'
+import { useFilterHistory } from '../../../../hooks/use-product'
 import useUser from '../../../../hooks/use-user'
 import CardOverview from '../../../components/ui/card/card-overview'
 import CardProfile from '../../../components/ui/card/customer/card-profile'
@@ -14,6 +15,7 @@ export default function Dashboard() {
   const navigate = useNavigate()
   const { user } = useUser()
   const { docs: orders } = useFilterOrders()
+  useFilterHistory()
   const address = user?.address
 
   return (
