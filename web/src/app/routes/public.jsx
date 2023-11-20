@@ -22,6 +22,7 @@ import Orders from '../pages/public/dashboard/orders'
 import Order from '../pages/public/dashboard/orders/form'
 import Wishlist from '../pages/public/wishlist'
 import Compare from '../pages/public/compare'
+import Address from '../pages/public/dashboard/address'
 
 const router = [
   {
@@ -94,6 +95,10 @@ const router = [
               { path: '', element: <Orders /> },
               { path: 'detalhe/:id', element: <Order /> },
             ],
+          },
+          {
+            path: 'endereco',
+            element: <Address />,
           },
           {
             path: 'configuracao',
