@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import useFilter from '../../../../hooks/use-filter'
+import { mergeClassName } from '../../../../utils/format'
 import Arrow from '../button/arrow'
 import Bullet from './bullet'
 
-export default function Pagination({ total, pages }) {
+export default function Pagination({ total, pages, className }) {
   const { page, setPage } = useFilter()
   const handlePage = (item) => setPage(item)
   const handleArrowPage = (direction) => {
@@ -16,7 +17,12 @@ export default function Pagination({ total, pages }) {
   }
 
   return (
-    <div className="flex items-center justify-between px-6">
+    <div
+      className={mergeClassName(
+        'flex items-center justify-between px-6',
+        className
+      )}
+    >
       <p className="text-xs text-gray-600">
         <span className="font-semibold">({total})</span> Resultados
       </p>

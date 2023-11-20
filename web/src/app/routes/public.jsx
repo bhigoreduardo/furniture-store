@@ -21,6 +21,7 @@ import CheckoutSuccess from '../pages/public/checkout/checkout-success'
 import Orders from '../pages/public/dashboard/orders'
 import Order from '../pages/public/dashboard/orders/form'
 import Wishlist from '../pages/public/wishlist'
+import Compare from '../pages/public/compare'
 
 const router = [
   {
@@ -74,6 +75,10 @@ const router = [
       {
         path: '/favoritos',
         element: <Wishlist />,
+      },
+      {
+        path: '/compare',
+        element: <Compare />,
       },
       {
         path: '/conta',

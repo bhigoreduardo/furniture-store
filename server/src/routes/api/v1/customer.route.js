@@ -72,12 +72,6 @@ router.get(
   useError(adminAuth),
   useError(customerController.search)
 )
-router.get(
-  '/:id',
-  useError(userAuth),
-  useError(adminAuth),
-  useError(customerController.findById)
-)
 router.patch(
   '/:id/toggle-status',
   useError(userAuth),
@@ -125,6 +119,18 @@ router.get(
   useError(userAuth),
   useError(customerAuth),
   useError(customerController.findSearchFavorits)
+)
+router.get(
+  '/compare',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.findAllCompare)
+)
+router.get(
+  '/:id',
+  useError(userAuth),
+  useError(adminAuth),
+  useError(customerController.findById)
 )
 
 export default router

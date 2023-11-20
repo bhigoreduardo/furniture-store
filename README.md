@@ -13,6 +13,7 @@ FIXME:
   - Bug do reload na conta do customer
   - Refresh token: https://github.com/bhigoreduardo/react-app/blob/main/code-hero/schedule-app/client/src/libs/apis.ts
   - Bug no cash das informações do usuário (quando sair, resetar todos caches)
+  - externalizar handleProduct(user, token, handleUpdateUser, endpoint, id) - [card-product/compare/wishlist/hero]
 
 TODO:
   - Condições de loja no ar:

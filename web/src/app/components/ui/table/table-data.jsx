@@ -24,6 +24,7 @@ export default function TableData({
   data,
   total,
   pages,
+  isColumn,
   className,
 }) {
   const table = useReactTable({
@@ -41,12 +42,21 @@ export default function TableData({
       )}
     >
       {title && <Heading title={title} btn={btn} />}
-      <Table className="mb-6">
+      <Table className={`${isColumn && 'flex'}`}>
         <TableHeader>
           {table.getHeaderGroups()?.map((item, i) => (
-            <TableRow key={i}>
+            <TableRow
+              key={i}
+              className={`${
+                isColumn && 'flex flex-col  h-full !items-start'
+              }`}
+            >
               {item.headers?.map((value, key) => (
-                <TableHead key={key}>
+                <TableHead
+                  key={key}
+                  // className={`${isColumn && 'first-of-type:py-[190px]'}`}
+                  className={`${isColumn && 'first-of-type:flex-grow first-of-type:flex first-of-type:items-center flex-none text-sm h-[20px]'}`}
+                >
                   {value.isPlaceholder
                     ? null
                     : flexRender(
@@ -61,9 +71,13 @@ export default function TableData({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((item, i) => (
-              <TableRow key={i} data-state={item.getIsSelected() && 'selected'}>
+              <TableRow
+                key={i}
+                data-state={item.getIsSelected() && 'selected'}
+                className={`${isColumn && 'flex flex-col !items-start'}`}
+              >
                 {item.getVisibleCells().map((value, key) => (
-                  <TableCell key={key}>
+                  <TableCell key={key} className={`${isColumn && 'flex-none'}`}>
                     {flexRender(
                       value.column.columnDef.cell,
                       value.getContext()
@@ -80,7 +94,7 @@ export default function TableData({
         </TableBody>
       </Table>
       {typeof total !== 'undefined' && typeof pages !== 'undefined' && (
-        <Pagination total={total} pages={pages} />
+        <Pagination total={total} pages={pages} className="mt-6" />
       )}
     </div>
   )

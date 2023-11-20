@@ -71,3 +71,15 @@ export function useFilterFavorits() {
 
   return { ...data }
 }
+
+export function useCompare() {
+  const { setIsLoading } = useApp()
+
+  const { data } = useQuery({
+    queryKey: ['compare'],
+    queryFn: async () => await get('/customers/compare', setIsLoading, toast),
+    staleTime: 1000 * 60 * 1,
+  })
+
+  return data
+}

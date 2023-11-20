@@ -60,7 +60,7 @@ export default function Sidebar() {
         className={comparePathname(path, 'favoritos') && ACTIVE_ITEM}
       />
       <NavItem
-        to="compare"
+        to="/compare"
         icon={<ArrowsCounterClockwise size={18} weight="duotone" />}
         label="Compare"
         title="Compare"
