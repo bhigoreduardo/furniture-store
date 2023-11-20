@@ -393,20 +393,23 @@ export const findSearchFavorits = async (req, res) => {
 export const findAllCompare = async (req, res) => {
   const finded = await CustomerModel.findById(req.userId).select('compare')
 
-  const allFinded = await Promise.all(
-    finded.compare.map(
-      async (item) =>
-        await ProductModel.findById(item)
-          .select(
-            '_id name rangePrice productData.media productData.shippingInfo category brand status createdAt'
+  const allFinded =
+    finded.compare !== undefined
+      ? await Promise.all(
+          finded.compare.map(
+            async (item) =>
+              await ProductModel.findById(item)
+                .select(
+                  '_id name rangePrice productData.media productData.shippingInfo category brand status createdAt'
+                )
+                .populate([
+                  { path: 'productData.media', select: 'cover' },
+                  { path: 'category', select: 'name' },
+                  { path: 'brand', select: 'name' },
+                ])
           )
-          .populate([
-            { path: 'productData.media', select: 'cover' },
-            { path: 'category', select: 'name' },
-            { path: 'brand', select: 'name' },
-          ])
-    )
-  )
+        )
+      : []
 
   return res.status(200).json(allFinded)
 }
