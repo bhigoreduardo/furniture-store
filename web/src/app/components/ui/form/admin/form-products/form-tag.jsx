@@ -1,5 +1,6 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable react/prop-types */
+import { XCircle } from 'phosphor-react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
@@ -7,7 +8,6 @@ import Button from '../../../button/button'
 import InputLabel from '../../../input/input-label'
 import FormWrapper from '../form-wrapper'
 import Badge from '../../../badge'
-import { XCircle } from 'phosphor-react'
 
 export default function FormTag(props) {
   const formik = useFormik({

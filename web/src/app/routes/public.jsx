@@ -8,21 +8,22 @@ import GenerateRecoveryPassword from '../pages/public/auth/generate-recovery-pas
 import RecoveryPassword from '../pages/public/auth/recovery-password'
 
 import Dashboard from '../pages/public/dashboard'
+import Orders from '../pages/public/dashboard/orders'
+import Order from '../pages/public/dashboard/orders/form'
+import Address from '../pages/public/dashboard/address'
 import Setting from '../pages/public/dashboard/setting'
 
 import Home from '../pages/public/home'
 import Product from '../pages/public/product'
+import Products from '../pages/public/products'
 import Tracker from '../pages/public/tracker'
 import Maintenance from '../pages/public/maintenance'
 import NotFound from '../pages/public/not-found'
 import Cart from '../pages/public/cart'
 import Checkout from '../pages/public/checkout'
 import CheckoutSuccess from '../pages/public/checkout/checkout-success'
-import Orders from '../pages/public/dashboard/orders'
-import Order from '../pages/public/dashboard/orders/form'
 import Wishlist from '../pages/public/wishlist'
 import Compare from '../pages/public/compare'
-import Address from '../pages/public/dashboard/address'
 
 const router = [
   {
@@ -36,6 +37,10 @@ const router = [
       {
         path: '/produto/:id',
         element: <Product />,
+      },
+      {
+        path: '/produtos',
+        element: <Products />,
       },
       {
         path: '/carrinho',

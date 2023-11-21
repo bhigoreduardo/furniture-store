@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   Heart,
   MagnifyingGlass,
@@ -9,6 +9,7 @@ import {
 
 import useApp from '../../../../../hooks/use-app'
 import useUser from '../../../../../hooks/use-user'
+import useFilter from '../../../../../hooks/use-filter'
 import Container from '../../../ui/container'
 import Input from '../../../ui/input/input'
 import Logo from '../../../ui/logo'
@@ -16,11 +17,19 @@ import CardAuth from '../../../ui/card/customer/card-auth'
 import CardCart from '../../../ui/card/customer/card-cart'
 
 export default function MiddleNav() {
+  const { pathname } = useLocation()
   const navigate = useNavigate()
   const [isCardAuth, setIsCardAuth] = useState(false)
   const [isCardCart, setIsCardCart] = useState(false)
+  const [search, setSearch] = useState('')
   const { cartItems } = useApp()
   const { user, token } = useUser()
+  const { setSearch: filterSearch } = useFilter()
+  const handleSearch = () => {
+    if (!search) return
+    filterSearch(search)
+    if (pathname.split('/')[1] !== 'produtos') navigate('/produtos')
+  }
 
   return (
     <div className="bg-blue-900 text-white border-b border-gray-600">
@@ -30,12 +39,15 @@ export default function MiddleNav() {
           id="search"
           placeholder="Pesquise qualquer assunto..."
           name="search"
+          onChange={({ target: { value } }) => setSearch(value)}
           icon={
-            <MagnifyingGlass
-              size={20}
-              weight="duotone"
-              className="text-gray-900"
-            />
+            <button
+              type="button"
+              onClick={handleSearch}
+              className="text-gray-900 hover:text-orange-500 duration-300 ease-in-out"
+            >
+              <MagnifyingGlass size={20} weight="duotone" />
+            </button>
           }
           className="flex-grow max-w-[600px]"
         />

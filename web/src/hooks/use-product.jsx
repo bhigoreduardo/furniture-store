@@ -7,13 +7,23 @@ import useFilter from './use-filter'
 
 export const useFilterProducts = () => {
   const { setIsLoading, refetch, setRefetch } = useApp()
-  const { search, priority, page, perPage } = useFilter()
+  const { search, brand, category, priceRange, priority, page, perPage } =
+    useFilter()
 
   const { data } = useQuery({
-    queryKey: ['products', search, priority, page, perPage],
+    queryKey: [
+      'products',
+      search,
+      brand,
+      category,
+      priceRange,
+      priority,
+      page,
+      perPage,
+    ],
     queryFn: async () =>
       await get(
-        `/products/search?search=${search}&priority=${priority}&page=${page}&perPage=${perPage}`,
+        `/products/search?search=${search}&brand=${brand.join(',')}&category=${category}&priceRange=${priceRange}&priority=${priority}&page=${page}&perPage=${perPage}`,
         setIsLoading,
         toast,
         setRefetch

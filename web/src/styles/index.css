@@ -11,7 +11,51 @@
   }
 }
 
-.ql-toolbar { @apply bg-white; }
-.ql-toolbar .ql-formats { @apply border border-gray-300 rounded-sm; }
-.ql-container { @apply border border-red-500 h-[250px] }
-.ql-container .ql-editor { @apply bg-white }
+.rangebox {
+  @apply relative w-full flex flex-col gap-1;
+}
+
+.rangebox .values {
+  @apply flex items-center justify-between gap-1 py-2 text-xs;
+}
+
+.rangebox .range-label {
+  @apply relative inline-block w-full;
+}
+
+.rangebox .range-label .slider-track {
+  @apply absolute top-0 bottom-0 w-full h-1 bg-gray-200 rounded-md;
+}
+
+.rangebox .range-label input[type='range'] {
+  @apply absolute top-[2px] bottom-0 w-full appearance-none bg-transparent outline-none pointer-events-none;
+}
+
+.rangebox .range-label input[type='range']::-webkit-slider-runnable-track,
+.rangebox .range-label input[type='range']::-moz-range-track,
+.rangebox .range-label input[type='range']::-ms-track {
+  @apply appearance-none h-1;
+}
+
+.rangebox .range-label input[type='range']::-webkit-slider-thumb,
+.rangebox .range-label input[type='range']::-moz-range-thumb,
+.rangebox .range-label input[type='range']::-ms-thumb {
+  @apply appearance-none h-2 w-2 rounded-full bg-white border border-orange-500 pointer-events-auto cursor-pointer;
+}
+
+.rangebox .label-text {
+  @apply flex items-center justify-between text-xs text-gray-600;
+}
+
+.ql-toolbar {
+  @apply bg-white;
+}
+.ql-toolbar .ql-formats {
+  @apply border border-gray-300 rounded-sm;
+}
+.ql-container {
+  @apply border border-red-500 h-[250px];
+}
+.ql-container .ql-editor {
+  @apply bg-white;
+}

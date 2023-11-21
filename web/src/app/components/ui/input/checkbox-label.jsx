@@ -14,7 +14,7 @@ export default function CheckboxLabel({
       <div className="flex justify-between">
         <div className="flex items-center gap-2">
           <Checkbox id={id} name={name} {...props} />
-          <label htmlFor={id}>{label}</label>
+          <label htmlFor={id} className="text-sm">{label}</label>
         </div>
         {icon}
       </div>

@@ -157,46 +157,28 @@ export const search = async (req, res) => {
         { code: { $regex: query.search, $options: 'i' } },
         { 'description.overview': { $regex: query.search, $options: 'i' } },
         { 'additional.detail': { $regex: query.search, $options: 'i' } },
-        {
-          'productData.shippingInfo.weight': {
-            $regex: query.search,
-            $options: 'i',
-          },
-        },
-        {
-          'productData.shippingInfo.length': {
-            $regex: query.search,
-            $options: 'i',
-          },
-        },
-        {
-          'productData.shippingInfo.width': {
-            $regex: query.search,
-            $options: 'i',
-          },
-        },
-        {
-          'productData.shippingInfo.height': {
-            $regex: query.search,
-            $options: 'i',
-          },
-        },
-        {
-          'productData.shippingInfo.fee': {
-            $regex: query.search,
-            $options: 'i',
-          },
-        },
-        {
-          'productData.shippingInfo.timeDelivery': {
-            $regex: query.search,
-            $options: 'i',
-          },
-        },
+        // ...(Number(query.search) !== NaN && {
+        //   ...{
+        //     'productData.shippingInfo.weight': Number(query.search),
+        //     'productData.shippingInfo.length': Number(query.search),
+        //     'productData.shippingInfo.width': Number(query.search),
+        //     'productData.shippingInfo.height': Number(query.search),
+        //     'productData.shippingInfo.fee': Number(query.search),
+        //     'productData.shippingInfo.timeDelivery': Number(query.search),
+        //   },
+        // }),
         { 'seoData.slug': { $regex: query.search, $options: 'i' } },
         { 'seoData.metaTitle': { $regex: query.search, $options: 'i' } },
         { 'seoData.metaDescription': { $regex: query.search, $options: 'i' } },
       ],
+    }),
+    ...(query.category && { category: query.category }),
+    ...(query.brand && { $in: { brand: req.brand?.split(',') } }),
+    ...(query.priceRange && {
+      ...{ 'rangePrice.min': { $gte: Number(query.priceRange.split('-')[0]) } },
+      ...(Number(query.priceRange.split('-')[1]) > 0 && {
+        'rangePrice.max': { $lte: Number(query.priceRange.split('-')[1]) },
+      }),
     }),
   }
   const finded = await ProductModel.paginate(filter, {
@@ -207,7 +189,7 @@ export const search = async (req, res) => {
       '_id name category sku productData.media productData.inventory rangePrice',
     populate: [
       { path: 'category', select: 'name' },
-      { path: 'productData.media', select: 'cover' },
+      { path: 'productData.media', select: 'cover backCover' },
       { path: 'productData.inventory.info', select: 'stock' },
     ],
   })

@@ -34,3 +34,13 @@ export const chatStatus = [
   { value: 'true', label: 'Online' },
   { value: 'undefined', label: 'Todos' },
 ]
+
+export const prices = [
+  { value: '-', label: 'Todos' },
+  { value: '0-250', label: 'Até R$250,00' },
+  { value: '250-1000', label: 'R$250,00 até R$1000,00' },
+  { value: '1000-3000', label: 'R$1000,00 até R$3000,00' },
+  { value: '3000-5000', label: 'R$3000,00 até R$5000,00' },
+  { value: '5000-10000', label: 'R$5000,00 até R$10000,00' },
+  { value: '10000-', label: 'Acima R$10000,00' },
+]

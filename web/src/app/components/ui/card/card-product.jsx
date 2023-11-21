@@ -42,7 +42,7 @@ export default function CardProduct({
   }
 
   return (
-    <article className="relative flex flex-col gap-1 p-2 border border-gray-100 rounded-sm hover:shadow-md hover:scale-105 duration-300 ease-in-out">
+    <article className="relative flex flex-col gap-1 p-2 border border-gray-100 rounded-sm hover:shadow-md hover:scale-105 duration-300 ease-in-out bg-white">
       {badge && (
         <Badge
           className={`absolute top-2 left-2 text-white uppercase ${getBadgeColor(

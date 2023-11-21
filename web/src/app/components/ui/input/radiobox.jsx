@@ -20,7 +20,7 @@ export default function RadioBox({
       />
       <span
         title={title}
-        className={`absolute inline-block w-${w} h-${h} border-[2px] bg-white border-gray-300 rounded-full peer-checked:border-orange-500 hover:border-orange-600 duration-300 ease-in-out peer-checked:border-[${border}px] peer-disabled:bg-gray-200 p-1`}
+        className={`absolute inline-block w-${w} h-${h} border-[2px] bg-white border-gray-300 rounded-full peer-checked:border-orange-500 hover:border-orange-600 peer-checked:border-[${border}px] peer-disabled:bg-gray-200 p-1`}
       >
         <span
           className="inline-block w-full h-full rounded-full"
