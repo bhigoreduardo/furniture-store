@@ -17,6 +17,10 @@ FIXME:
   - Se estiver no admin consertar bug dos compare, favorits
   - Refactor models extends and user type in users
   - Componentizar form tag button
+  - Text rich está com bug no enter
+  - Compare/Favoritos fazendo request sem user e token bug
+  - Favorito está com bug de mais de 1 produto
+  - Colocar as tags do produto para mecanismo de busca google e mostrar abaixo do produto
 
 TODO:
   - Condições de loja no ar:
@@ -85,3 +89,9 @@ const admin = new AdminUser({
 
 admin.save();
 // Oops! Error 'phone' is required
+
+Dimensões:
+	Categorias: 512*512
+	Marcas: 512*512
+	Produto Capa: 512*512
+	Produto Galeria: 1200*960

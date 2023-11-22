@@ -47,15 +47,16 @@ export default function TableData({
           {table.getHeaderGroups()?.map((item, i) => (
             <TableRow
               key={i}
-              className={`${
-                isColumn && 'flex flex-col  h-full !items-start'
-              }`}
+              className={`${isColumn && 'flex flex-col  h-full !items-start'}`}
             >
               {item.headers?.map((value, key) => (
                 <TableHead
                   key={key}
                   // className={`${isColumn && 'first-of-type:py-[190px]'}`}
-                  className={`${isColumn && 'first-of-type:flex-grow first-of-type:flex first-of-type:items-center flex-none text-sm h-[20px]'}`}
+                  className={`${
+                    isColumn &&
+                    'first-of-type:flex-grow first-of-type:flex first-of-type:items-center flex-none text-sm h-[20px]'
+                  }`}
                 >
                   {value.isPlaceholder
                     ? null
@@ -68,7 +69,7 @@ export default function TableData({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody className={`${isColumn && 'flex'}`}>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((item, i) => (
               <TableRow

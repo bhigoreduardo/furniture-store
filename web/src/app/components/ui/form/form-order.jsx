@@ -1,4 +1,7 @@
 /* eslint-disable react/prop-types */
+import { useParams } from 'react-router-dom'
+
+import useApp from '../../../../hooks/use-app'
 import { cartOrderColumns } from '../../../../utils/constants/public'
 import {
   currencyPrice,
@@ -11,6 +14,8 @@ import OrderProcess from '../order-process'
 import TableData from '../table/table-data'
 
 export default function FormOrder({ data }) {
+  const { id } = useParams()
+  const { setIsModalOpen, setProductReview } = useApp()
   const createdAt = new Date(data?.createdAt)
   const timeDelivery = data?.cart?.reduce(
     (acc, cur) => acc + cur.timeDelivery,
@@ -22,6 +27,10 @@ export default function FormOrder({ data }) {
     minute: 'numeric',
   }
   const orderHistory = data?.status?.map((item) => getOrderHistoryStyle(item))
+  const handleReview = (cartItem) => {
+    setIsModalOpen(true)
+    setProductReview({ order: id, cartItem })
+  }
 
   return (
     <form className="flex flex-col gap-6 px-6">
@@ -77,7 +86,7 @@ export default function FormOrder({ data }) {
           Produtos ({data?.payment?.cartQuantity})
         </h5>
         <TableData
-          columns={cartOrderColumns}
+          columns={cartOrderColumns(handleReview)}
           data={data?.cart}
           className="!p-0 !border-none !shadow-none"
         />
@@ -122,7 +131,9 @@ export default function FormOrder({ data }) {
 
         <div className="flex-1 flex flex-col gap-4 pl-4">
           <h5 className="font-semibold text-lg text-gray-900">Observações</h5>
-          <p className="text-sm text-gray-600">{data?.obs}</p>
+          <p className="text-sm text-gray-600">
+            {data.obs ? data.obs : 'Sem observações'}
+          </p>
         </div>
       </div>
     </form>

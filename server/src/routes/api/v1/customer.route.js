@@ -13,6 +13,7 @@ import upload from '../../../config/multer.js'
 
 const router = express.Router()
 
+// AUTH
 router.post(
   '/sign-up',
   validate(customerMiddleware.signUp),
@@ -51,6 +52,15 @@ router.put(
   validate(customerMiddleware.update),
   useError(customerController.update)
 )
+router.patch(
+  '/change-password',
+  useError(userAuth),
+  useError(customerAuth),
+  validate(customerMiddleware.changePassword),
+  useError(customerController.changePassword)
+)
+
+// ADMIN
 router.put(
   '/update/:id/admin',
   useError(userAuth),
@@ -58,13 +68,6 @@ router.put(
   upload.single('image'),
   validate(customerMiddleware.update),
   useError(customerController.updateAdmin)
-)
-router.patch(
-  '/change-password',
-  useError(userAuth),
-  useError(customerAuth),
-  validate(customerMiddleware.changePassword),
-  useError(customerController.changePassword)
 )
 router.get(
   '/search',
@@ -78,6 +81,8 @@ router.patch(
   useError(adminAuth),
   useError(customerController.toggleStatus)
 )
+
+// ORDERS
 router.get(
   '/search/orders/',
   useError(userAuth),
@@ -96,6 +101,15 @@ router.get(
   useError(customerAuth),
   useError(customerController.findOrderByCode)
 )
+router.post(
+  '/rating-review',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.ratingReview)
+)
+
+
+// PRODUCT
 router.patch(
   '/toggle-favorite',
   useError(userAuth),
@@ -132,6 +146,8 @@ router.get(
   useError(customerAuth),
   useError(customerController.findSearchHistory)
 )
+
+// ADMIN
 router.get(
   '/:id',
   useError(userAuth),

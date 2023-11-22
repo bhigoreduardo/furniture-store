@@ -82,7 +82,7 @@ const OrderSchema = new mongoose.Schema(
             default: 0,
             required: [true, 'Sub total é obrigatório'],
           },
-          stars: { type: Number, max: 5, default: 0 },
+          review: { type: mongoose.Schema.Types.ObjectId, ref: 'Review' },
           reviewd: { type: Boolean, default: false },
         },
       ],

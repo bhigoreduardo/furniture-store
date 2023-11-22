@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, XCircle, ShoppingCartSimple, Heart } from 'phosphor-react'
+import ReactStars from 'react-rating-stars-component'
 
 import {
   currencyPrice,
@@ -156,7 +157,7 @@ export const orderColumns = [
   },
 ]
 
-export const cartOrderColumns = [
+export const cartOrderColumns = (handleReview) => [
   {
     accessorKey: 'product',
     header: 'Produto',
@@ -198,7 +199,7 @@ export const cartOrderColumns = [
             {currencyPrice.format(row?.original?.price)}
           </span>
         </div>
-        {row?.original?.fee && (
+        {row?.original?.fee !== 0 && (
           <span className="text-xs text-gray-600">
             Frete: {currencyPrice.format(row?.original?.fee)}
           </span>
@@ -218,13 +219,33 @@ export const cartOrderColumns = [
   {
     accessorKey: 'actions',
     header: 'Ações',
-    cell: () => (
-      <Button
-        label="Avaliar"
-        // className="bg-orange-500 text-white hover:bg-orange-600 !py-2 flex-row-reverse uppercase"
-        className="!gap-1 font-semibold text-sm text-orange-500 hover:bg-orange-500 hover:text-white !py-2"
-        // onClick={() => navigate(-1)}
-      />
+    cell: ({ row }) => (
+      <div className="relative w-full">
+        <Button
+          label="Avaliar"
+          title="Avaliar"
+          className="peer !gap-1 font-semibold text-sm text-orange-500 hover:bg-orange-500 hover:text-white !py-2 disabled:!bg-gray-200 disabled:!text-white"
+          disabled={row?.original?.reviewd}
+          onClick={() => handleReview(row?.original?._id)}
+        />
+        {row?.original?.reviewd && (
+          <div className="absolute hidden peer-hover:block -top-[calc(100%+10px)] border border-gray-100 p-2 shadow-sm rounded-sm w-full bg-white">
+            <span className="flex items-center text-xs text-gray-900">
+              <ReactStars
+                count={5}
+                size={12}
+                value={row?.original?.review?.stars}
+                edit={false}
+                activeColor="#FA8232"
+              />
+              ({row?.original?.review?.stars})
+            </span>
+            <p className="text-sm text-gray-600">
+              {row?.original?.review?.description}
+            </p>
+          </div>
+        )}
+      </div>
     ),
   },
 ]
@@ -423,6 +444,24 @@ export const compareColumns = (handleProduct, favorits) => [
     header: 'Peso',
     cell: ({ row }) => (
       <span>{row?.original?.productData?.shippingInfo?.weight} kg</span>
+    ),
+  },
+  {
+    accessorKey: 'timeDelivery',
+    header: 'Entrega',
+    cell: ({ row }) => (
+      <span>{row?.original?.productData?.shippingInfo?.timeDelivery} dias</span>
+    ),
+  },
+  {
+    accessorKey: 'fee',
+    header: 'Frete',
+    cell: ({ row }) => (
+      <span>
+        {row?.original?.productData?.shippingInfo?.isFree
+          ? 'Frete grátis'
+          : currencyPrice.format(row?.original?.productData?.shippingInfo?.fee)}
+      </span>
     ),
   },
 ]

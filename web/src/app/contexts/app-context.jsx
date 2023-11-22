@@ -5,14 +5,17 @@ import useLocalStorage from '../../hooks/use-localStorage'
 
 export const AppContext = createContext({
   isLoading: false,
+  isModalOpen: false,
   refetch: false,
   store: null,
   payment: null,
   cartItems: [],
+  productReview: { order: '', cartItem: '' },
 })
 
 export default function AppContextProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [refetch, setRefetch] = useState(false)
   const { value: store, handleUpdate: handleStore } = useLocalStorage(
     'store',
@@ -26,12 +29,18 @@ export default function AppContextProvider({ children }) {
     'cart-items',
     []
   )
+  const [productReview, setProductReview] = useState({
+    order: '',
+    cartItem: '',
+  })
 
   return (
     <AppContext.Provider
       value={{
         isLoading,
         setIsLoading,
+        isModalOpen,
+        setIsModalOpen,
         refetch,
         setRefetch,
         store,
@@ -40,6 +49,8 @@ export default function AppContextProvider({ children }) {
         handlePayment,
         cartItems,
         handleCartItems,
+        productReview,
+        setProductReview,
       }}
     >
       {children}

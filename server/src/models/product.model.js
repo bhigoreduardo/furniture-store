@@ -133,7 +133,26 @@ const ProductSchema = new mongoose.Schema(
     },
     sales: { type: Number, default: 0 },
     amountSales: { type: Number, default: 0 },
-    // reviews/reviewsAvg
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
+    reviewsAvg: {
+      type: {
+        amount: { type: Number, default: 0 },
+        avg: { type: Number, default: 0 },
+        starAmount: {
+          type: {
+            oneStar: { type: Number, default: 0 },
+            twoStar: { type: Number, default: 0 },
+            threeStar: { type: Number, default: 0 },
+            fourStar: { type: Number, default: 0 },
+            fiveStar: { type: Number, default: 0 },
+          },
+          default: {},
+          _id: false,
+        },
+      },
+      default: {},
+      _id: false,
+    },
   },
   { timestamps: true }
 )
