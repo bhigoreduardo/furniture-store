@@ -51,7 +51,7 @@ export default function CardProduct({
           content={badge}
         />
       )}
-      <div className="group relative flex items-center justify-center h-[180px] w-full overflow-hidden">
+      <div className="group relative flex items-center justify-center h-[240px] w-full overflow-hidden">
         <img
           src={`${import.meta.env.VITE_SERVER_PUBLIC_IMAGES}/${cover}`}
           alt={name}
