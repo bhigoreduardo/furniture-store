@@ -140,7 +140,7 @@ export const findAll = async (req, res) => {
     'published.step': StepEnumType.Completed,
     'published.visibility': VisibilityEnumType.Public,
   })
-    .select('_id name productData.media rangePrice')
+    .select('_id name productData.media rangePrice reviewsAvg reviews')
     .populate('productData.media')
   return res.status(200).json(allFinded)
 }
@@ -186,7 +186,7 @@ export const search = async (req, res) => {
     limit,
     sort: filterSorted(query.priority),
     select:
-      '_id name category sku productData.media productData.inventory rangePrice',
+      '_id name category sku productData.media productData.inventory rangePrice reviewsAvg',
     populate: [
       { path: 'category', select: 'name' },
       { path: 'productData.media', select: 'cover backCover' },
@@ -209,6 +209,7 @@ export const findById = async (req, res) => {
     { path: 'category', select: '_id name' },
     { path: 'brand', select: '_id name' },
     'productData.media',
+    'reviews'
   ])
   return res.status(200).json(finded)
 }

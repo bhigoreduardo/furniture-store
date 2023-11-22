@@ -2,6 +2,8 @@ import mongoose from 'mongoose'
 
 const ReviewSchema = new mongoose.Schema(
   {
+    customer: { type: String, required: [true, 'Cliente é obrigatório'] },
+    image: { type: String },
     stars: {
       type: Number,
       max: 5,

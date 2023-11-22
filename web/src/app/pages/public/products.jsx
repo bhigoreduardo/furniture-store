@@ -22,6 +22,7 @@ export default function Products() {
                 cover={item?.productData?.media?.cover}
                 backCover={item?.productData?.media?.backCover}
                 rangePrice={item.rangePrice}
+                reviews={item.reviewsAvg}
               />
             ))}
             {/* {createEmptyArr(6).map((_, i) => (

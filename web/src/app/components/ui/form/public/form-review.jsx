@@ -8,8 +8,11 @@ import useApp from '../../../../../hooks/use-app'
 import Button from '../../button/button'
 import SelectLabel from '../../input/select-label'
 import TextAreaLabel from '../../input/textarea-label'
+import useUser from '../../../../../hooks/use-user'
 
 const validationSchema = yup.object().shape({
+  customer: yup.string().required('Cliente é obrigatório'),
+  image: yup.string().optional(),
   order: yup.string().required('Pedido é obrigatório'),
   cartItem: yup.string().required('Item é obrigatório'),
   stars: yup.number().required('Avaliação é obrigatório'),
@@ -18,9 +21,12 @@ const validationSchema = yup.object().shape({
 
 export default function FormReview() {
   const { productReview, setIsLoading, setIsModalOpen } = useApp()
+  const { user } = useUser()
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      customer: user.name,
+      image: user.image,
       order: productReview?.order ?? '',
       cartItem: productReview?.cartItem ?? '',
       stars: '',

@@ -16,6 +16,8 @@ export default function Home() {
             cover={item?.productData?.media?.cover}
             backCover={item?.productData?.media?.backCover}
             rangePrice={item.rangePrice}
+            reviewsAvg={item.reviewsAvg}
+            reviews={item.reviews}
           />
         ))}
         {/* <CardProduct

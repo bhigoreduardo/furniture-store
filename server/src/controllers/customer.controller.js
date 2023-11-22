@@ -433,7 +433,7 @@ export const findSearchHistory = async (req, res) => {
 }
 
 export const ratingReview = async (req, res) => {
-  const { order, cartItem, description } = req.body
+  const { customer, image, order, cartItem, description } = req.body
   const stars = Number(req.body.stars)
 
   const findedOrder = await OrderModel.findOne({
@@ -451,7 +451,12 @@ export const ratingReview = async (req, res) => {
         if (!findedProduct)
           throw new ErrorHandler('Produto não cadastrado', 400)
 
-        const review = await ReviewModel.create({ stars, description })
+        const review = await ReviewModel.create({
+          customer,
+          image,
+          stars,
+          description,
+        })
         item.review = review
         item.reviewd = true
 
@@ -463,19 +468,19 @@ export const ratingReview = async (req, res) => {
 
         switch (stars) {
           case 1:
-            starAmount['oneStar'] = starAmount?.oneStar + stars
+            starAmount['oneStar'] = starAmount?.oneStar + 1
             break
           case 2:
-            starAmount['twoStar'] = starAmount?.twoStar + stars
+            starAmount['twoStar'] = starAmount?.twoStar + 1
             break
           case 3:
-            starAmount['threeStar'] = starAmount?.threeStar + stars
+            starAmount['threeStar'] = starAmount?.threeStar + 1
             break
           case 4:
-            starAmount['fourStar'] = starAmount?.fourStar + stars
+            starAmount['fourStar'] = starAmount?.fourStar + 1
             break
           case 5:
-            starAmount['fiveStar'] = starAmount?.fiveStar + stars
+            starAmount['fiveStar'] = starAmount?.fiveStar + 1
             break
         }
         await ProductModel.findByIdAndUpdate(item.product, {

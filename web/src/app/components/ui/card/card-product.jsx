@@ -19,6 +19,7 @@ export default function CardProduct({
   id,
   badge,
   badgeColor,
+  reviewsAvg,
   reviews,
   name,
   cover,
@@ -87,16 +88,16 @@ export default function CardProduct({
           />
         </div>
       </div>
-      {reviews !== undefined ? (
+      {reviewsAvg !== undefined && reviews?.length !== 0 ? (
         <div className="flex items-center gap-1">
           <ReactStars
             count={5}
             size={12}
-            value={reviews?.avg}
+            value={reviewsAvg?.avg}
             edit={false}
             activeColor="#FA8232"
           />
-          <span className="text-xs text-gray-400">({reviews?.amount})</span>
+          <span className="text-xs text-gray-400">({reviews?.length})</span>
         </div>
       ) : (
         <span className="text-xs text-gray-400">Sem avaliações</span>

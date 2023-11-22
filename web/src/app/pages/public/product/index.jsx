@@ -9,6 +9,7 @@ import Breadcrumb from '../../../components/ui/breadcrumb'
 import Tab from '../../../components/ui/button/tab'
 import Hero from './hero'
 import Overview from './overview'
+import Reviews from './reviews'
 
 export default function Product() {
   const { id } = useParams()
@@ -32,6 +33,8 @@ export default function Product() {
         rangePrice={product.rangePrice}
         inventory={product?.productData?.inventory?.info}
         shippingInfo={product?.productData?.shippingInfo}
+        reviewsAvg={product?.reviewsAvg}
+        reviews={product?.reviews}
       />
       <Container className="flex flex-col">
         <div className="flex items-center justify-center border border-gray-200">
@@ -82,9 +85,7 @@ export default function Product() {
           />
         )}
         {tabInformation === 'reviews' && (
-          <div className="flex items-center justify-center border border-gray-200 p-10">
-            <span className="text-base text-gray-400">Sem avaliações</span>
-          </div>
+          <Reviews reviews={product.reviews} reviewsAvg={product.reviewsAvg} />
         )}
       </Container>
     </section>

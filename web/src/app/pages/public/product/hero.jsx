@@ -21,6 +21,7 @@ export default function Hero({
   id,
   cover,
   gallery,
+  reviewsAvg,
   reviews,
   name,
   sku,
@@ -167,20 +168,20 @@ export default function Hero({
 
       <div className="flex-1 flex flex-col gap-6 justify-between">
         <div className="flex flex-col gap-1">
-          {reviews !== undefined ? (
+          {reviewsAvg !== undefined && reviews?.length != 0 ? (
             <div className="flex items-center gap-1">
               <ReactStars
                 count={5}
                 size={20}
-                value={reviews?.avg}
+                value={reviewsAvg?.avg}
                 edit={false}
                 activeColor="#FA8232"
               />
               <span className="font-semibold text-sm text-gray-900">
-                {reviews?.avg}
+                {reviewsAvg?.avg}
               </span>
               <span className="text-sm text-gray-400">
-                ({reviews?.amount} Avaliações)
+                ({reviews?.length} Avaliações)
               </span>
             </div>
           ) : (
