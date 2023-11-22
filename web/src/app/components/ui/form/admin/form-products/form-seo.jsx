@@ -1,4 +1,7 @@
 /* eslint-disable react/prop-types */
+import { useEffect } from 'react'
+import slugify from 'slugify'
+
 import InputLabel from '../../../input/input-label'
 import TextAreaLabel from '../../../input/textarea-label'
 import FormWrapper from '../form-wrapper'
@@ -9,6 +12,13 @@ export default function FormSeo(props) {
     props.formik.setFieldValue('seoData.slug', '')
     props.formik.setFieldValue('seoData.metaDescription', '')
   }
+  useEffect(() => {
+    props.formik.setFieldValue(
+      'seoData.slug',
+      slugify(props?.formik?.values?.name).toLowerCase()
+    )
+  }, [props?.formik?.values?.name]) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <FormWrapper title="SEO" handleClear={handleClear}>
       <div className="flex flex-col gap-4">
