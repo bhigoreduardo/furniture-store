@@ -1,7 +1,3 @@
-import DOMPurify from 'dompurify'
-import truncHtml from 'trunc-html'
-import { removeMask } from './mask'
-import { OrderStatusEnumType } from '../types/enum-type'
 import {
   CheckCircle,
   Checks,
@@ -11,7 +7,11 @@ import {
   WarningCircle,
   XCircle,
 } from 'phosphor-react'
-// import { Checks } from 'phosphor-react'
+import DOMPurify from 'dompurify'
+import truncHtml from 'trunc-html'
+
+import { removeMask } from './mask'
+import { OrderStatusEnumType } from '../types/enum-type'
 
 export const mergeClassName = (first, last) => first + ' ' + last
 
@@ -142,8 +142,8 @@ export const getBadgeColor = (badgeColor) => {
   }
 }
 
-export const getPercentageDiscountPrice = (min, max) =>
-  Math.ceil((1 - min / max) * 100)
+export const calculatePercentage = (min, max) =>
+  min !== 0 && max > 0 ? Math.ceil((1 - min / max) * 100) : 0
 
 export const cartCalculate = (cartItems) => {
   let subAmount = 0

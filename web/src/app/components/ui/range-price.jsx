@@ -2,7 +2,7 @@
 import {
   currencyPrice,
   getBadgeColor,
-  getPercentageDiscountPrice,
+  calculatePercentage,
 } from '../../../utils/format'
 import Badge from './badge'
 
@@ -26,7 +26,7 @@ export default function RangePrice({ rangePrice }) {
       {rangePrice?.max !== rangePrice?.min && (
         <Badge
           className={`text-white uppercase ${getBadgeColor('yellow')}`}
-          content={`${getPercentageDiscountPrice(
+          content={`${calculatePercentage(
             rangePrice?.min,
             rangePrice?.max
           )}% Off`}
