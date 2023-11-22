@@ -3,13 +3,14 @@ import { ImageSquare, XCircle } from 'phosphor-react'
 
 import { mergeClassName } from '../../../../utils/format'
 
-export default function File({
+export default function Image({
   id,
   name,
   info,
   className,
   value,
   onClear,
+  isCircle = false,
   ...props
 }) {
   return (
@@ -40,7 +41,7 @@ export default function File({
           >
             <XCircle size={20} />
           </button>
-          <div className="flex items-center justify-center w-full h-full overflow-hidden">
+          <div className={`flex items-center justify-center w-full h-full overflow-hidden ${isCircle && 'rounded-full'}`}>
             <img
               src={
                 typeof value === 'string'

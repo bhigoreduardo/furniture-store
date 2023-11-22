@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
-import File from './file'
+import IconHint from '../icon/icon-hint'
+import Image from './image'
 
-export default function FileLabel({
+export default function ImageLabel({
   id,
   label,
   name,
   info,
   error,
+  hint,
   value,
   onClear,
+  className,
   ...props
 }) {
   return (
@@ -17,15 +20,17 @@ export default function FileLabel({
         <div className="flex items-center justify-between text-sm text-gray-900">
           <div className="flex items-center gap-1 relative">
             <label htmlFor={id}>{label}</label>
+            {hint && <IconHint hint={hint} />}
           </div>
         </div>
       )}
-      <File
+      <Image
         id={id}
         name={name}
         info={info}
         value={value}
         onClear={onClear}
+        className={className}
         {...props}
       />
       {error && <span className="text-xs text-red-500">{error}</span>}

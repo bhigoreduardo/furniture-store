@@ -12,7 +12,7 @@ import { usePayments } from '../../../../../../hooks/use-payment'
 import useApp from '../../../../../../hooks/use-app'
 import InputLabel from '../../../input/input-label'
 import CheckboxToggleLabel from '../../../input/checkboxtoggle-label'
-import FileLabel from '../../../input/file-label'
+import ImageLabel from '../../../input/image-label'
 import Button from '../../../button/button'
 import TableData from '../../../table/table-data'
 import Badge from '../../../badge'
@@ -110,7 +110,7 @@ export default function FormPayment() {
     <form className="flex flex-col gap-6 px-6" onSubmit={formik.handleSubmit}>
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
-          <FileLabel
+          <ImageLabel
             id="image"
             label="Imagem"
             name="image"

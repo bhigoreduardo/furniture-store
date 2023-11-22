@@ -21,6 +21,7 @@ FIXME:
   - Compare/Favoritos fazendo request sem user e token bug
   - Favorito está com bug de mais de 1 produto
   - Colocar as tags do produto para mecanismo de busca google e mostrar abaixo do produto
+  - Colocar modal para confirmar exclusão
 
 TODO:
   - Condições de loja no ar:
@@ -95,3 +96,4 @@ Dimensões:
 	Marcas: 512*512
 	Produto Capa: 512*512
 	Produto Galeria: 1200*960
+  https://stackoverflow.com/questions/54020719/validating-file-size-and-format-with-yup

@@ -10,7 +10,7 @@ import { post, put } from '../../../../libs/fetcher'
 import useApp from '../../../../hooks/use-app'
 import useUser from '../../../../hooks/use-user'
 import Button from '../button/button'
-import FileLabel from '../input/file-label'
+import ImageLabel from '../input/image-label'
 import InputLabel from '../input/input-label'
 
 const validationSchema = yup.object().shape({
@@ -61,16 +61,19 @@ export default function FormProfile({ user, isAdmin = false, endPoint }) {
     <form className="flex flex-col gap-6 px-6" onSubmit={formik.handleSubmit}>
       <div className="flex gap-4">
         {Object.keys(user)?.length !== 0 && (
-          <FileLabel
+          <ImageLabel
             id="image"
             label="Imagem"
             name="image"
-            info="800*800"
+            info="800*450"
+            hint="Tamanho máximo da imagem aceito é de até 70KB"
             error={formik.touched.image && formik.errors.image}
             onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
             onBlur={formik.handleBlur}
             value={formik.values.image}
             onClear={() => formik.setFieldValue('image', '')}
+            className="!w-[180px] !h-[180px] !rounded-full"
+            isCircle
           />
         )}
         <div className="flex-grow flex flex-col gap-4">

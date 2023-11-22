@@ -8,7 +8,7 @@ import { formDataUpload } from '../../../../../utils/format'
 import { post, put } from '../../../../../libs/fetcher'
 import useApp from '../../../../../hooks/use-app'
 import Button from '../../button/button'
-import FileLabel from '../../input/file-label'
+import ImageLabel from '../../input/image-label'
 import InputLabel from '../../input/input-label'
 import TextAreaLabel from '../../input/textarea-label'
 
@@ -48,7 +48,7 @@ export default function FormBrands({ data }) {
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6 px-6">
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
-          <FileLabel
+          <ImageLabel
             id="image"
             label="Imagem"
             name="image"

@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { XCircle } from 'phosphor-react'
 
-import FileLabel from '../../../../input/file-label'
+import ImageLabel from '../../../../input/image-label'
 import InputLabel from '../../../../input/input-label'
 
 export default function Media(props) {
@@ -12,7 +12,7 @@ export default function Media(props) {
         <div className="flex flex-col gap-2">
           <span className="text-sm text-gray-900">Imagem de capa</span>
           <div className="flex gap-2">
-            <FileLabel
+            <ImageLabel
               id="cover"
               name="cover"
               info="800*800"
@@ -24,7 +24,7 @@ export default function Media(props) {
               value={props.formik.values?.cover}
               onClear={() => props.formik.setFieldValue('cover', '')}
             />
-            <FileLabel
+            <ImageLabel
               id="backCover"
               name="backCover"
               info="800*800"
@@ -45,7 +45,7 @@ export default function Media(props) {
         <div className="flex flex-col gap-2">
           <span className="text-sm text-gray-900">Galeria</span>
           <div className="flex items-start gap-2">
-            <FileLabel
+            <ImageLabel
               id="gallery"
               name="gallery"
               info="800*800"
