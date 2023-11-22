@@ -5,6 +5,7 @@ import {
   MagnifyingGlass,
   ShoppingCartSimple,
   User,
+  IdentificationBadge,
 } from 'phosphor-react'
 
 import useApp from '../../../../../hooks/use-app'
@@ -81,10 +82,16 @@ export default function MiddleNav() {
             </button>
           ) : (
             <button type="button" onClick={() => navigate('/conta')}>
-              <img
-                className="h-6 w-6 rounded-full"
-                src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              />
+              {user.image ? (
+                <img
+                  className="h-6 w-6 rounded-full"
+                  src={`${import.meta.env.VITE_SERVER_PUBLIC_IMAGES}/${
+                    user.image
+                  }`}
+                />
+              ) : (
+                <IdentificationBadge size={20} weight="duotone" />
+              )}
             </button>
           )}
         </div>

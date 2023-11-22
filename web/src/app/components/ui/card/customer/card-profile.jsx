@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom'
+import { IdentificationBadge } from 'phosphor-react'
 
 import { cpfMask, mobileMask } from '../../../../../utils/mask'
 import { optionsFullLocaleDate } from '../../../../../utils/format'
@@ -13,11 +14,16 @@ export default function CardProfile({ user, to }) {
     <div className="flex-1 flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
       <Heading title="Informações pessoais" />
       <div className="flex flex-col gap-6 px-6">
-        <div className="flex gap-4">
-          <img
-            src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            className="w-10 h-10 rounded-full"
-          />
+        <div className="flex items-center gap-4">
+          {user.image ? (
+            <img
+              src={`${import.meta.env.VITE_SERVER_PUBLIC_IMAGES}/${user.image}`}
+              className="w-10 h-10 rounded-full"
+            />
+          ) : (
+            <IdentificationBadge size={32} weight="duotone" />
+          )}
+
           <div className="flex flex-col">
             <span className="font-semibold text-base-text-gray-900">
               {user?.name}

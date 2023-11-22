@@ -1,5 +1,6 @@
 import { filterSorted } from '../utils/format.js'
 import { sendInfoEmail } from '../utils/sendEmail.js'
+import { removeServerImage } from '../utils/helper.js'
 import CustomerModel from '../models/customer.model.js'
 import OrderModel from '../models/order.model.js'
 import ProductModel from '../models/product.model.js'
@@ -149,17 +150,19 @@ export const recoveryPassword = async (req, res) => {
 }
 
 export const update = async (req, res) => {
-  await CustomerModel.findOneAndUpdate(
-    { _id: req.userId },
-    { ...req.body, image: req.body.image ?? '' }
-  )
-  const finded = await CustomerModel.findOne({
-    _id: req.userId,
+  const { image } = req.body
+  const finded = await CustomerModel.findById(req.userId)
+  if (finded.image && finded.image !== image) removeServerImage(finded.image)
+
+  await CustomerModel.findByIdAndUpdate(req.userId, {
+    ...req.body,
+    image: image ?? '',
   })
+  const findedUpdate = await CustomerModel.findById(req.userId)
   return res.status(200).json({
     success: true,
     message: 'Atualização realizada com sucesso',
-    ...finded.sendAuth(),
+    ...findedUpdate.sendAuth(),
   })
 }
 
@@ -319,7 +322,6 @@ export const toggleFavorite = async (req, res) => {
 export const toggleCompare = async (req, res) => {
   const { id: productId } = req.body
   const finded = await CustomerModel.findById(req.userId)
-  console.log(finded.compare)
   // if (finded.compare.get(productId)) finded.compare.delete(productId)
   // else finded.set(productId)
   if (!finded.compare.includes(productId)) finded.compare.push(productId)
@@ -424,7 +426,6 @@ export const findSearchHistory = async (req, res) => {
     keys.map((key) =>
       finded.history[key].map(async (item) => {
         const finded = await ProductModel.findById(item).select('name')
-        console.log(finded)
         allFinded.push(finded)
       })
     )
