@@ -94,7 +94,7 @@ export const cartColumns = (handleDelete, handleDecrease, handleIncrease) => [
   },
 ]
 
-export const orderColumns = [
+export const orderColumns = (endpoint) => [
   {
     accessorKey: 'code',
     header: 'Código',
@@ -148,7 +148,7 @@ export const orderColumns = [
     header: 'Ações',
     cell: ({ row }) => (
       <Link
-        to={`/conta/pedidos/detalhe/${row.original?._id}`}
+        to={`${endpoint}/${row.original?._id}`}
         className="flex items-center gap-1 text-sm text-blue-500"
       >
         Vê detalhes <ArrowRight size={14} />
@@ -157,7 +157,7 @@ export const orderColumns = [
   },
 ]
 
-export const cartOrderColumns = (handleReview) => [
+export const cartOrderColumns = (handleReview, isAdmin) => [
   {
     accessorKey: 'product',
     header: 'Produto',
@@ -219,34 +219,37 @@ export const cartOrderColumns = (handleReview) => [
   {
     accessorKey: 'actions',
     header: 'Ações',
-    cell: ({ row }) => (
-      <div className="relative w-full">
-        <Button
-          label="Avaliar"
-          title="Avaliar"
-          className="peer !gap-1 font-semibold text-sm text-orange-500 hover:bg-orange-500 hover:text-white !py-2 disabled:!bg-gray-200 disabled:!text-white"
-          disabled={row?.original?.reviewd}
-          onClick={() => handleReview(row?.original?._id)}
-        />
-        {row?.original?.reviewd && (
-          <div className="absolute hidden peer-hover:block -top-[calc(100%+10px)] border border-gray-100 p-2 shadow-sm rounded-sm w-full bg-white">
-            <span className="flex items-center text-xs text-gray-900">
-              <ReactStars
-                count={5}
-                size={12}
-                value={row?.original?.review?.stars}
-                edit={false}
-                activeColor="#FA8232"
-              />
-              ({row?.original?.review?.stars})
-            </span>
-            <p className="text-sm text-gray-600">
-              {row?.original?.review?.description}
-            </p>
-          </div>
-        )}
-      </div>
-    ),
+    cell: ({ row }) =>
+      !isAdmin ? (
+        <div className="relative w-full">
+          <Button
+            label="Avaliar"
+            title="Avaliar"
+            className="peer !gap-1 font-semibold text-sm text-orange-500 hover:bg-orange-500 hover:text-white !py-2 disabled:!bg-gray-200 disabled:!text-white"
+            disabled={row?.original?.reviewd}
+            onClick={() => handleReview(row?.original?._id)}
+          />
+          {row?.original?.reviewd && (
+            <div className="absolute hidden peer-hover:block -top-[calc(100%+10px)] border border-gray-100 p-2 shadow-sm rounded-sm w-full bg-white">
+              <span className="flex items-center text-xs text-gray-900">
+                <ReactStars
+                  count={5}
+                  size={12}
+                  value={row?.original?.review?.stars}
+                  edit={false}
+                  activeColor="#FA8232"
+                />
+                ({row?.original?.review?.stars})
+              </span>
+              <p className="text-sm text-gray-600">
+                {row?.original?.review?.description}
+              </p>
+            </div>
+          )}
+        </div>
+      ) : (
+        '-'
+      ),
   },
 ]
 

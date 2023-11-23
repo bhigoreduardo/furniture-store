@@ -1,11 +1,12 @@
 import { ArrowRight, Package, Receipt, Rocket } from 'phosphor-react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { orderColumns } from '../../../../utils/constants/public'
 import {
   useFilterOrders,
   useOrdersAnalytics,
 } from '../../../../hooks/use-order'
+import { orderColumns } from '../../../../utils/constants/public'
+import { OrderStatusEnumType } from '../../../../types/enum-type'
 import { useFilterHistory } from '../../../../hooks/use-product'
 import useUser from '../../../../hooks/use-user'
 import CardOverview from '../../../components/ui/card/card-overview'
@@ -62,7 +63,9 @@ export default function Dashboard() {
             icon={<Receipt size={20} className="text-orange-500" />}
             value={
               ordersAnalytics?.filter(
-                (item) => item.status?.slice(-1)[0]?.history === 'pending'
+                (item) =>
+                  item.status?.slice(-1)[0]?.history ===
+                  OrderStatusEnumType.Pending
               )?.length
             }
             description="Pedidos Pendetes"
@@ -72,7 +75,9 @@ export default function Dashboard() {
             icon={<Package size={20} className="text-green-500" />}
             value={
               ordersAnalytics?.filter(
-                (item) => item.status?.slice(-1)[0]?.history === 'delivered'
+                (item) =>
+                  item.status?.slice(-1)[0]?.history ===
+                  OrderStatusEnumType.Delivered
               )?.length
             }
             description="Pedidos Entregue"

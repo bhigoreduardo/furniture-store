@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useParams } from 'react-router-dom'
+import { XCircle } from 'phosphor-react'
 
 import useApp from '../../../../hooks/use-app'
 import { cartOrderColumns } from '../../../../utils/constants/public'
@@ -10,12 +11,14 @@ import {
   optionsShortLocaleDate,
 } from '../../../../utils/format'
 import { mobileMask, zipCodeMask } from '../../../../utils/mask'
+import { OrderStatusEnumType } from '../../../../types/enum-type'
 import OrderProcess from '../order-process'
 import TableData from '../table/table-data'
 
-export default function FormOrder({ data }) {
+export default function FormOrder({ data, isAdmin = false }) {
   const { id } = useParams()
   const { setIsModalOpen, setProductReview } = useApp()
+  const status = data?.status?.slice(-1)[0]?.history
   const createdAt = new Date(data?.createdAt)
   const timeDelivery = data?.cart?.reduce(
     (acc, cur) => acc + cur.timeDelivery,
@@ -58,7 +61,18 @@ export default function FormOrder({ data }) {
             ).toLocaleDateString('pt-BR', optionsFullLocaleDate(false))}
           </span>
         </p>
-        <OrderProcess />
+        {status === OrderStatusEnumType.Canceled ? (
+          <div className="flex items-center justify-center">
+            <span className="flex flex-col items-center gap-1 w-[100px]">
+              <XCircle size={25} weight="duotone" className="text-red-500" />
+              <span className="font-semibold text-sm text-gray-500">
+                Cancelado
+              </span>
+            </span>
+          </div>
+        ) : (
+          <OrderProcess status={status} />
+        )}
       </div>
 
       <div className="flex flex-col gap-6 border-b border-gray-100 pb-6">
@@ -86,7 +100,7 @@ export default function FormOrder({ data }) {
           Produtos ({data?.payment?.cartQuantity})
         </h5>
         <TableData
-          columns={cartOrderColumns(handleReview)}
+          columns={cartOrderColumns(handleReview, isAdmin)}
           data={data?.cart}
           className="!p-0 !border-none !shadow-none"
         />

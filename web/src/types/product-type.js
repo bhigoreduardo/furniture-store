@@ -17,10 +17,10 @@ export const orderStatus = [
   { value: 'created', label: 'Criado' },
   { value: 'pending', label: 'Pendente' },
   { value: 'paid', label: 'Pago' },
-  { value: 'canceled', label: 'Cancelado' },
   { value: 'progress', label: 'Embalando' },
   { value: 'traffic', label: 'Em trânsito' },
   { value: 'delivered', label: 'Entregue' },
+  { value: 'canceled', label: 'Cancelado' },
 ]
 
 export const starsReview = [

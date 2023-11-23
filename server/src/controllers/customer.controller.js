@@ -224,7 +224,21 @@ export const search = async (req, res) => {
 }
 
 export const findById = async (req, res) => {
-  const finded = await CustomerModel.findOne({ _id: req.params.id })
+  const finded = await CustomerModel.findOne({ _id: req.params.id }).populate([
+    {
+      path: 'orders',
+      select: '_id code status payment createdAt',
+      limit: 10,
+      sort: { createdAt: -1 },
+      populate: [
+        {
+          path: 'payment',
+          populate: [{ path: 'method', select: '_id image method' }],
+        },
+      ],
+    },
+  ])
+
   return res.status(200).json(finded.sendPublic())
 }
 

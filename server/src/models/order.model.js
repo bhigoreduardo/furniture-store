@@ -5,10 +5,10 @@ export const StatusEnumType = {
   Created: 'created',
   Pending: 'pending',
   Paid: 'paid',
-  Canceled: 'canceled',
   Progress: 'progress',
   Traffic: 'traffic',
   Delivered: 'delivered',
+  Canceled: 'canceled',
 }
 
 const OrderSchema = new mongoose.Schema(

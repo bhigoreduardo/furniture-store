@@ -11,7 +11,7 @@ export default function Orders() {
       <FitlerOrder />
       <TableData
         title="Pedidos recentes"
-        columns={orderColumns}
+        columns={orderColumns('/conta/pedidos/detalhe')}
         data={docs}
         total={total}
         pages={pages}

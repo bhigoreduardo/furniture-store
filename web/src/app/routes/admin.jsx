@@ -21,6 +21,8 @@ import Users from '../pages/admin/users'
 import UsersForm from '../pages/admin/users/form'
 import Store from '../pages/admin/store'
 import Orders from '../pages/admin/orders'
+import CustomersOrders from '../pages/admin/customers/orders'
+import OrdersDetail from '../pages/admin/customers/orders-detail'
 
 const children = [
   {
@@ -77,7 +79,10 @@ const children = [
       },
       {
         path: 'pedidos',
-        children: [{ path: '', element: <Orders /> }],
+        children: [
+          { path: '', element: <Orders /> },
+          { path: ':id', element: <OrdersDetail /> },
+        ],
       },
     ],
   },
@@ -94,6 +99,7 @@ const admin = [
           { path: '', element: <Customers /> },
           { path: 'perfil/:id', element: <CustomersProfile /> },
           { path: 'perfil/:id/editar', element: <CustomersForm /> },
+          { path: 'pedidos/:id', element: <CustomersOrders /> },
         ],
       },
       {

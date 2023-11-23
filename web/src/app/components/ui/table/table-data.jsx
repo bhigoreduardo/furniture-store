@@ -69,7 +69,7 @@ export default function TableData({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className={`${isColumn && 'flex'}`}>
+        <TableBody className={`${isColumn && 'flex overflow-x-auto'}`}>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((item, i) => (
               <TableRow
@@ -78,7 +78,7 @@ export default function TableData({
                 className={`${isColumn && 'flex flex-col !items-start'}`}
               >
                 {item.getVisibleCells().map((value, key) => (
-                  <TableCell key={key} className={`${isColumn && 'flex-none'}`}>
+                  <TableCell key={key} className={`${isColumn && 'flex-none min-w-[256px]'}`}>
                     {flexRender(
                       value.column.columnDef.cell,
                       value.getContext()

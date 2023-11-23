@@ -22,6 +22,7 @@ FIXME:
   - Colocar as tags do produto para mecanismo de busca google e mostrar abaixo do produto
   - Colocar modal para confirmar exclusão
   - Código provisório de orders analytics no dashboard do customer
+  - Rever todos refetch
 
 TODO:
   - Condições de loja no ar:

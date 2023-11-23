@@ -12,6 +12,9 @@ router.post(
   useError(customerAuth),
   useError(orderController.save)
 )
+router.patch('/update-status/:id', useError(orderController.updateStatus))
 router.get('/search', useError(orderController.search))
+router.get('/customers/:id/search', useError(orderController.searchCustomers))
+router.get('/:id', useError(orderController.findById))
 
 export default router

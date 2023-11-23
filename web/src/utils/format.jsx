@@ -213,7 +213,7 @@ export const getOrderHistoryStyle = (orderStatus) => {
     case OrderStatusEnumType.Paid:
       node.bgIcon = 'bg-lime-50'
       node.icon = <CheckCircle size={20} className="text-lime-500" />
-      node.text = 'Seu pedido foi pago com sucesso.'
+      node.text = 'Pedido foi pago com sucesso.'
       return node
     case OrderStatusEnumType.Canceled:
       node.bgIcon = 'bg-red-50'
@@ -223,18 +223,18 @@ export const getOrderHistoryStyle = (orderStatus) => {
     case OrderStatusEnumType.Progress:
       node.bgIcon = 'bg-orange-50'
       node.icon = <User size={20} className="text-orange-500" />
-      node.text = 'Seu pedido está sendo empacotado.'
+      node.text = 'Pedido está sendo empacotado.'
       return node
     case OrderStatusEnumType.Traffic:
       node.bgIcon = 'bg-fuchsia-50'
       node.icon = <MapPinLine size={20} className="text-fuchsia-500" />
-      node.text = 'Seu pedido está em trânsito para entrega.'
+      node.text = 'Pedido está em trânsito para entrega.'
       return node
     case OrderStatusEnumType.Delivered:
       node.bgIcon = 'bg-green-50'
       node.icon = <Checks size={20} className="text-green-500" />
       node.text =
-        'Seu pedido foi entregue. Obrigado por comprar na Furniture eCommerce!'
+        'Pedido foi entregue. Obrigado por comprar na Furniture eCommerce!'
       return node
   }
 }
