@@ -47,3 +47,16 @@ export function useOrder(id) {
 
   return { ...data }
 }
+
+export function useOrdersAnalytics() {
+  const { setIsLoading } = useApp()
+
+  const { data } = useQuery({
+    queryKey: ['orders-analytics'],
+    queryFn: async () => {
+      return await get('/customers/orders-analytics', setIsLoading, toast)
+    },
+  })
+
+  return data
+}

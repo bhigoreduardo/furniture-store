@@ -6,7 +6,6 @@ FIXME:
   - bug no protected route do layout public
   - bug no slider do product
   - colocar as dimensões das imagens pxs com hint de tipo e limite bytes
-  - colocar slugify no cadastro do slug do produto
   - Fazer a validação do tempo da oferta para aplicar no produto
   - Colocar máscara no cartão de crédito
   - Filtro do history no order aggregation: https://stackoverflow.com/questions/38808154/mongodb-filter-on-value-of-the-last-element-in-an-array
@@ -22,6 +21,7 @@ FIXME:
   - Favorito está com bug de mais de 1 produto
   - Colocar as tags do produto para mecanismo de busca google e mostrar abaixo do produto
   - Colocar modal para confirmar exclusão
+  - Código provisório de orders analytics no dashboard do customer
 
 TODO:
   - Condições de loja no ar:

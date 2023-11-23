@@ -239,6 +239,7 @@ export const toggleStatus = async (req, res) => {
   })
 }
 
+// ORDERS
 export const searchOrders = async (req, res) => {
   const query = req.query
   const page = Number(query.page) || 0
@@ -296,6 +297,14 @@ export const findOrderByCode = async (req, res) => {
   return res.status(200).json(finded)
 }
 
+export const ordersAnalytics = async (req, res) => {
+  const allFinded = await OrderModel.find({
+    'customer.user': req.userId,
+  }).select('status')
+  return res.status(200).json(allFinded)
+}
+
+// PRODUCTS
 export const toggleFavorite = async (req, res) => {
   const { id: productId } = req.body
   const finded = await CustomerModel.findById(req.userId)
@@ -372,22 +381,17 @@ export const findSearchFavorits = async (req, res) => {
 
   const finded = await CustomerModel.findById(req.userId).select('favorits')
 
-  const allFinded = await Promise.all(
-    finded.favorits.map(
-      async (item) =>
-        await ProductModel.paginate(
-          { _id: item },
-          {
-            page,
-            limit,
-            select: '_id name rangePrice productData.media category status',
-            populate: [
-              { path: 'productData.media', select: 'cover' },
-              { path: 'category', select: 'name' },
-            ],
-          }
-        )
-    )
+  const allFinded = await ProductModel.paginate(
+    { _id: { $in: finded.favorits } },
+    {
+      page,
+      limit,
+      select: '_id name rangePrice productData.media category status',
+      populate: [
+        { path: 'productData.media', select: 'cover' },
+        { path: 'category', select: 'name' },
+      ],
+    }
   )
 
   return res.status(200).json(...allFinded)
@@ -422,13 +426,15 @@ export const findSearchHistory = async (req, res) => {
   const keys = Object.keys(finded.history)
 
   const allFinded = []
-  keys?.length > 0 &&
-    keys.map((key) =>
-      finded.history[key].map(async (item) => {
-        const finded = await ProductModel.findById(item).select('name')
-        allFinded.push(finded)
-      })
-    )
+  if (keys?.length > 0) {
+    keys.forEach(async (key) => {
+      await Promise.all(
+        finded.history[key].map(async (item) =>
+          allFinded.push(await ProductModel.findById(item).select('name'))
+        )
+      )
+    })
+  }
 
   return res.status(200).json(allFinded)
 }

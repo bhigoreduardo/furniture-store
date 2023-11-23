@@ -2,7 +2,10 @@ import { ArrowRight, Package, Receipt, Rocket } from 'phosphor-react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { orderColumns } from '../../../../utils/constants/public'
-import { useFilterOrders } from '../../../../hooks/use-order'
+import {
+  useFilterOrders,
+  useOrdersAnalytics,
+} from '../../../../hooks/use-order'
 import { useFilterHistory } from '../../../../hooks/use-product'
 import useUser from '../../../../hooks/use-user'
 import CardOverview from '../../../components/ui/card/card-overview'
@@ -15,6 +18,7 @@ export default function Dashboard() {
   const navigate = useNavigate()
   const { user } = useUser()
   const { docs: orders } = useFilterOrders()
+  const ordersAnalytics = useOrdersAnalytics()
   useFilterHistory()
   const address = user?.address
 
@@ -50,19 +54,27 @@ export default function Dashboard() {
         <div className="flex-1 flex flex-col gap-6">
           <CardOverview
             icon={<Rocket size={20} className="text-blue-500" />}
-            value="154"
+            value={ordersAnalytics?.length}
             description="Total Pedidos"
             className="bg-blue-50"
           />
           <CardOverview
             icon={<Receipt size={20} className="text-orange-500" />}
-            value="154"
+            value={
+              ordersAnalytics?.filter(
+                (item) => item.status?.slice(-1)[0]?.history === 'pending'
+              )?.length
+            }
             description="Pedidos Pendetes"
             className="bg-orange-50"
           />
           <CardOverview
             icon={<Package size={20} className="text-green-500" />}
-            value="154"
+            value={
+              ordersAnalytics?.filter(
+                (item) => item.status?.slice(-1)[0]?.history === 'delivered'
+              )?.length
+            }
             description="Pedidos Entregue"
             className="bg-green-50"
           />
@@ -85,3 +97,11 @@ export default function Dashboard() {
     </section>
   )
 }
+
+// let ordersPending = 0
+// let ordersDelivered = 0
+// ordersAnalytics?.forEach((item) => {
+//   const curStatus = item.status.slice(-1)[0]
+//   if (curStatus.history === 'pending') ordersPending += 1
+//   else if (curStatus.history === 'delivered') ordersDelivered += 1
+// })

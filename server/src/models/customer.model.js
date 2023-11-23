@@ -96,7 +96,7 @@ const CustomerSchema = new mongoose.Schema(
     //       },
     //     ],
     //   },
-    //   default: {},
+    //   default: [],
     // },
   },
   { timestamps: true }

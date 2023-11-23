@@ -107,7 +107,12 @@ router.post(
   useError(customerAuth),
   useError(customerController.ratingReview)
 )
-
+router.get(
+  '/orders-analytics',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.ordersAnalytics)
+)
 
 // PRODUCT
 router.patch(
