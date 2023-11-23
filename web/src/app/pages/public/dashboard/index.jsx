@@ -96,7 +96,7 @@ export default function Dashboard() {
             onClick={() => navigate('/conta/pedidos')}
           />
         }
-        columns={orderColumns}
+        columns={orderColumns('/conta/pedidos')}
         data={orders}
       />
     </section>

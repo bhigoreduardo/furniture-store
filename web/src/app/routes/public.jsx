@@ -98,7 +98,7 @@ const router = [
             path: 'pedidos',
             children: [
               { path: '', element: <Orders /> },
-              { path: 'detalhe/:id', element: <Order /> },
+              { path: ':id', element: <Order /> },
             ],
           },
           {

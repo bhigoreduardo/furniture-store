@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, XCircle, ShoppingCartSimple, Heart } from 'phosphor-react'
 import ReactStars from 'react-rating-stars-component'
@@ -8,9 +9,9 @@ import {
   optionsShortLocaleDate,
   translateOrderStatus,
 } from '../format'
+import { OrderStatusEnumType } from '../../types/enum-type'
 import Count from '../../app/components/ui/button/count'
 import Button from '../../app/components/ui/button/button'
-import { Fragment } from 'react'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
 
@@ -226,7 +227,11 @@ export const cartOrderColumns = (handleReview, isAdmin) => [
             label="Avaliar"
             title="Avaliar"
             className="peer !gap-1 font-semibold text-sm text-orange-500 hover:bg-orange-500 hover:text-white !py-2 disabled:!bg-gray-200 disabled:!text-white"
-            disabled={row?.original?.reviewd}
+            disabled={
+              row?.original?.reviewd ||
+              row?.original?.status?.slice(-1)[0]?.history !==
+                OrderStatusEnumType.Delivered
+            }
             onClick={() => handleReview(row?.original?._id)}
           />
           {row?.original?.reviewd && (
