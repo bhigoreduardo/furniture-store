@@ -14,6 +14,8 @@ export const FilterContext = createContext({
   chatStatus: true,
   orderStatus: '',
   dateRange: '',
+  offer: '',
+  discount: '',
 })
 
 export default function FilterContextProvider({ children }) {
@@ -30,6 +32,8 @@ export default function FilterContextProvider({ children }) {
   const [orderStatus, setOrderStatus] = useState('')
   const [dateRange, setDateRange] = useState([null, null])
   const [startDate, endDate] = dateRange
+  const [offer, setOffer] = useState('')
+  const [discount, setDiscount] = useState('')
 
   const handleClear = () => {
     setSearch('')
@@ -43,6 +47,8 @@ export default function FilterContextProvider({ children }) {
     setActived(true)
     setOrderStatus('')
     setDateRange([null, null])
+    setOffer('')
+    setDiscount('')
   }
 
   return (
@@ -73,6 +79,10 @@ export default function FilterContextProvider({ children }) {
         startDate,
         endDate,
         setDateRange,
+        offer,
+        setOffer,
+        discount,
+        setDiscount,
         handleClear,
       }}
     >

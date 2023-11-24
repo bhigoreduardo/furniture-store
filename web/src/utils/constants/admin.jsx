@@ -16,6 +16,7 @@ import {
   translateOrderStatus,
 } from '../format'
 import { mobileMask, zipCodeMask } from '../mask'
+import { DiscountEnumType, OfferEnumType } from '../../types/enum-type'
 
 const serverPublicImages = import.meta.env.VITE_SERVER_PUBLIC_IMAGES
 
@@ -671,14 +672,30 @@ export const offerColumns = [
   {
     accessorKey: 'status',
     header: 'Status',
+    cell: ({ row }) =>
+      row?.original?.status ? (
+        <span className="font-semibold text-green-500 uppercase">Ativo</span>
+      ) : (
+        <span className="font-semibold text-red-500 uppercase">Inativo</span>
+      ),
+  },
+  {
+    accessorKey: 'discount',
+    header: 'Tipo Desconto',
+    cell: ({ row }) =>
+      row?.original?.discountType === DiscountEnumType.Coupon ? (
+        <span className="font-semibold text-green-500 uppercase">Cupom</span>
+      ) : (
+        <span className="font-semibold text-red-500 uppercase">Oferta</span>
+      ),
   },
   {
     accessorKey: 'offerValue',
     header: 'Valor desconto',
     cell: ({ row }) =>
-      row?.original?.offer?.offerType === 'percentage'
-        ? `${row?.original?.offer?.offerValue}%`
-        : currencyPrice.format(row?.original?.offer?.offerValue),
+      row?.original?.offerType === OfferEnumType.Percentage
+        ? `${row?.original?.offerValue}%`
+        : currencyPrice.format(row?.original?.offerValue),
   },
   {
     accessorKey: 'expiresIn',
@@ -716,6 +733,52 @@ export const offerColumns = [
       >
         Vê detalhes <ArrowRight size={14} />
       </Link>
+    ),
+  },
+]
+
+export const offerProductColumns = (handleDelete) => [
+  {
+    accessorKey: 'product',
+    header: 'Produto',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <img
+          src={`${serverPublicImages}/${row?.original?.productData?.media?.cover}`}
+          alt={row?.original?.name}
+          className="h-14 w-14 rounded-full bg-gray-500 object-contain"
+        />
+        <p className="flex flex-col">
+          <span className="font-semibold text-sm text-gray-900 line-clamp-1">
+            {row?.original?.name}
+          </span>
+          <span className="text-xs">
+            Categoria:{' '}
+            {row?.original?.category?.map((item, i) => (
+              <Fragment key={item._id}>
+                {item.name}
+                {row?.original?.category?.length === i + 1 ? '' : '/'}
+              </Fragment>
+            ))}
+          </span>
+        </p>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2 text-sm text-blue-600">
+        <button
+          type="button"
+          title="Excluir"
+          onClick={() => handleDelete(row?.original?._id)}
+          className="text-red-500"
+        >
+          <Trash size={16} />
+        </button>
+      </div>
     ),
   },
 ]

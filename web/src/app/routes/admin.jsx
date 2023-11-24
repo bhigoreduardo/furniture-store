@@ -23,6 +23,8 @@ import Store from '../pages/admin/store'
 import Orders from '../pages/admin/orders'
 import CustomersOrders from '../pages/admin/customers/orders'
 import OrdersDetail from '../pages/admin/customers/orders-detail'
+import Offers from '../pages/admin/offers'
+import OffersForm from '../pages/admin/offers/form'
 
 const children = [
   {
@@ -113,6 +115,13 @@ const admin = [
       {
         path: 'loja',
         element: <Store />,
+      },
+      {
+        path: 'ofertas',
+        children: [
+          { path: '', element: <Offers /> },
+          { path: 'cadastrar', element: <OffersForm /> },
+        ],
       },
     ],
   },

@@ -44,3 +44,13 @@ export const prices = [
   { value: '5000-10000', label: 'R$5000,00 até R$10000,00' },
   { value: '10000-', label: 'Acima R$10000,00' },
 ]
+
+export const offer = [
+  { value: 'percentage', label: 'Porcentagem' },
+  { value: 'money', label: 'Monetário' },
+]
+
+export const discount = [
+  { value: 'coupon', label: 'Cupom' },
+  { value: 'offer', label: 'Oferta' },
+]

@@ -23,6 +23,7 @@ FIXME:
   - Colocar modal para confirmar exclusão
   - Código provisório de orders analytics no dashboard do customer
   - Rever todos refetch
+  - Na oferta quanto for escolhido para todos produtos colocar condição na validação do formik
 
 TODO:
   - Condições de loja no ar:
