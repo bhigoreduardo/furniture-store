@@ -15,7 +15,7 @@ const ColorSchema = new mongoose.Schema(
     },
     color: { type: String, required: [true, 'Cor é obrigatório'] },
     description: { type: String },
-    // products
+    products: { type: [{ type: mongoose.Schema.Types.ObjectId }], default: [] },
   },
   { timestamps: true }
 )

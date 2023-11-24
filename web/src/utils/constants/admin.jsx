@@ -6,6 +6,7 @@ import {
   IdentificationBadge,
 } from 'phosphor-react'
 import { Link } from 'react-router-dom'
+import ReactStars from 'react-rating-stars-component'
 
 import {
   createMarkup,
@@ -285,12 +286,34 @@ export const productColumns = [
   {
     accessorKey: 'sales',
     header: 'Vendas',
-    cell: ({ row }) => row?.original?.sales ?? '-',
+    cell: ({ row }) =>
+      row?.original?.sales ? (
+        <span className="flex flex-col">
+          {currencyPrice.format(row?.original?.amountSales)}
+          <span className="text-xs">({row?.original?.sales}) unidades</span>
+        </span>
+      ) : (
+        '-'
+      ),
   },
   {
     accessorKey: 'reviews',
     header: 'Avaliações',
-    cell: ({ row }) => row?.original?.reviews ?? '-',
+    cell: ({ row }) =>
+      row?.original?.reviews ? (
+        <span className="flex items-center gap-2">
+          <ReactStars
+            count={5}
+            size={12}
+            value={row?.original?.reviewsAvg?.avg}
+            edit={false}
+            activeColor="#FA8232"
+          />
+          <span className="text-xs">({row?.original?.reviews?.length})</span>
+        </span>
+      ) : (
+        '-'
+      ),
   },
   {
     accessorKey: 'actions',
@@ -428,10 +451,14 @@ export const userColumns = [
     header: 'Nome',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <img
-          className="h-6 w-6 rounded-full"
-          src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        />
+        {row?.original?.image ? (
+          <img
+            className="h-6 w-6 rounded-full"
+            src={`${serverPublicImages}/${row?.original?.image}`}
+          />
+        ) : (
+          <IdentificationBadge size={16} weight="duotone" />
+        )}
         <span className="font-semibold text-sm text-gray-900 capitalize">
           {row?.original?.name}
         </span>
@@ -575,7 +602,7 @@ export const orderColumns = [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {
-      const history = row?.original?.status[0]?.history
+      const history = row?.original?.status?.slice(-1)[0]?.history
 
       return (
         <span

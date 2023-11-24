@@ -2,6 +2,7 @@ import { removeServerImage, saveInventoryInfo } from '../utils/helper.js'
 import { filterSorted } from '../utils/format.js'
 import MediaModel from '../models/media.model.js'
 import InventoryModel from '../models/inventory.model.js'
+import CategoryModel from '../models/category.model.js'
 import ProductModel, {
   StepEnumType,
   VisibilityEnumType,
@@ -58,6 +59,25 @@ export const save = async (req, res, next) => {
       rangePrice,
       ...rest,
     })
+    await Promise.all(
+      req.body.category.forEach(
+        async (item) =>
+          await CategoryModel.findByIdAndUpdate(item, {
+            $push: { products: product._id },
+          })
+      )
+    )
+    await BrandModel.findByIdAndUpdate(req.body.brand, {
+      $push: { products: product._id },
+    })
+    await Promise.all(
+      info.forEach(
+        async (item) =>
+          await ColorModel.findByIdAndUpdate(item.color, {
+            $push: { products: product._id },
+          })
+      )
+    )
 
     return res.status(201).json({
       success: true,
@@ -186,7 +206,7 @@ export const search = async (req, res) => {
     limit,
     sort: filterSorted(query.priority),
     select:
-      '_id name category sku productData.media productData.inventory rangePrice reviewsAvg',
+      '_id name category sku productData.media productData.inventory rangePrice reviewsAvg sales amountSales reviews reviewsAvg',
     populate: [
       { path: 'category', select: 'name' },
       { path: 'productData.media', select: 'cover backCover' },
@@ -209,7 +229,7 @@ export const findById = async (req, res) => {
     { path: 'category', select: '_id name' },
     { path: 'brand', select: '_id name' },
     'productData.media',
-    'reviews'
+    'reviews',
   ])
   return res.status(200).json(finded)
 }

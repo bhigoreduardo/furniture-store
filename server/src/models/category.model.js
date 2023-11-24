@@ -16,10 +16,28 @@ const CategorySchema = new mongoose.Schema(
     },
     description: { type: String },
     image: { type: String, requied: [true, 'Image é obrigatório'] },
-    // products
-    // spotlights
-    // header
-    // store
+    products: { type: [{ type: mongoose.Schema.Types.ObjectId }], default: [] },
+    spotlights: {
+      type: [{ type: mongoose.Schema.Types.ObjectId }],
+      default: [],
+    },
+    store: { type: mongoose.Schema.Types.ObjectId },
+    banner: {
+      type: [
+        {
+          product: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: [true, 'Produto é obrigatório'],
+          },
+          shortDescription: {
+            type: String,
+            required: [true, 'Descrição breve é obrigatório'],
+          },
+          bagde: { type: String },
+        },
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 )

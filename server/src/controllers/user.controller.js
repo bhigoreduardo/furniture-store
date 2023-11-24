@@ -1,6 +1,7 @@
 import UserModel from '../models/user.model.js'
 
 import { filterSorted } from '../utils/format.js'
+import { removeServerImage } from '../utils/helper.js'
 
 export const save = async (req, res) => {
   await UserModel.create({ ...req.body })
@@ -46,7 +47,14 @@ export const findById = async (req, res) => {
 }
 
 export const updateAdmin = async (req, res) => {
-  await UserModel.findOneAndUpdate({ _id: req.params.id }, { ...req.body })
+  const { image } = req.body
+  const finded = await UserModel.findById(req.params.id)
+  if (finded.image && finded.image !== image) removeServerImage(finded.image)
+
+  await UserModel.findByIdAndUpdate(req.params.id, {
+    ...req.body,
+    image: image ?? '',
+  })
   return res.status(200).json({
     success: true,
     message: 'Atualização realizada com sucesso',

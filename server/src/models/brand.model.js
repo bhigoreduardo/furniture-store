@@ -15,7 +15,7 @@ const BrandSchema = new mongoose.Schema(
     },
     description: { type: String },
     image: { type: String, requied: [true, 'Image é obrigatório'] },
-    // products
+    products: { type: [{ type: mongoose.Schema.Types.ObjectId }], default: [] },
   },
   { timestamps: true }
 )

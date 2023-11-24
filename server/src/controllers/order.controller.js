@@ -191,6 +191,7 @@ export const search = async (req, res) => {
         populate: [{ path: 'method', select: '_id image method' }],
       },
     ],
+    sort: { createdAt: -1 },
   })
   return res.status(200).json(finded)
 }

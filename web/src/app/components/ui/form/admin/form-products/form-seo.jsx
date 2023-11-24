@@ -15,7 +15,7 @@ export default function FormSeo(props) {
   useEffect(() => {
     props.formik.setFieldValue(
       'seoData.slug',
-      slugify(props?.formik?.values?.name).toLowerCase()
+      slugify(props?.formik?.values?.name ?? '').toLowerCase()
     )
   }, [props?.formik?.values?.name]) // eslint-disable-line react-hooks/exhaustive-deps
 

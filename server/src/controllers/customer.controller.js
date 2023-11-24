@@ -167,7 +167,14 @@ export const update = async (req, res) => {
 }
 
 export const updateAdmin = async (req, res) => {
-  await CustomerModel.findOneAndUpdate({ _id: req.params.id }, { ...req.body })
+  const { image } = req.body
+  const finded = await CustomerModel.findById(req.params.id)
+  if (finded.image && finded.image !== image) removeServerImage(finded.image)
+
+  await CustomerModel.findByIdAndUpdate(req.params.id, {
+    ...req.body,
+    image: image ?? '',
+  })
   return res.status(200).json({
     success: true,
     message: 'Atualização realizada com sucesso',
