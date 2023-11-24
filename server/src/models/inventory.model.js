@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const OfferTypeEnum = {
+export const OfferTypeEnum = {
   Default: '',
   Percentage: 'percentage',
   Money: 'money',

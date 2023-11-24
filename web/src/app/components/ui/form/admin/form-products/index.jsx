@@ -265,8 +265,8 @@ export default function FormProducts({ data }) {
             className="bg-orange-500 text-white hover:bg-orange-600 !p-2 h-[42px]"
           />
           <FormPublished formik={formik} />
-          <FormCategory formik={formik} />
-          <FormBrand formik={formik} />
+          <FormCategory formik={formik} wrapper />
+          <FormBrand formik={formik} wrapper />
           <FormTag formik={formik} />
         </div>
       </div>

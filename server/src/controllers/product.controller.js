@@ -67,9 +67,6 @@ export const save = async (req, res, next) => {
           })
       )
     )
-    await BrandModel.findByIdAndUpdate(req.body.brand, {
-      $push: { products: product._id },
-    })
     await Promise.all(
       info.forEach(
         async (item) =>
@@ -78,6 +75,9 @@ export const save = async (req, res, next) => {
           })
       )
     )
+    await BrandModel.findByIdAndUpdate(req.body.brand, {
+      $push: { products: product._id },
+    })
 
     return res.status(201).json({
       success: true,

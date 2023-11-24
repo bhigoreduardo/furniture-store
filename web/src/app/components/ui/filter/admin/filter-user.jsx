@@ -6,11 +6,11 @@ import {
   actived as activedType,
   chatStatus as chatStatusType,
 } from '../../../../../types/filter-type'
+import { sanitizeSelectData } from '../../../../../utils/format'
 import useFilter from '../../../../../hooks/use-filter'
 import Button from '../../button/button'
 import Input from '../../input/input'
 import Select from '../../input/select'
-import { sanitizeSelectData } from '../../../../../utils/format'
 
 export default function FilterUser() {
   const {

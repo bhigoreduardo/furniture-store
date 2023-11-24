@@ -114,7 +114,10 @@ export const categoryColumns = [
   {
     accessorKey: 'products',
     header: 'Produtos',
-    cell: ({ row }) => row?.original?.products ?? '-',
+    cell: ({ row }) =>
+      row?.original?.products?.length > 0
+        ? row?.original?.products?.length
+        : '-',
   },
   {
     accessorKey: 'actions',
@@ -160,7 +163,10 @@ export const colorColumns = [
   {
     accessorKey: 'products',
     header: 'Produtos',
-    cell: ({ row }) => row?.original?.products ?? '-',
+    cell: ({ row }) =>
+      row?.original?.products?.length > 0
+        ? row?.original?.products?.length
+        : '-',
   },
   {
     accessorKey: 'actions',
@@ -205,7 +211,10 @@ export const brandColumns = [
   {
     accessorKey: 'products',
     header: 'Produtos',
-    cell: ({ row }) => row?.original?.products ?? '-',
+    cell: ({ row }) =>
+      row?.original?.products?.length > 0
+        ? row?.original?.products?.length
+        : '-',
   },
   {
     accessorKey: 'actions',
@@ -643,6 +652,66 @@ export const orderColumns = [
     cell: ({ row }) => (
       <Link
         to={`${row.original?._id}`}
+        className="flex items-center gap-1 text-sm text-blue-500"
+      >
+        Vê detalhes <ArrowRight size={14} />
+      </Link>
+    ),
+  },
+]
+
+export const offerColumns = [
+  {
+    accessorKey: 'name',
+    header: 'Nome',
+    cell: ({ row }) => (
+      <span className="font-semibold">{row?.original?.name}</span>
+    ),
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+  },
+  {
+    accessorKey: 'offerValue',
+    header: 'Valor desconto',
+    cell: ({ row }) =>
+      row?.original?.offer?.offerType === 'percentage'
+        ? `${row?.original?.offer?.offerValue}%`
+        : currencyPrice.format(row?.original?.offer?.offerValue),
+  },
+  {
+    accessorKey: 'expiresIn',
+    header: 'Data limite',
+    cell: ({ row }) => (
+      <div className="flex flex-col">
+        {row?.original?.offerPriceDates[0] && (
+          <p>
+            <span className="font-semibold">Data criação: </span>
+            {new Date(row?.original?.offerPriceDates[0]).toLocaleDateString(
+              'pt-BR',
+              optionsShortLocaleDate
+            )}
+          </p>
+        )}
+        {row?.original?.offerPriceDates[1] && (
+          <p>
+            <span className="font-semibold">Data expiração: </span>
+            {new Date(row?.original?.offerPriceDates[1]).toLocaleDateString(
+              'pt-BR',
+              optionsShortLocaleDate
+            )}
+          </p>
+        )}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'actions',
+    header: 'Ações',
+    cell: ({ row }) => (
+      <Link
+        to={`editar/${row.original?._id}`}
         className="flex items-center gap-1 text-sm text-blue-500"
       >
         Vê detalhes <ArrowRight size={14} />
