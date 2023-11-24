@@ -3,7 +3,7 @@ MERN ecommerce furniture application
 
 FIXME:
   - Filtro de busca em arrays dentro de um obj no mongoose para o filter do admin (https://mongoosejs.com/docs/api/model.html)
-  - bug no protected route do layout public
+  - bug no protected route do layout public para manutenção
   - bug no slider do product
   - colocar as dimensões das imagens pxs com hint de tipo e limite bytes
   - Fazer a validação do tempo da oferta para aplicar no produto
@@ -17,8 +17,6 @@ FIXME:
   - Refactor models extends and user type in users
   - Componentizar form tag button
   - Text rich está com bug no enter
-  - Compare/Favoritos fazendo request sem user e token bug
-  - Favorito está com bug de mais de 1 produto
   - Colocar as tags do produto para mecanismo de busca google e mostrar abaixo do produto
   - Colocar modal para confirmar exclusão
   - Código provisório de orders analytics no dashboard do customer

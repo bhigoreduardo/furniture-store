@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { get } from '../libs/fetcher'
 import useApp from './use-app'
 import useFilter from './use-filter'
+import useUser from './use-user'
 
 export const useFilterProducts = () => {
   const { setIsLoading, refetch, setRefetch } = useApp()
@@ -23,7 +24,9 @@ export const useFilterProducts = () => {
     ],
     queryFn: async () =>
       await get(
-        `/products/search?search=${search}&brand=${brand.join(',')}&category=${category}&priceRange=${priceRange}&priority=${priority}&page=${page}&perPage=${perPage}`,
+        `/products/search?search=${search}&brand=${brand.join(
+          ','
+        )}&category=${category}&priceRange=${priceRange}&priority=${priority}&page=${page}&perPage=${perPage}`,
         setIsLoading,
         toast,
         setRefetch
@@ -64,18 +67,21 @@ export function useProducts() {
 }
 
 export function useFilterFavorits() {
-  const { setIsLoading, refetch, setRefetch } = useApp()
+  const { setIsLoading, refetch } = useApp()
   const { page } = useFilter()
+  const { user, token } = useUser()
 
   const { data } = useQuery({
     queryKey: ['favorits', page],
-    queryFn: async () =>
-      await get(
-        `/customers/favorits/search?page=${page}`,
-        setIsLoading,
-        toast,
-        setRefetch
-      ),
+    queryFn: async () => {
+      if (user && token)
+        return await get(
+          `/customers/favorits/search?page=${page}`,
+          setIsLoading,
+          toast
+        )
+      return null
+    },
     staleTime: refetch ? 0 : 1000 * 60 * 1,
   })
 
@@ -84,10 +90,15 @@ export function useFilterFavorits() {
 
 export function useCompare() {
   const { setIsLoading } = useApp()
+  const { user, token } = useUser()
 
   const { data } = useQuery({
     queryKey: ['compare'],
-    queryFn: async () => await get('/customers/compare', setIsLoading, toast),
+    queryFn: async () => {
+      if (user && token)
+        return await get('/customers/compare', setIsLoading, toast)
+      return null
+    },
     staleTime: 1000 * 60 * 1,
   })
 

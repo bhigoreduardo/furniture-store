@@ -402,7 +402,6 @@ export const findSearchFavorits = async (req, res) => {
   const limit = 10
 
   const finded = await CustomerModel.findById(req.userId).select('favorits')
-
   const allFinded = await ProductModel.paginate(
     { _id: { $in: finded.favorits } },
     {
@@ -415,8 +414,7 @@ export const findSearchFavorits = async (req, res) => {
       ],
     }
   )
-
-  return res.status(200).json(...allFinded)
+  return res.status(200).json(allFinded)
 }
 
 export const findAllCompare = async (req, res) => {
