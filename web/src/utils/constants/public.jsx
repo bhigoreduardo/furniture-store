@@ -109,7 +109,7 @@ export const orderColumns = (endpoint) => [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {
-      const history = row?.original?.status[0]?.history
+      const history = row?.original?.status?.slice(-1)[0]?.history
 
       return (
         <span
