@@ -4,6 +4,7 @@ import {
   GlobeSimple,
   ChatTeardropDots,
   BellSimpleRinging,
+  User,
 } from 'phosphor-react'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
@@ -94,10 +95,16 @@ export default function Header() {
               />
             </button>
             <button>
-              <img
-                src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                className="w-10 h-10 rounded-full"
-              />
+              {user?.image ? (
+                <img
+                  src={`${import.meta.env.VITE_SERVER_PUBLIC_IMAGES}/${
+                    user.image
+                  }`}
+                  className="w-10 h-10 rounded-full bg-gray-100"
+                />
+              ) : (
+                <User size={20} weight="duotone" className="text-white" />
+              )}
             </button>
           </div>
         </div>

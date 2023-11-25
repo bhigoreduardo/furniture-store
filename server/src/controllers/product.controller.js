@@ -3,6 +3,8 @@ import { filterSorted } from '../utils/format.js'
 import MediaModel from '../models/media.model.js'
 import InventoryModel from '../models/inventory.model.js'
 import CategoryModel from '../models/category.model.js'
+import BrandModel from '../models/brand.model.js'
+import ColorModel from '../models/color.model.js'
 import ProductModel, {
   StepEnumType,
   VisibilityEnumType,
@@ -59,21 +61,17 @@ export const save = async (req, res, next) => {
       rangePrice,
       ...rest,
     })
-    await Promise.all(
-      req.body.category.forEach(
-        async (item) =>
-          await CategoryModel.findByIdAndUpdate(item, {
-            $push: { products: product._id },
-          })
-      )
+    req.body.category.forEach(
+      async (item) =>
+        await CategoryModel.findByIdAndUpdate(item, {
+          $push: { products: product._id },
+        })
     )
-    await Promise.all(
-      info.forEach(
-        async (item) =>
-          await ColorModel.findByIdAndUpdate(item.color, {
-            $push: { products: product._id },
-          })
-      )
+    info.forEach(
+      async (item) =>
+        await ColorModel.findByIdAndUpdate(item.color, {
+          $push: { products: product._id },
+        })
     )
     await BrandModel.findByIdAndUpdate(req.body.brand, {
       $push: { products: product._id },
