@@ -1,5 +1,6 @@
 import { ArrowRight, Package, Receipt, Rocket } from 'phosphor-react'
 import { Link, useNavigate } from 'react-router-dom'
+import { SwiperSlide } from 'swiper/react'
 
 import {
   useFilterOrders,
@@ -7,20 +8,23 @@ import {
 } from '../../../../hooks/use-order'
 import { orderColumns } from '../../../../utils/constants/public'
 import { OrderStatusEnumType } from '../../../../types/enum-type'
-import { useFilterHistory } from '../../../../hooks/use-product'
+import { useLastHistory } from '../../../../hooks/use-product'
 import useUser from '../../../../hooks/use-user'
 import CardOverview from '../../../components/ui/card/card-overview'
 import CardProfile from '../../../components/ui/card/customer/card-profile'
 import CardAddress from '../../../components/ui/card/customer/card-address'
 import TableData from '../../../components/ui/table/table-data'
 import Button from '../../../components/ui/button/button'
+import CardProduct from '../../../components/ui/card/card-product'
+import Heading from '../../../components/ui/heading'
+import Slider from '../../../components/ui/slider'
 
 export default function Dashboard() {
   const navigate = useNavigate()
   const { user } = useUser()
   const { docs: orders } = useFilterOrders()
   const ordersAnalytics = useOrdersAnalytics()
-  useFilterHistory()
+  const lastHistory = useLastHistory()
   const address = user?.address
 
   return (
@@ -99,14 +103,51 @@ export default function Dashboard() {
         columns={orderColumns('/conta/pedidos')}
         data={orders}
       />
+
+      <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
+        <Heading
+          title="Histórico"
+          btn={
+            <Button
+              label="Vê todos"
+              icon={<ArrowRight size={14} />}
+              className="!gap-1 font-semibold text-sm text-orange-500 hover:bg-orange-500 hover:text-white !py-2 normal-case"
+              onClick={() => navigate('/conta/historico')}
+            />
+          }
+        />
+        {lastHistory?.length > 0 ? (
+          <Slider perView={4} spaceBetween={24} className="px-6">
+            {({ swiperRef }) =>
+              lastHistory?.map((item) => (
+                <SwiperSlide
+                  key={item._id}
+                  value={item._id}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    swiperRef.current.swiper.slideToLoop(item._id)
+                    swiperRef.current.activeIndex = item._id
+                  }}
+                >
+                  <CardProduct
+                    id={item?._id}
+                    reviewsAvg={item?.reviewsAvg}
+                    reviews={item?.reviews}
+                    name={item?.name}
+                    cover={item?.productData?.media?.cover}
+                    backCover={item?.productData?.media?.backCover}
+                    rangePrice={item?.rangePrice}
+                  />
+                </SwiperSlide>
+              ))
+            }
+          </Slider>
+        ) : (
+          <span className="text-sm text-gray-600 text-left px-6">
+            Sem resultados
+          </span>
+        )}
+      </div>
     </section>
   )
 }
-
-// let ordersPending = 0
-// let ordersDelivered = 0
-// ordersAnalytics?.forEach((item) => {
-//   const curStatus = item.status.slice(-1)[0]
-//   if (curStatus.history === 'pending') ordersPending += 1
-//   else if (curStatus.history === 'delivered') ordersDelivered += 1
-// })

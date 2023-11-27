@@ -8,6 +8,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 
 import Button from './button/button'
+import { mergeClassName } from '../../../utils/format'
 
 export default function Slider({
   perView = 7,
@@ -15,19 +16,21 @@ export default function Slider({
   loop = true,
   onSlideChange,
   onActiveIndexChange,
+  spaceBetween,
+  className,
   children,
 }) {
   const swiperRef = useRef()
-  const spaceBetween = Math.floor((width - 80 * perView) / (perView - 1))
+  const calcSpaceBetween = Math.floor((width - 80 * perView) / (perView - 1))
 
   return (
-    <div className="relative">
+    <div className={mergeClassName('relative', className)}>
       <Swiper
         ref={swiperRef}
         loop={loop}
         grabCursor={true}
         slidesPerView={perView}
-        spaceBetween={spaceBetween}
+        spaceBetween={spaceBetween || calcSpaceBetween}
         modules={[Navigation]}
         onSlideChange={onSlideChange}
         onActiveIndexChange={onActiveIndexChange}

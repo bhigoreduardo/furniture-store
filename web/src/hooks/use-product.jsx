@@ -105,6 +105,19 @@ export function useCompare() {
   return data
 }
 
+export function useLastHistory() {
+  const { setIsLoading, refetch, setRefetch } = useApp()
+
+  const { data } = useQuery({
+    queryKey: ['last-history'],
+    queryFn: async () =>
+      await get(`/customers/last-history`, setIsLoading, toast, setRefetch),
+    staleTime: refetch ? 0 : 1000 * 60 * 1,
+  })
+
+  return data
+}
+
 export function useFilterHistory() {
   const { setIsLoading, refetch, setRefetch } = useApp()
   const { page, perPage } = useFilter()
@@ -121,5 +134,5 @@ export function useFilterHistory() {
     staleTime: refetch ? 0 : 1000 * 60 * 1,
   })
 
-  return { ...data }
+  return data
 }

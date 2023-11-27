@@ -24,6 +24,7 @@ import Checkout from '../pages/public/checkout'
 import CheckoutSuccess from '../pages/public/checkout/checkout-success'
 import Wishlist from '../pages/public/wishlist'
 import Compare from '../pages/public/compare'
+import History from '../pages/public/dashboard/history'
 
 const router = [
   {
@@ -104,6 +105,10 @@ const router = [
           {
             path: 'endereco',
             element: <Address />,
+          },
+          {
+            path: 'historico',
+            element: <History />,
           },
           {
             path: 'configuracao',

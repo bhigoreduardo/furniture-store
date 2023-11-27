@@ -59,6 +59,12 @@ router.patch(
   validate(customerMiddleware.changePassword),
   useError(customerController.changePassword)
 )
+router.patch(
+  '/toggle-history',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.toggleHistory)
+)
 
 // ADMIN
 router.put(
@@ -150,6 +156,12 @@ router.get(
   useError(userAuth),
   useError(customerAuth),
   useError(customerController.findSearchHistory)
+)
+router.get(
+  '/last-history',
+  useError(userAuth),
+  useError(customerAuth),
+  useError(customerController.lastHistory)
 )
 
 // ADMIN

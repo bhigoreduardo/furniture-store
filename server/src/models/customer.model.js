@@ -84,6 +84,14 @@ const CustomerSchema = new mongoose.Schema(
     amountSpend: { type: Number, default: 0 },
     historyAvailable: { type: Boolean, default: true },
     history: { type: Object, default: {} },
+    // history: {
+    //   type: Map,
+    //   of: {
+    //     type: {
+    //       datetime: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+    //     },
+    //   },
+    // },
     favorits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
     compare: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
     // compare: {

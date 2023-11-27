@@ -199,6 +199,18 @@ export const changePassword = async (req, res) => {
   })
 }
 
+export const toggleHistory = async (req, res) => {
+  await CustomerModel.findByIdAndUpdate(req.userId, {
+    historyAvailable: req.body.historyAvailable,
+  })
+  const finded = await CustomerModel.findById(req.userId)
+  return res.status(200).json({
+    success: true,
+    message: 'Atualização realizada com sucesso',
+    ...finded.sendAuth(),
+  })
+}
+
 export const search = async (req, res) => {
   const query = req.query
   const page = Number(query.page) || 0
@@ -441,22 +453,68 @@ export const findAllCompare = async (req, res) => {
   return res.status(200).json(allFinded)
 }
 
-export const findSearchHistory = async (req, res) => {
+export const lastHistory = async (req, res) => {
   const finded = await CustomerModel.findById(req.userId).select('history')
-  const keys = Object.keys(finded.history)
+  const lastKey = Object.keys(finded.history)[0]
 
-  const allFinded = []
-  if (keys?.length > 0) {
-    keys.forEach(async (key) => {
-      await Promise.all(
-        finded.history[key].map(async (item) =>
-          allFinded.push(await ProductModel.findById(item).select('name'))
-        )
-      )
-    })
+  let allFinded
+  if (typeof lastKey !== 'undefined') {
+    allFinded = finded.history[lastKey].map(
+      async (item) =>
+        await ProductModel.findById(item)
+          .select('_id name productData.media rangePrice reviewsAvg reviews')
+          .populate('productData.media')
+    )
+  }
+  const data =
+    typeof lastKey !== 'undefined' ? await Promise.all(allFinded) : []
+
+  return res.status(200).json(data)
+}
+
+export const findSearchHistory = async (req, res) => {
+  const query = req.query
+  const finded = await CustomerModel.findById(req.userId).select('history')
+  const allFinded = finded.history
+  const keys = Object.keys(allFinded)
+  const filter = {
+    ...(query.search && {
+      $or: [
+        { name: { $regex: query.search, $options: 'i' } },
+        { sku: { $regex: query.search, $options: 'i' } },
+        { code: { $regex: query.search, $options: 'i' } },
+        { 'description.overview': { $regex: query.search, $options: 'i' } },
+        { 'additional.detail': { $regex: query.search, $options: 'i' } },
+        { 'seoData.slug': { $regex: query.search, $options: 'i' } },
+        { 'seoData.metaTitle': { $regex: query.search, $options: 'i' } },
+        { 'seoData.metaDescription': { $regex: query.search, $options: 'i' } },
+      ],
+    }),
   }
 
-  return res.status(200).json(allFinded)
+  let allData
+  if (keys?.length > 0) {
+    keys.forEach((key) => {
+      allData = allFinded[key].map(
+        async (item) =>
+          await ProductModel.findById(item)
+            .select('_id name productData.media rangePrice reviewsAvg reviews')
+            .populate('productData.media')
+      )
+    })
+    allData = await Promise.all(allData)
+    keys.forEach((key) => {
+      allData.forEach((item) => {
+        if (allFinded[key].includes(item._id.toString())) {
+          allFinded[key].push(item)
+        }
+      })
+      allFinded[key] = allFinded[key].filter((item) => typeof item !== 'string')
+    })
+  }
+  const data = keys?.length > 0 ? allFinded : {}
+
+  return res.status(200).json(data)
 }
 
 export const ratingReview = async (req, res) => {
