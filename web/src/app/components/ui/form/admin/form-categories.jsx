@@ -1,29 +1,37 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable react/prop-types */
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
+import { offerProductColumns } from '../../../../../utils/constants/admin'
 import { formDataUpload, parsedSelectData } from '../../../../../utils/format'
 import { useCategories } from '../../../../../hooks/use-category'
 import { post, put } from '../../../../../libs/fetcher'
+import useFilter from '../../../../../hooks/use-filter'
 import useApp from '../../../../../hooks/use-app'
 import Button from '../../button/button'
 import ImageLabel from '../../input/image-label'
 import InputLabel from '../../input/input-label'
 import SelectLabel from '../../input/select-label'
 import TextAreaLabel from '../../input/textarea-label'
+import FormProduct from './form-product'
+import Heading from '../../heading'
 
 const validationSchema = yup.object().shape({
   image: yup.string().required('Imagem é obrigatório'),
   name: yup.string().required('Nome é obrigatório'),
   parent: yup.string().optional(),
   description: yup.string().optional(),
+  product: yup.array().of(yup.string()).optional(),
 })
 
 export default function FormCategories({ data }) {
   const navigate = useNavigate()
   const { setIsLoading, setRefetch } = useApp()
+  const { setCategory } = useFilter()
   const categories = useCategories()
   const parsedData = categories && parsedSelectData(categories, '_id', 'name')
   const parsedCategories = data
@@ -36,10 +44,15 @@ export default function FormCategories({ data }) {
       name: data?.name || '',
       parent: data?.parent || '',
       description: data?.description || '',
+      product: data?.spotlights || [],
     },
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
+  const handleDelete = (index) =>
+    formik.setFieldValue('product', [
+      ...formik?.values?.product?.filter((item) => item !== index),
+    ])
   const handleSubmit = async (values) => {
     let response
     validationSchema.cast(values, { stripUnknown: true })
@@ -57,6 +70,9 @@ export default function FormCategories({ data }) {
       navigate(-1)
     }
   }
+  useEffect(() => {
+    if (Object.keys(data)?.length !== 0) setCategory(data._id)
+  }, [data, setCategory])
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6 px-6">
@@ -110,6 +126,15 @@ export default function FormCategories({ data }) {
           value={formik.values.description}
         />
       </div>
+      {Object.keys(data)?.length !== 0 && (
+        <>
+          <Heading title="Destaques" />
+          <FormProduct
+            formik={formik}
+            columns={offerProductColumns(handleDelete)}
+          />
+        </>
+      )}
       <Button
         type="submit"
         label="Salvar"

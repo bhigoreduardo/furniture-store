@@ -18,5 +18,6 @@ export const update = {
     name: Joi.string().required(),
     description: Joi.string().allow('').optional(),
     image: Joi.string().required(),
+    product: Joi.array().items(Joi.string().allow('')).required(),
   }),
 }

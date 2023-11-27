@@ -104,6 +104,7 @@ export const categoryColumns = [
   {
     accessorKey: 'description',
     header: 'Descrição',
+    cell: ({ row }) => row?.original?.description || '-',
   },
   {
     accessorKey: 'slug',

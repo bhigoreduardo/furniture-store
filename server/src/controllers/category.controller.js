@@ -24,7 +24,7 @@ export const save = async (req, res, next) => {
 }
 
 export const update = async (req, res) => {
-  const { image } = req.body
+  const { image, product: spotlights } = req.body
   try {
     const finded = await CategoryModel.findById(req.params.id)
     if (!finded) throw new ErrorHandler('Categoria não cadastrada', 422)
@@ -35,6 +35,7 @@ export const update = async (req, res) => {
       ...req.body,
       parent: req.body.parent || undefined,
       slug: slugify(req.body.name).toLowerCase(),
+      spotlights,
     })
     return res
       .status(200)
