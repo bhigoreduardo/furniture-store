@@ -166,6 +166,12 @@ router.get(
 
 // ADMIN
 router.get(
+  '/:id/last-history',
+  useError(userAuth),
+  useError(adminAuth),
+  useError(customerController.findByIdLastHistory)
+)
+router.get(
   '/:id',
   useError(userAuth),
   useError(adminAuth),

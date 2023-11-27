@@ -472,6 +472,25 @@ export const lastHistory = async (req, res) => {
   return res.status(200).json(data)
 }
 
+export const findByIdLastHistory = async (req, res) => {
+  const finded = await CustomerModel.findById(req.params.id).select('history')
+  const lastKey = Object.keys(finded.history)[0]
+
+  let allFinded
+  if (typeof lastKey !== 'undefined') {
+    allFinded = finded.history[lastKey].map(
+      async (item) =>
+        await ProductModel.findById(item)
+          .select('_id name productData.media rangePrice reviewsAvg reviews')
+          .populate('productData.media')
+    )
+  }
+  const data =
+    typeof lastKey !== 'undefined' ? await Promise.all(allFinded) : []
+
+  return res.status(200).json(data)
+}
+
 export const findSearchHistory = async (req, res) => {
   const query = req.query
   const finded = await CustomerModel.findById(req.userId).select('history')

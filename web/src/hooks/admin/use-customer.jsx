@@ -42,3 +42,16 @@ export function useCustomer(id) {
   })
   return { ...data }
 }
+
+export function useLastHistory(id) {
+  const { setIsLoading, refetch, setRefetch } = useApp()
+
+  const { data } = useQuery({
+    queryKey: ['last-history', id],
+    queryFn: async () =>
+      await get(`/customers/${id}/last-history`, setIsLoading, toast, setRefetch),
+    staleTime: refetch ? 0 : 1000 * 60 * 1,
+  })
+
+  return data
+}

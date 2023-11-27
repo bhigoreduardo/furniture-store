@@ -25,12 +25,13 @@ export default function CardProduct({
   cover,
   backCover,
   rangePrice,
+  isAdmin = false,
 }) {
   const navigate = useNavigate()
   const { setIsLoading } = useApp()
   const { user, token, handleUpdateUser } = useUser()
-  const isFavorite = user?.favorits.includes(id)
-  const isCompare = user?.compare.includes(id)
+  const isFavorite = !isAdmin ? user?.favorits.includes(id) : false
+  const isCompare = !isAdmin ? user?.compare.includes(id) : false
   const handleProduct = async (endpoint) => {
     if (!user || !token) return navigate('/entrar')
     const { user: userData, token: tokenData } = await patch(
@@ -64,28 +65,36 @@ export default function CardProduct({
           className="absolute -right-[100%] group-hover:right-0 h-full w-full object-cover duration-300 ease-in-out"
         />
         <div className="hidden absolute top-0 right-0 left-0 bottom-0 group-hover:flex items-center justify-center gap-2 bg-black w-full h-full bg-opacity-50 duration-300 ease-in-out">
-          <Button
-            icon={<Heart size={16} />}
-            onClick={() => handleProduct('/customers/toggle-favorite')}
-            title="Favoritar"
-            className={`${
-              isFavorite ? 'bg-orange-500 text-white' : 'bg-white text-gray-900'
-            } hover:bg-orange-500 hover:text-white !w-10 !h-10 !p-0 !rounded-full`}
-          />
+          {!isAdmin && (
+            <Button
+              icon={<Heart size={16} />}
+              onClick={() => handleProduct('/customers/toggle-favorite')}
+              title="Favoritar"
+              className={`${
+                isFavorite
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-white text-gray-900'
+              } hover:bg-orange-500 hover:text-white !w-10 !h-10 !p-0 !rounded-full`}
+            />
+          )}
           <Button
             icon={<ShoppingCartSimple size={16} />}
             onClick={() => navigate(`/produto/${id}`)}
             title="Visualizar"
             className="bg-white hover:bg-orange-500 text-gray-900 hover:text-white !w-10 !h-10 !p-0 !rounded-full"
           />
-          <Button
-            icon={<ArrowsCounterClockwise size={16} />}
-            onClick={() => handleProduct('/customers/toggle-compare')}
-            title="Comparar"
-            className={`${
-              isCompare ? 'bg-orange-500 text-white' : 'bg-white text-gray-900'
-            } hover:bg-orange-500 hover:text-white !w-10 !h-10 !p-0 !rounded-full`}
-          />
+          {!isAdmin && (
+            <Button
+              icon={<ArrowsCounterClockwise size={16} />}
+              onClick={() => handleProduct('/customers/toggle-compare')}
+              title="Comparar"
+              className={`${
+                isCompare
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-white text-gray-900'
+              } hover:bg-orange-500 hover:text-white !w-10 !h-10 !p-0 !rounded-full`}
+            />
+          )}
         </div>
       </div>
       {reviewsAvg !== undefined && reviews?.length !== 0 ? (
