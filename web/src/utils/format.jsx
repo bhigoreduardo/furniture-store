@@ -238,3 +238,6 @@ export const getOrderHistoryStyle = (orderStatus) => {
       return node
   }
 }
+
+export const toCapitalize = (string) =>
+  string.charAt(0).toUpperCase() + string.slice(1)

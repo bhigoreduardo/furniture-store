@@ -1,0 +1,71 @@
+@server=http://localhost:3001
+@endPoint=api/v1/orders
+@id=657862889bcccd023ad85e61
+@code=3ad85e60
+
+### POST /
+POST {{ server }}/{{ endPoint }}/ HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NTdmNDcwY2RmNmU4ZjIwOWJhNCIsImV4cCI6MTcwMzY4NDM1My4xMDgsImlhdCI6MTcwMjM4ODM1M30.yft4sHNuHrhXqwCLeYzk1nS_5vlo9Wm7OtHKDnLYxaA
+
+{
+  "name": "Customer",
+  "email": "firstcustomer@email.com",
+  "whatsApp": "12345678988",
+  "address": {
+    "street": "Fake street",
+    "neighborhood": "Fake Neighborhood",
+    "city": "Fake City",
+    "state": "Fake State",
+    "number": "12",
+    "zipCode": "12345678",
+    "complement": "Fale complement"
+  },
+  "payment": {
+    "method": "657860390db93518ffb9b90c",
+    "availableInstallments": true,
+    "installments": 12
+  },
+  "cart": [
+    {
+      "product": "657795280b1499ae6f1fe8ce",
+      "color": "657791ff63463a7007449539",
+      "quantity": 2
+    }
+  ],
+  "obs": "Nenhuma obs"
+}
+
+### PATCH /:id/change-status
+PATCH {{ server }}/{{ endPoint }}/{{ id }}/change-status HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1M2JiMTNmMGRhNGViNGE3MzdiMiIsImV4cCI6MTcwMzY4NTA1MS4zNDQsImlhdCI6MTcwMjM4OTA1MX0.2YofyAb9pBdVoIYbkK7ZbevJxeEGzNWBwDbyA_GSd00
+
+{
+  "status": "paid"
+}
+
+### GET /analytics/customers
+GET {{ server }}/{{ endPoint }}/analytics/customers HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NTdmNDcwY2RmNmU4ZjIwOWJhNCIsImV4cCI6MTcwMzY4NDM1My4xMDgsImlhdCI6MTcwMjM4ODM1M30.yft4sHNuHrhXqwCLeYzk1nS_5vlo9Wm7OtHKDnLYxaA
+
+### GET /search?search=First&page=1&perPage=5&priority=asc
+GET {{ server }}/{{ endPoint }}/search?search=First HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1M2JiMTNmMGRhNGViNGE3MzdiMiIsImV4cCI6MTcwMzY4NTA1MS4zNDQsImlhdCI6MTcwMjM4OTA1MX0.2YofyAb9pBdVoIYbkK7ZbevJxeEGzNWBwDbyA_GSd00
+
+### GET /search/customers?search=First&page=1&perPage=5&priority=asc
+GET {{ server }}/{{ endPoint }}/search/customers?search=First HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NTdmNDcwY2RmNmU4ZjIwOWJhNCIsImV4cCI6MTcwMzY4NDM1My4xMDgsImlhdCI6MTcwMjM4ODM1M30.yft4sHNuHrhXqwCLeYzk1nS_5vlo9Wm7OtHKDnLYxaA
+
+### GET /:code/customers/code
+GET {{ server }}/{{ endPoint }}/{{ code }}/customers/code?email=firstcustomer@email.com HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NTdmNDcwY2RmNmU4ZjIwOWJhNCIsImV4cCI6MTcwMzY4NDM1My4xMDgsImlhdCI6MTcwMjM4ODM1M30.yft4sHNuHrhXqwCLeYzk1nS_5vlo9Wm7OtHKDnLYxaA
+
+### GET /:id/customers
+GET {{ server }}/{{ endPoint }}/{{ id }}/customers HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NTdmNDcwY2RmNmU4ZjIwOWJhNCIsImV4cCI6MTcwMzY4NDM1My4xMDgsImlhdCI6MTcwMjM4ODM1M30.yft4sHNuHrhXqwCLeYzk1nS_5vlo9Wm7OtHKDnLYxaA
+
+### GET /:id
+GET {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1M2JiMTNmMGRhNGViNGE3MzdiMiIsImV4cCI6MTcwMzY4NTA1MS4zNDQsImlhdCI6MTcwMjM4OTA1MX0.2YofyAb9pBdVoIYbkK7ZbevJxeEGzNWBwDbyA_GSd00

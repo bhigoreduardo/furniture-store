@@ -1,0 +1,15 @@
+@server=http://localhost:3001
+@endPoint=api/v1/reviews
+@id=
+
+### POST /
+POST {{ server }}/{{ endPoint }}/ HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NTdmNDcwY2RmNmU4ZjIwOWJhNCIsImV4cCI6MTcwMzY4NjQwNS44OTMsImlhdCI6MTcwMjM5MDQwNX0.uSjnG3PMNeTkGXoc-QV5HWgh0zNyMdOACfsFr2J0qos
+
+{
+  "order": "657862889bcccd023ad85e61",
+  "cartItem": "657862889bcccd023ad85e62",
+  "description": "Descrição",
+  "stars": 3
+}

@@ -24,7 +24,7 @@ export default function Dashboard() {
   const { user } = useUser()
   const { docs: orders } = useFilterOrders()
   const ordersAnalytics = useOrdersAnalytics()
-  const lastHistory = useLastHistory()
+  // const lastHistory = useLastHistory()
   const address = user?.address
 
   return (
@@ -116,7 +116,7 @@ export default function Dashboard() {
             />
           }
         />
-        {lastHistory?.length > 0 ? (
+        {/* {lastHistory?.length > 0 ? (
           <Slider perView={4} spaceBetween={24} className="px-6">
             {({ swiperRef }) =>
               lastHistory?.map((item) => (
@@ -146,7 +146,7 @@ export default function Dashboard() {
           <span className="text-sm text-gray-600 text-left px-6">
             Sem resultados
           </span>
-        )}
+        )} */}
       </div>
     </section>
   )

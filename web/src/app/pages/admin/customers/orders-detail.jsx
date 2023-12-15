@@ -16,7 +16,7 @@ import AlertModal from '../../../components/ui/modal/alert-modal'
 
 export default function OrdersDetail() {
   const { id } = useParams()
-  const { setIsLoading, isModalOpen, setIsModalOpen } = useApp()
+  const { setIsLoading, isModalOpen, setIsModalOpen, setRefetch } = useApp()
   const data = useOrder(id)
   const orderStatus = data?.status?.slice(-1)[0]?.history
   const statusTypeParsed = sanitizeSelectData(statusType, ['canceled'])
@@ -26,7 +26,13 @@ export default function OrdersDetail() {
       orderStatus === OrderStatusEnumType.Canceled
     )
       return
-    await patch(`/orders/update-status/${id}`, { status }, setIsLoading, toast)
+    await patch(
+      `/orders/${id}/change-status`,
+      { status },
+      setIsLoading,
+      toast,
+      setRefetch
+    )
   }
 
   return (
@@ -38,7 +44,6 @@ export default function OrdersDetail() {
           handleStatus(OrderStatusEnumType.Canceled)
           setIsModalOpen(false)
         }}
-        message=""
       />
       {orderStatus !== OrderStatusEnumType.Delivered &&
         orderStatus !== OrderStatusEnumType.Canceled && (

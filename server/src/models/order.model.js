@@ -1,15 +1,7 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
-export const StatusEnumType = {
-  Created: 'created',
-  Pending: 'pending',
-  Paid: 'paid',
-  Progress: 'progress',
-  Traffic: 'traffic',
-  Delivered: 'delivered',
-  Canceled: 'canceled',
-}
+import { StatusEnum } from '../types/order.type.js'
 
 const OrderSchema = new mongoose.Schema(
   {
@@ -127,7 +119,7 @@ const OrderSchema = new mongoose.Schema(
       {
         history: {
           type: String,
-          enum: StatusEnumType,
+          enum: StatusEnum,
           required: [true, 'Status do pedido é obrigatório'],
         },
         dateTime: { type: Date, default: Date.now() },

@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { toast } from 'react-toastify'
 import {
   List,
   GlobeSimple,
@@ -6,9 +8,8 @@ import {
   BellSimpleRinging,
   User,
 } from 'phosphor-react'
-import { useFormik } from 'formik'
-import { toast } from 'react-toastify'
 
+import { UserEnum } from '../../../../types/user-type'
 import { patch } from '../../../../libs/fetcher'
 import useUser from '../../../../hooks/use-user'
 import useApp from '../../../../hooks/use-app'
@@ -27,10 +28,10 @@ export default function Header() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { available: user?.available || false },
-    onSubmit: async (values) => {
+    onSubmit: async () => {
       const { user, token } = await patch(
         '/stores/toggle-available',
-        values,
+        {},
         setIsLoading,
         toast
       )
@@ -61,15 +62,17 @@ export default function Header() {
               }
               className="flex-row-reverse bg-orange-600 text-white !py-1 !px-2"
             />
-            <CheckboxToggleLabel
-              id="available"
-              name="available"
-              onChange={() => {
-                formik.setFieldValue('available', !formik.values.available)
-                formik.handleSubmit()
-              }}
-              checked={formik.values.available}
-            />
+            {user?._type === UserEnum.Store && (
+              <CheckboxToggleLabel
+                id="available"
+                name="available"
+                onChange={() => {
+                  formik.setFieldValue('available', !formik.values.available)
+                  formik.handleSubmit()
+                }}
+                checked={formik.values.available}
+              />
+            )}
           </div>
           <div className="flex items-center gap-8">
             <button className="relative">

@@ -15,19 +15,20 @@ import CheckboxToggleLabel from '../../../components/ui/input/checkboxtoggle-lab
 export default function History() {
   const { user, handleUpdateUser } = useUser()
   const { setIsLoading } = useApp()
-  const history = useFilterHistory()
-  const keys = history ? Object.keys(history) : []
+  // const history = useFilterHistory()
+  // const keys = history ? Object.keys(history) : []
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { historyAvailable: user?.historyAvailable },
-    onSubmit: async (values) => {
-      const { user, token } = await patch(
-        '/customers/toggle-history',
-        values,
+    onSubmit: async () => {
+      const { user: userData, token } = await patch(
+        `/customers/${user._id}/toggle-history`,
+        {},
         setIsLoading,
-        toast
+        toast,
+        null
       )
-      handleUpdateUser(user, token)
+      handleUpdateUser(userData, token)
     },
   })
 
@@ -53,7 +54,7 @@ export default function History() {
         className="!border-none !px-0"
       />
       <FilterHistory />
-      {keys?.length > 0 ? (
+      {/* {keys?.length > 0 ? (
         <>
           {Object.keys(history)?.map((key) => (
             <div
@@ -90,7 +91,7 @@ export default function History() {
         </>
       ) : (
         <span className="text-sm text-gray-600 text-left">Sem resultados</span>
-      )}
+      )} */}
     </section>
   )
 }

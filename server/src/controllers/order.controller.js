@@ -1,14 +1,14 @@
 import mongoose from 'mongoose'
-// import Stripe from 'stripe'
 
-import ProductModel from '../models/product.model.js'
+import { StatusEnum } from '../types/order.type.js'
+import OrderModel from '../models/order.model.js'
 import PaymentModel from '../models/payment.model.js'
-import OrderModel, { StatusEnumType } from '../models/order.model.js'
-import InventoryModel from '../models/inventory.model.js'
-import CustomerModel from '../models/customer.model.js'
-import ColorModel from '../models/color.model.js'
-import ErrorHandler from '../utils/ErrorHandler.js'
+import ProductModel from '../models/product/product.model.js'
+import InventoryModel from '../models/product/inventory.model.js'
+import ColorModel from '../models/product/color.model.js'
+import CustomerModel from '../models/user/customer.model.js'
 
+// SAVE
 export const save = async (req, res) => {
   const {
     name,
@@ -99,10 +99,7 @@ export const save = async (req, res) => {
     cart: items,
     address,
     payment: { method, fee, amount, cartQuantity },
-    status: [
-      { history: StatusEnumType.Created },
-      { history: StatusEnumType.Pending },
-    ],
+    status: [{ history: StatusEnum.Created }, { history: StatusEnum.Pending }],
     obs: req.body.obs,
   })
 
@@ -148,9 +145,27 @@ export const save = async (req, res) => {
     .json({ success: true, message: 'Pedido criado com sucesso' })
 }
 
+// UPDATE
+export const changeStatus = async (req, res) => {
+  await OrderModel.findByIdAndUpdate(req.params.id, {
+    $push: { status: { history: req.body.status } },
+  })
+  // TODO: req.body.status === StatusEnum.Canceled devolver estoque
+  return res.status(200).json({ success: true, message: 'Pedido atualizado' })
+}
+
+// ANALYTICS
+export const analyticsCustomers = async (req, res) => {
+  const allFinded = await OrderModel.find({
+    'customer.user': req.userId,
+  }).select('status')
+  return res.status(200).json(allFinded)
+}
+
+// SEARCH
 export const search = async (req, res) => {
   const query = req.query
-  const page = Number(query.page) || 0
+  const page = Number(query.page) || 1
   const limit = Number(query.perPage) || 10
   const filter = {
     ...(query.search && {
@@ -198,7 +213,7 @@ export const search = async (req, res) => {
 
 export const searchCustomers = async (req, res) => {
   const query = req.query
-  const page = Number(query.page) || 0
+  const page = Number(query.page) || 1
   const limit = Number(query.perPage) || 10
   const filter = {
     ...(query.search && {
@@ -224,31 +239,41 @@ export const searchCustomers = async (req, res) => {
     }),
   }
   const finded = await OrderModel.paginate(
-    { 'customer.user': req.params.id, ...filter },
+    { 'customer.user': req.userId, ...filter },
     {
       page,
       limit,
       select: '_id customer code status payment createdAt',
       populate: [
-        { path: 'customer.user', select: 'image' },
         {
           path: 'payment',
           populate: [{ path: 'method', select: '_id image method' }],
         },
       ],
+      sort: { createdAt: -1 },
     }
   )
+  return res.status(200).json(finded)
+}
+
+export const findByCodeCustomers = async (req, res) => {
+  const finded = await OrderModel.findOne({
+    code: req.params.code,
+    'customer.user': req.userId,
+    'customer.email': req.query.email,
+  })
+  return res.status(200).json(finded)
+}
+
+export const findByIdCustomers = async (req, res) => {
+  const finded = await OrderModel.findOne({
+    _id: req.params.id,
+    'customer.user': req.userId,
+  }).populate(['cart.review'])
   return res.status(200).json(finded)
 }
 
 export const findById = async (req, res) => {
   const finded = await OrderModel.findById(req.params.id)
   return res.status(200).json(finded)
-}
-
-export const updateStatus = async (req, res) => {
-  await OrderModel.findByIdAndUpdate(req.params.id, {
-    $push: { status: { history: req.body.status } },
-  })
-  return res.status(200).json({ success: true, message: 'Pedido atualizado' })
 }

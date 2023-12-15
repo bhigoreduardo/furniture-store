@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import { ArrowRight } from 'phosphor-react'
 
 import { post } from '../../../../../../libs/fetcher'
+import { findUserTypePath } from '../../../../../../utils/helper'
 import useApp from '../../../../../../hooks/use-app'
 import useQueries from '../../../../../../hooks/use-queries'
 import Button from '../../../button/button'
@@ -25,9 +26,9 @@ const initialValues = {
 
 export default function FormRecoveryPassword() {
   const navigate = useNavigate()
+  const queries = useQueries()
   const { pathname } = useLocation()
   const { setIsLoading } = useApp()
-  const queries = useQueries()
   const [info, setInfo] = useState('')
   const [success, setSuccess] = useState(false)
   const formik = useFormik({
@@ -36,16 +37,15 @@ export default function FormRecoveryPassword() {
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
+  const path = pathname.split('/')
+  path.pop()
   const handleSubmit = async (values) => {
     if (queries.has('token')) {
-      const endPoint =
-        pathname.split('/')[1] === 'loja'
-          ? '/users/recovery-password'
-          : '/stores/recovery-password'
-
+      const _type = findUserTypePath(path[2])
       const { info, success } = await post(
-        endPoint,
+        'auth/recovery-password',
         {
+          _type,
           ...values,
           passwordResetToken: queries.get('token'),
         },
@@ -53,9 +53,9 @@ export default function FormRecoveryPassword() {
         toast
       )
       setInfo(info)
-      setSuccess(success)
       if (success) {
-        navigate(`/${pathname.split('/')[1]}/entrar`)
+        setSuccess(success)
+        navigate(`${path.join('/')}/entrar`)
       }
     }
   }

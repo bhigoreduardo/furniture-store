@@ -1,12 +1,8 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
-import { OfferTypeEnum } from './inventory.model.js'
-
-const DiscountTypeEnum = {
-  Coupon: 'coupon',
-  Offer: 'offer',
-}
+import { DiscountEnum } from '../types/offer.type.js'
+import { OfferEnum } from '../types/product.type.js'
 
 const OfferSchema = new mongoose.Schema(
   {
@@ -14,12 +10,12 @@ const OfferSchema = new mongoose.Schema(
     complement: { type: String },
     discountType: {
       type: String,
-      enum: DiscountTypeEnum,
-      default: DiscountTypeEnum.Offer,
+      enum: DiscountEnum,
+      default: DiscountEnum.Offer,
     },
     offerType: {
       type: String,
-      enum: OfferTypeEnum,
+      enum: OfferEnum,
       required: [true, 'Tipo da oferta é obrigatório'],
     },
     offerValue: {
@@ -36,6 +32,19 @@ const OfferSchema = new mongoose.Schema(
       },
       default: {},
       _id: false,
+    },
+    everyOne: { type: Boolean, default: false },
+    category: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
+      default: [],
+    },
+    brand: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Brand' }],
+      default: [],
+    },
+    product: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+      default: [],
     },
   },
   { timestamps: true }

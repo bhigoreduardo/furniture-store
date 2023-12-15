@@ -13,6 +13,8 @@ import {
   Layout,
   CurrencyCircleDollar,
   SignOut,
+  UserCircleGear,
+  IdentificationCard,
 } from 'phosphor-react'
 
 import { comparePathname } from '../../../../utils/format'
@@ -24,8 +26,9 @@ const ACTIVE_ITEM = 'text-white !bg-orange-500'
 export default function Sidebar() {
   const { pathname } = useLocation()
   const { isSidebar } = useAdmin()
-  const isStore = pathname.split('/')[1] === 'loja'
-  const path = pathname.split('/')[2]
+  const isAdmin = pathname.split('/')[2] === 'admin'
+  const isStore = pathname.split('/')[2] === 'loja'
+  const path = pathname.split('/')[3]
 
   return (
     <aside
@@ -40,15 +43,13 @@ export default function Sidebar() {
         title="Painel"
         className={comparePathname(path, undefined) && ACTIVE_ITEM}
       />
-      {!isStore && (
-        <NavItem
-          to="clientes"
-          icon={<UserList size={18} />}
-          label="Clientes"
-          title="Clientes"
-          className={comparePathname(path, 'clientes') && ACTIVE_ITEM}
-        />
-      )}
+      <NavItem
+        to="clientes"
+        icon={<UserList size={18} />}
+        label="Clientes"
+        title="Clientes"
+        className={comparePathname(path, 'clientes') && ACTIVE_ITEM}
+      />
       <NavItem
         to="categorias"
         icon={<Tag size={18} />}
@@ -91,7 +92,21 @@ export default function Sidebar() {
         title="Mensagens"
         className={comparePathname(path, 'mensagens') && ACTIVE_ITEM}
       />
-      {!isStore && (
+      <NavItem
+        to="layout"
+        icon={<Layout size={18} />}
+        label="Layout"
+        title="Layout"
+        className={comparePathname(path, 'layout') && ACTIVE_ITEM}
+      />
+      <NavItem
+        to="ofertas"
+        icon={<CurrencyCircleDollar size={18} />}
+        label="Ofertas/Cupons"
+        title="Ofertas/Cupons"
+        className={comparePathname(path, 'ofertas') && ACTIVE_ITEM}
+      />
+      {isStore && (
         <>
           <NavItem
             to="loja"
@@ -101,25 +116,33 @@ export default function Sidebar() {
             className={comparePathname(path, 'loja') && ACTIVE_ITEM}
           />
           <NavItem
-            to="usuarios"
+            to="administradores"
+            icon={<UserCircleGear size={18} />}
+            label="Administradores"
+            title="Administradores"
+            className={comparePathname(path, 'administradores') && ACTIVE_ITEM}
+          />
+        </>
+      )}
+      {(isStore || isAdmin) && (
+        <>
+          <NavItem
+            to="colaboradores"
             icon={<UsersThree size={18} />}
-            label="Usuários"
-            title="Usuários"
-            className={comparePathname(path, 'usuarios') && ACTIVE_ITEM}
+            label="Colaboradores"
+            title="Colaboradores"
+            className={comparePathname(path, 'colaboradores') && ACTIVE_ITEM}
           />
+        </>
+      )}
+      {!isStore && (
+        <>
           <NavItem
-            to="layout"
-            icon={<Layout size={18} />}
-            label="Layout"
-            title="Layout"
-            className={comparePathname(path, 'layout') && ACTIVE_ITEM}
-          />
-          <NavItem
-            to="ofertas"
-            icon={<CurrencyCircleDollar size={18} />}
-            label="Ofertas/Cupons"
-            title="Ofertas/Cupons"
-            className={comparePathname(path, 'ofertas') && ACTIVE_ITEM}
+            to="perfil"
+            icon={<IdentificationCard size={18} />}
+            label="Perfil"
+            title="Perfil"
+            className={comparePathname(path, 'perfil') && ACTIVE_ITEM}
           />
         </>
       )}

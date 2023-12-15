@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'phosphor-react'
 
 import { post } from '../../../../../../libs/fetcher'
+import { UserEnum } from '../../../../../../types/user-type'
 import useApp from '../../../../../../hooks/use-app'
 import InputLabel from '../../../input/input-label'
 import Button from '../../../button/button'
@@ -16,7 +17,7 @@ const validationSchema = yup.object().shape({
     .matches(/\S+@\S+\.\S+/, 'Informe email válido')
     .required('Email é obrigatório'),
 })
-const initialValues = { email: '' }
+const initialValues = { _type: UserEnum.Customer, email: '' }
 
 export default function FormGenerateRecoveryPassword() {
   const { setIsLoading } = useApp()
@@ -30,10 +31,11 @@ export default function FormGenerateRecoveryPassword() {
   })
   const handleSubmit = async (values) => {
     const { info, success } = await post(
-      '/customers/generate-recovery-password',
+      '/auth/generate-recovery-password',
       values,
       setIsLoading,
-      toast
+      toast,
+      null
     )
     setInfo(info)
     setSuccess(success)

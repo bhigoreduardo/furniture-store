@@ -3,7 +3,6 @@ MERN ecommerce furniture application
 
 FIXME:
   - Filtro de busca em arrays dentro de um obj no mongoose para o filter do admin (https://mongoosejs.com/docs/api/model.html)
-  - bug no protected route do layout public para manutenção
   - bug no slider do product
   - colocar as dimensões das imagens pxs com hint de tipo e limite bytes
   - Fazer a validação do tempo da oferta para aplicar no produto
@@ -14,7 +13,6 @@ FIXME:
   - Bug no cash das informações do usuário (quando sair, resetar todos caches)
   - externalizar handleProduct(user, token, handleUpdateUser, endpoint, id) - [card-product/compare/wishlist/hero]
   - Se estiver no admin consertar bug dos compare, favorits
-  - Refactor models extends and user type in users
   - Componentizar form tag button
   - Text rich está com bug no enter
   - Colocar as tags do produto para mecanismo de busca google e mostrar abaixo do produto
@@ -22,6 +20,10 @@ FIXME:
   - Código provisório de orders analytics no dashboard do customer
   - Rever todos refetch
   - Na oferta quanto for escolhido para todos produtos colocar condição na validação do formik
+  - Erro da remoção da imagem do servidor está crashando a aplicação tem que ser resolvido com urgência
+  - Consertar _id do products do put
+  - bug do protect route de maintenance
+  - req.body.status === StatusEnum.Canceled devolver estoque
 
 TODO:
   - Condições de loja no ar:
@@ -44,56 +46,13 @@ Dashboard Cliente:
 Home
 Header Todos Produtos
 
-const mongoose = require('mongoose');
-
-const UserSchema = new mongoose.Schema({
-  email: {type: String, unique: true, required: true},
-  passwordHash: {type: String, required: true},
-
-  firstname: {type: String},
-  lastname: {type: String},
-  phone: {type: String}
-});
-
-// Extend function
-const extend = (Schema, obj) => (
-  new mongoose.Schema(
-    Object.assign({}, Schema.obj, obj)
-  )
-);
-
-// Usage:
-const AdminUserSchema = extend(UserSchema, {
-  firstname: {type: String, required: true},
-  lastname: {type: String, required: true},
-  phone: {type: String, required: true}
-});
-
-const User = mongoose.model('users', UserSchema);
-const AdminUser = mongoose.model('admins', AdminUserSchema);
-
-const john = new User({
-  email: 'user@site.com',
-  passwordHash: 'bla-bla-bla',
-  firstname: 'John'
-});
-
-john.save();
-
-const admin = new AdminUser({
-  email: 'admin@site.com',
-  passwordHash: 'bla-bla-bla',
-  firstname: 'Henry',
-  lastname: 'Hardcore',
-  // phone: '+555-5555-55'
-});
-
-admin.save();
-// Oops! Error 'phone' is required
-
 Dimensões:
 	Categorias: 512*512
 	Marcas: 512*512
 	Produto Capa: 512*512
 	Produto Galeria: 1200*960
   https://stackoverflow.com/questions/54020719/validating-file-size-and-format-with-yup
+
+Quick scripts:
+- Loja:
+  db.stores.insert({_type:"store",name:"Furniture",email:"furniture@email.com",whatsApp:"12345678901",activatedStatus:false})

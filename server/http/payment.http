@@ -1,0 +1,50 @@
+@server=http://localhost:3001
+@endPoint=api/v1/payments
+@id=6577a62912b026586460dff7
+
+### POST /
+POST {{ server }}/{{ endPoint }}/ HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYzNjEwNi45MzcsImlhdCI6MTcwMjM0MDEwNn0.KWaQmYqZapXyh-NDahSkFG9k-rTmfJlO-dfwgC5AMtc
+
+{
+  "image": "image.png",
+  "method": "Cartão de crédito",
+  "availableGateway": true,
+  "availableInstallments": true,
+  "infoInstallments": [
+    {
+      "installments": 12,
+      "fee": 1.2
+    }
+  ]
+}
+
+### PUT /:id
+PUT {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYzNjEwNi45MzcsImlhdCI6MTcwMjM0MDEwNn0.KWaQmYqZapXyh-NDahSkFG9k-rTmfJlO-dfwgC5AMtc
+
+{
+  "image": "image.png",
+  "method": "Cartão de crédito",
+  "availableGateway": true,
+  "availableInstallments": true,
+  "infoInstallments": [
+    {
+      "installments": 12,
+      "fee": 1.2
+    },
+    {
+      "installments": 10,
+      "fee": 1
+    }
+  ]
+}
+
+### GET /
+GET {{ server }}/{{ endPoint }}/ HTTP/1.1
+
+### DELETE /:id
+DELETE {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYzNjEwNi45MzcsImlhdCI6MTcwMjM0MDEwNn0.KWaQmYqZapXyh-NDahSkFG9k-rTmfJlO-dfwgC5AMtc

@@ -2,10 +2,13 @@
 import { useNavigate } from 'react-router-dom'
 
 import { zipCodeMask } from '../../../../../utils/mask'
+import useUser from '../../../../../hooks/use-user'
 import Button from '../../button/button'
 import Heading from '../../heading'
+import { UserEnum } from '../../../../../types/user-type'
 
 export default function CardAddress({ address, to }) {
+  const { user: userAuth } = useUser()
   const navigate = useNavigate()
 
   return (
@@ -48,11 +51,13 @@ export default function CardAddress({ address, to }) {
             Sem endereço cadastrado, por gentileza, realize a edição do endereço
           </p>
         )}
-        <Button
-          label="Editar endereço"
-          className="text-blue-500 !border-blue-500 hover:bg-blue-500 hover:text-white"
-          onClick={() => navigate(to)}
-        />
+        {userAuth?._type !== UserEnum.Employee && (
+          <Button
+            label="Editar endereço"
+            className="text-blue-500 !border-blue-500 hover:bg-blue-500 hover:text-white"
+            onClick={() => navigate(to)}
+          />
+        )}
       </div>
     </div>
   )

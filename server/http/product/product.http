@@ -1,0 +1,187 @@
+@server=http://localhost:3001
+@endPoint=api/v1/products
+@id=657795ee85b7c21d33509225
+
+### POST /
+POST {{ server }}/{{ endPoint }}/ HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYxNDk4Ny44ODQsImlhdCI6MTcwMjMxODk4N30.xIcxcvfu8LfTE-bPF4vr-F18V9JN7uFBVERifVCaTVA
+
+{
+  "status": true,
+  "name": "New",
+  "sku": "POA890",
+  "code": "AUIOW81",
+  "description": {
+    "overview": "Description overview",
+    "otherInfos": [
+      {
+        "title": "Title",
+        "description": "description"
+      }
+    ]
+  },
+  "additional": {
+    "detail": "Additional detail",
+    "otherInfos": [
+      {
+        "title": "Title",
+        "description": "description"
+      }
+    ]
+  },
+  "specification": [
+    {
+      "title": "Title",
+      "description": "description"
+    }
+  ],
+  "productData": {
+    "inventory": {
+      "manageStock": true,
+      "stockStatus": true,
+      "lowStockWarning": true,
+      "info": [
+        {
+          "color": "657791ff63463a7007449539",
+          "stock": 10,
+          "price": 10.76,
+          "offer": {
+            "offerValue": 2,
+            "offerType": "money",
+            "offerPrice": 8.76
+          },
+          "featured": true
+        },
+        {
+          "color": "657791ff63463a7007449539",
+          "stock": 10,
+          "price": 10.76,
+          "featured": true
+        }
+      ]
+    },
+    "shippingInfo": {
+      "weight": 12,
+      "length": 18,
+      "width": 10,
+      "height": 30,
+      "fee": 0,
+      "timeDelivery": 2,
+      "isFree": true
+    }
+  },
+  "seoData": {
+    "slug": "product new",
+    "metaTitle": "Product",
+    "metaDescription": "Product"
+  },
+  "published": {
+    "step": "completed",
+    "visibility": "private"
+  },
+  "category": ["65776351debda2320cf43df8"],
+  "brand": "657760b912320afdadcc87e6",
+  "tags": ["Product"],
+  "cover": "657760b912320afdadcc87e6.png",
+  "backCover": "657760b912320afdadcc87e6.png",
+  "gallery": ["657760b912320afdadcc87e6.png"],
+  "video": "youtube.com"
+}
+
+### PUT /:id
+PUT {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYxNDk4Ny44ODQsImlhdCI6MTcwMjMxODk4N30.xIcxcvfu8LfTE-bPF4vr-F18V9JN7uFBVERifVCaTVA
+
+{
+  "status": true,
+  "name": "Novo",
+  "sku": "POA890",
+  "code": "AUIOW81",
+  "description": {
+    "overview": "Description overview",
+    "otherInfos": [
+      {
+        "title": "Title",
+        "description": "description"
+      }
+    ]
+  },
+  "additional": {
+    "detail": "Additional detail",
+    "otherInfos": [
+      {
+        "title": "Title",
+        "description": "description"
+      }
+    ]
+  },
+  "specification": [
+    {
+      "title": "Title",
+      "description": "description"
+    }
+  ],
+  "productData": {
+    "inventory": {
+      "manageStock": true,
+      "stockStatus": true,
+      "lowStockWarning": true,
+      "info": [
+        {
+          "color": "657791ff63463a7007449539",
+          "stock": 10,
+          "price": 10.76,
+          "offer": {
+            "offerValue": 2,
+            "offerType": "money",
+            "offerPrice": 8.76
+          },
+          "featured": true
+        },
+        {
+          "color": "657791ff63463a7007449539",
+          "stock": 10,
+          "price": 10.76,
+          "featured": true
+        }
+      ]
+    },
+    "shippingInfo": {
+      "weight": 12,
+      "length": 18,
+      "width": 10,
+      "height": 30,
+      "fee": 0,
+      "timeDelivery": 2,
+      "isFree": true
+    }
+  },
+  "seoData": {
+    "slug": "product 10",
+    "metaTitle": "Product",
+    "metaDescription": "Product"
+  },
+  "published": {
+    "step": "draft",
+    "visibility": "private"
+  },
+  "category": ["65776351debda2320cf43df8"],
+  "brand": "657760b912320afdadcc87e6",
+  "tags": ["Product"],
+  "cover": "657760b912320afdadcc8756.png",
+  "backCover": "657760b912320afdadcc87e6.png",
+  "gallery": ["657760b912320afdadcc87e6.png"],
+  "video": "youtube.com"
+}
+
+### GET /search?search=product&page=1&perPage=5&priority=asc&public=true
+GET {{ server }}/{{ endPoint }}/search?search=prod&perPage=2&public=true HTTP/1.1
+
+### GET /:id?color=true
+GET {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+
+### DELETE /:id
+DELETE {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NGJiNDgwNzA1NGRlYzNhMGM0OCIsImV4cCI6MTcwMzYxNzU5Mi44NTEsImlhdCI6MTcwMjMyMTU5Mn0.tAN2ePK2pyOc5V5afP0X0efh2y1tSbUyvEQAhn_TAMs

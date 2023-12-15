@@ -1,22 +1,24 @@
+import { FilterEnum } from '../types/filter.type.js'
+
 export const filterSorted = (sorted) => {
   switch (sorted) {
-    case 'asc':
+    case FilterEnum.ASC:
       return { name: 1 }
-    case 'desc':
+    case FilterEnum.DESC:
       return { name: -1 }
-    case 'news':
+    case FilterEnum.NEWS:
       return { createdAt: -1 }
-    case 'old':
+    case FilterEnum.OLD:
       return { createdAt: 1 }
-    case 'latest':
+    case FilterEnum.LATEST:
       return { updatedAt: -1 }
-    case 'sold':
+    case FilterEnum.SOLD:
       return { sales: -1 }
-    case 'popularity':
+    case FilterEnum.POPULARITY:
       return { 'reviewsAvg.amount': -1 }
-    case 'minor-price':
+    case FilterEnum.MINORPRICE:
       return { 'rangePrice.min': 1 }
-    case 'biggest-price':
+    case FilterEnum.BIGGESTPRICE:
       return { 'rangePrice.max': -1 }
     default:
       return { createdAt: -1 }

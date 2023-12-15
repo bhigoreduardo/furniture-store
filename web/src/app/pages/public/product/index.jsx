@@ -14,9 +14,9 @@ import Reviews from './reviews'
 export default function Product() {
   const { id } = useParams()
   const product = useProduct(id, true)
-  useHistory(id)
   const [tabInformation, setTabInformation] = useState('description')
   const getActiveTab = (tab) => tab === tabInformation
+  useHistory(id)
 
   return (
     <section className="flex flex-col gap-10">

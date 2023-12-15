@@ -1,9 +1,12 @@
 import mongoose from 'mongoose'
+import mongoosePaginate from 'mongoose-paginate'
 
 const ReviewSchema = new mongoose.Schema(
   {
-    customer: { type: String, required: [true, 'Cliente é obrigatório'] },
-    image: { type: String },
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, 'Cliente é obrigatório'],
+    },
     stars: {
       type: Number,
       max: 5,
@@ -14,5 +17,7 @@ const ReviewSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+ReviewSchema.plugin(mongoosePaginate)
 
 export default mongoose.model('Review', ReviewSchema)

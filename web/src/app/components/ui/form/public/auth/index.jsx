@@ -7,6 +7,7 @@ import { ArrowRight } from 'phosphor-react'
 
 import { cpfMask, mobileMask } from '../../../../../../utils/mask'
 import { removeDataMask } from '../../../../../../utils/format'
+import { UserEnum } from '../../../../../../types/user-type'
 import { post } from '../../../../../../libs/fetcher'
 import useUser from '../../../../../../hooks/use-user'
 import useApp from '../../../../../../hooks/use-app'
@@ -17,6 +18,7 @@ import Tab from '../../../button/tab'
 import CheckboxLabel from '../../../input/checkbox-label'
 
 const validationSignInSchema = yup.object().shape({
+  _type: yup.string().required('Usuário tipo é obrigatório'),
   email: yup
     .string()
     .matches(/\S+@\S+\.\S+/, 'Informe email válido')
@@ -24,6 +26,7 @@ const validationSignInSchema = yup.object().shape({
   password: yup.string().required('Senha é obrigatório'),
 })
 const initialSignInValues = {
+  _type: UserEnum.Customer,
   email: '',
   password: '',
 }
@@ -62,17 +65,18 @@ export default function FormAuth() {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    const endPoint = isNonLogin ? '/customers/sign-up' : '/customers/sign-in'
+    if (isNonLogin) delete values._type
+    const endPoint = isNonLogin ? '/customers/sign-up' : '/auth/sign-in'
     values = isNonLogin ? removeDataMask(values, ['cpf', 'whatsApp']) : values
-    const { info, success, user, token } = await post(
-      endPoint,
-      values,
-      setIsLoading,
-      toast
-    )
+    const {
+      info,
+      success: successData,
+      user,
+      token,
+    } = await post(endPoint, values, setIsLoading, toast, null)
     setInfo(info)
-    setSuccess(success)
-    if (success) {
+    setSuccess(successData)
+    if (successData) {
       formik.resetForm()
       if (!isNonLogin) {
         handleUpdateUser(user, token)

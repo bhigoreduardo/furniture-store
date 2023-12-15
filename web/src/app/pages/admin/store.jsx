@@ -19,6 +19,8 @@ export default function Store() {
   const { user } = useUser()
   const [isNonAccount, setIsNonAccount] = useState(false)
   const getClassName = (status) => (!status ? ACTIVE_ITEM : INACTIVE_ITEM)
+  const endPoint = `/stores`
+
   return (
     <section className="flex-grow flex flex-col gap-6">
       <div className="flex gap-3">
@@ -65,7 +67,7 @@ export default function Store() {
           </div>
           <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
             <Heading title="Endereço" />
-            <FormAddress user={user} endPoint="/stores/update" />
+            <FormAddress user={user} endPoint={endPoint} _type={user?._type} />
           </div>
           <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
             <Heading title="Formas de pagamento" />
@@ -73,13 +75,13 @@ export default function Store() {
           </div>
           <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
             <Heading title="Redes sociais" />
-            <FormSocial user={user} endPoint="/stores/update" />
+            <FormSocial user={user} endPoint={endPoint} _type={user?._type} />
           </div>
         </>
       ) : (
         <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
           <Heading title="Segurança" />
-          <FormPassword endPoint="/stores/change-password" />
+          <FormPassword endPoint={`${user?._type}s`} _type={user?._type} />
         </div>
       )}
     </section>

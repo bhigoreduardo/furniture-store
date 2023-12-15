@@ -10,7 +10,7 @@ import {
   phoneMask,
 } from '../../../../../../utils/mask'
 import { formDataUpload, removeDataMask } from '../../../../../../utils/format'
-import { put } from '../../../../../../libs/fetcher'
+import { patch } from '../../../../../../libs/fetcher'
 import useApp from '../../../../../../hooks/use-app'
 import useUser from '../../../../../../hooks/use-user'
 import Button from '../../../button/button'
@@ -19,6 +19,7 @@ import InputLabel from '../../../input/input-label'
 import TextAreaLabel from '../../../input/textarea-label'
 
 const validationSchema = yup.object().shape({
+  _type: yup.string().required('Usuário tipo é obrigatório'),
   image: yup.string().required('Imagem é obrigatório'),
   name: yup.string().required('Nome é obrigatório'),
   email: yup
@@ -52,6 +53,7 @@ export default function FormStore({ user }) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      _type: user?._type || '',
       image: user?.image || '',
       name: user?.name || '',
       email: user?.email || '',
@@ -70,14 +72,14 @@ export default function FormStore({ user }) {
   const handleSubmit = async (values) => {
     values = removeDataMask(values, ['phone', 'whatsApp', 'cnpj', 'ie'])
     if (typeof values.image !== 'string') values = formDataUpload(values)
-    const { user, token } = await put(
-      '/stores/update',
+    const { user: userData, token } = await patch(
+      `/stores/${user._id}`,
       values,
       setIsLoading,
       toast,
       null
     )
-    handleUpdateUser(user, token)
+    handleUpdateUser(userData, token)
   }
 
   return (
@@ -99,7 +101,7 @@ export default function FormStore({ user }) {
             <InputLabel
               id="name"
               label="Nome"
-              placeholder="Infome nome completo"
+              placeholder="Infome nome da loja"
               name="name"
               error={formik.touched.name && formik.errors.name}
               onChange={formik.handleChange}

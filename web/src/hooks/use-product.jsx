@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 import { get } from '../libs/fetcher'
+import { UserEnum } from '../types/user-type'
 import useApp from './use-app'
 import useFilter from './use-filter'
 import useUser from './use-user'
@@ -74,7 +75,7 @@ export function useFilterFavorits() {
   const { data } = useQuery({
     queryKey: ['favorits', page],
     queryFn: async () => {
-      if (user && token)
+      if (user && token && user?._type === UserEnum.Customer)
         return await get(
           `/customers/favorits/search?page=${page}`,
           setIsLoading,

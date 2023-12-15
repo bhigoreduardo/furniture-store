@@ -1,10 +1,11 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { toast } from 'react-toastify'
 import { ArrowRight } from 'phosphor-react'
 
 import { post } from '../../../../../../libs/fetcher'
+import { findUserTypePath } from '../../../../../../utils/helper'
 import useApp from '../../../../../../hooks/use-app'
 import Button from '../../../button/button'
 import InputLabel from '../../../input/input-label'
@@ -28,6 +29,7 @@ const initialValues = {
 }
 
 export default function FormSignUp() {
+  const { pathname } = useLocation()
   const navigate = useNavigate()
   const { setIsLoading } = useApp()
   const formik = useFormik({
@@ -36,15 +38,18 @@ export default function FormSignUp() {
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
+  const path = pathname.split('/')
+  path.pop()
   const handleSubmit = async (values) => {
+    const _type = findUserTypePath(path[2])
     const { success } = await post(
-      '/stores/sign-up',
-      values,
+      '/auth/sign-up',
+      { _type, ...values },
       setIsLoading,
       toast
     )
     if (success) {
-      navigate('/admin/entrar')
+      navigate(`${path.join('/')}/entrar`)
     }
   }
   return (

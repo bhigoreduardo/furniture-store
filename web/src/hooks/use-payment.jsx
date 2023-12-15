@@ -11,7 +11,7 @@ export function usePayments() {
     queryKey: ['payments'],
     queryFn: async () =>
       await get('/payments', setIsLoading, toast, setRefetch),
-    staleTime: refetch ? 0 : 1000 * 60 * 1,
+    staleTime: refetch ? 0 : 1000 * 60 * 60,
   })
 
   return data

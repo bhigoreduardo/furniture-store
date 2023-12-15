@@ -6,7 +6,7 @@ import * as yup from 'yup'
 
 import { zipCodeMask } from '../../../../utils/mask'
 import { removeDataMask } from '../../../../utils/format'
-import { put } from '../../../../libs/fetcher'
+import { patch } from '../../../../libs/fetcher'
 import useApp from '../../../../hooks/use-app'
 import useUser from '../../../../hooks/use-user'
 import InputLabel from '../input/input-label'
@@ -34,7 +34,12 @@ const initialValues = {
   complement: '',
 }
 
-export default function FormAddress({ user, isAdmin = false, endPoint }) {
+export default function FormAddress({
+  user,
+  isAdmin = false,
+  endPoint,
+  _type,
+}) {
   const navigate = useNavigate()
   const { setIsLoading, setRefetch } = useApp()
   const { handleUpdateUser } = useUser()
@@ -50,9 +55,9 @@ export default function FormAddress({ user, isAdmin = false, endPoint }) {
       user: userData,
       token,
       success,
-    } = await put(
-      endPoint,
-      { address: removeDataMask(values, ['zipCode']) },
+    } = await patch(
+      `${endPoint}/${user._id}`,
+      { _type, address: removeDataMask(values, ['zipCode']) },
       setIsLoading,
       toast
     )

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
 import { usePayments } from '../../../hooks/use-payment'
 import useApp from '../../../hooks/use-app'
@@ -9,11 +9,13 @@ import Footer from '../../components/navigation/public/footer'
 import Copyright from '../../components/ui/copyright'
 
 export default function Public() {
-  const { store, handlePayment } = useApp()
+  const { handlePayment } = useApp()
   const payments = usePayments()
 
   // const ProtectedRoute = ({ children }) => {
-  //   if (!store?.available) return <Navigate to="/manutencao" />
+  //   if (store === null) return null
+  //   else if (!store?.available) return <Navigate to="/manutencao" />
+
   //   return children
   // }
 
@@ -22,13 +24,11 @@ export default function Public() {
   }, [payments]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    // <ProtectedRoute>
     <main>
       <Header />
       <Outlet />
       <Footer />
       <Copyright />
     </main>
-    // </ProtectedRoute>
   )
 }

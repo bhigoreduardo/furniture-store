@@ -8,6 +8,7 @@ import * as yup from 'yup'
 import ReactStars from 'react-rating-stars-component'
 
 import { parsedSelectData } from '../../../../utils/format'
+import { UserEnum } from '../../../../types/user-type'
 import useApp from '../../../../hooks/use-app'
 import useUser from '../../../../hooks/use-user'
 import Slider from '../../../components/ui/slider'
@@ -35,8 +36,14 @@ export default function Hero({
   const [image, setImage] = useState('')
   const { payment, cartItems, handleCartItems } = useApp()
   const { user } = useUser()
-  const isFavorite = user?.favorits.includes(id)
-  const isCompare = user?.compare.includes(id)
+  const isFavorite =
+    user && user?._type === UserEnum.Customer
+      ? user?.favorits.includes(id)
+      : false
+  const isCompare =
+    user && user?._type === UserEnum.Customer
+      ? user?.compare.includes(id)
+      : false
   // const isCompare = Boolean(user?.compare[id])
   const parsedColor =
     inventory &&

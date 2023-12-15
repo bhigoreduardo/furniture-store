@@ -17,6 +17,7 @@ export default function Form() {
   const { setIsLoading, setRefetch } = useApp()
   const navigate = useNavigate()
   const customer = useCustomer(id)
+  const endPoint = `${customer?._type}s`
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { status: customer.status },
@@ -59,7 +60,8 @@ export default function Form() {
         <FormProfile
           user={customer}
           isAdmin
-          endPoint={`/customers/update/${customer._id}/admin`}
+          endPoint={endPoint}
+          _type={customer?._type}
         />
       </div>
       <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
@@ -67,7 +69,8 @@ export default function Form() {
         <FormAddress
           user={customer}
           isAdmin
-          endPoint={`/customers/update/${customer._id}/admin`}
+          endPoint={endPoint}
+          _type={customer?._type}
         />
       </div>
     </section>

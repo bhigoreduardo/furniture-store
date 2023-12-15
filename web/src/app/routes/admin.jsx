@@ -6,6 +6,9 @@ import GenerateRecoveryPassword from '../pages/admin/auth/generate-recovery-pass
 import RecoveryPassword from '../pages/admin/auth/recovery-password'
 
 import Dashboard from '../pages/admin/dashboard'
+import Customers from '../pages/admin/customers'
+import CustomersProfile from '../pages/admin/customers/profile'
+import CustomersForm from '../pages/admin/customers/form'
 import Categories from '../pages/admin/categories'
 import CategoriesForm from '../pages/admin/categories/form'
 import Colors from '../pages/admin/colors'
@@ -14,19 +17,21 @@ import Brands from '../pages/admin/brands'
 import BrandsForm from '../pages/admin/brands/form'
 import Products from '../pages/admin/products'
 import ProductsForm from '../pages/admin/products/form'
-import Customers from '../pages/admin/customers'
-import CustomersProfile from '../pages/admin/customers/profile'
-import CustomersForm from '../pages/admin/customers/form'
-import Users from '../pages/admin/users'
-import UsersForm from '../pages/admin/users/form'
-import Store from '../pages/admin/store'
 import Orders from '../pages/admin/orders'
 import CustomersOrders from '../pages/admin/customers/orders'
 import OrdersDetail from '../pages/admin/customers/orders-detail'
 import Offers from '../pages/admin/offers'
 import OffersForm from '../pages/admin/offers/form'
+import Store from '../pages/admin/store'
+import Users from '../pages/admin/users'
+import UsersForm from '../pages/admin/users/form'
+import UserProfile from '../pages/admin/users/profile'
 
 const children = [
+  {
+    path: 'cadastrar',
+    element: <SignUp />,
+  },
   {
     path: 'entrar',
     element: <Auth />,
@@ -86,6 +91,18 @@ const children = [
           { path: ':id', element: <OrdersDetail /> },
         ],
       },
+      {
+        path: 'clientes',
+        children: [
+          { path: '', element: <Customers /> },
+          { path: 'perfil/:id', element: <CustomersProfile /> },
+          { path: 'pedidos/:id', element: <CustomersOrders /> },
+        ],
+      },
+      {
+        path: 'perfil',
+        element: <UserProfile />,
+      },
     ],
   },
 ]
@@ -105,16 +122,12 @@ const admin = [
         ],
       },
       {
-        path: 'usuarios',
+        path: 'colaboradores',
         children: [
           { path: '', element: <Users /> },
           { path: 'cadastrar', element: <UsersForm /> },
           { path: 'editar/:id', element: <UsersForm /> },
         ],
-      },
-      {
-        path: 'loja',
-        element: <Store />,
       },
       {
         path: 'ofertas',
@@ -127,21 +140,44 @@ const admin = [
   },
 ]
 
-const router = [
+const store = [
   {
-    path: '/admin',
+    path: '',
+    element: <Layout />,
     children: [
-      ...children,
-      ...admin,
       {
-        path: 'cadastrar',
-        element: <SignUp />,
+        path: 'loja',
+        element: <Store />,
+      },
+      {
+        path: 'administradores',
+        children: [
+          { path: '', element: <Users /> },
+          { path: 'cadastrar', element: <UsersForm /> },
+          { path: 'editar/:id', element: <UsersForm /> },
+        ],
       },
     ],
   },
+]
+
+const router = [
   {
-    path: '/loja',
-    children: children,
+    path: '/acesso',
+    children: [
+      {
+        path: 'loja',
+        children: [...store, ...children, ...admin],
+      },
+      {
+        path: 'admin',
+        children: [...children, ...admin],
+      },
+      {
+        path: 'colaborador',
+        children: children,
+      },
+    ],
   },
 ]
 

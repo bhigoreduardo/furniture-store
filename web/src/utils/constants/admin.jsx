@@ -598,11 +598,16 @@ export const orderColumns = [
     header: 'Cliente',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <img
-          src={`${serverPublicImages}/${row?.original?.customer?.user?.image}`}
-          alt={row?.original?.customer?.name}
-          className="h-6 w-6 rounded-full bg-gray-500 object-contain"
-        />
+        {row?.original?.image ? (
+          <img
+            src={`${serverPublicImages}/${row?.original?.customer?.user?.image}`}
+            alt={row?.original?.customer?.name}
+            className="h-6 w-6 rounded-full bg-gray-500 object-contain"
+          />
+        ) : (
+          <IdentificationBadge size={16} weight="duotone" />
+        )}
+
         <span className="font-semibold text-sm text-gray-900">
           {row?.original?.customer?.name}
         </span>

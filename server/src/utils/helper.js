@@ -1,9 +1,10 @@
+import mongoose from 'mongoose'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import ErrorHandler from './ErrorHandler.js'
-import InventoryModel from '../models/inventory.model.js'
+import ErrorHandler from '../middlewares/ErrorHandler.js'
+import InventoryModel from '../models/product/inventory.model.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -13,6 +14,15 @@ export const removeServerImage = (image) => {
   fs.unlink(pathfile, function (err) {
     if (err) throw new ErrorHandler('Falha na remoção da imagem', 500)
   })
+}
+
+export const extend = (ParentSchema, obj) => {
+  const Schema = new mongoose.Schema(Object.assign({}, ParentSchema.obj, obj), {
+    timestamps: true,
+  })
+  Schema.methods = ParentSchema.methods
+
+  return Schema
 }
 
 export const saveInventoryInfo = async (info) => {

@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import { ArrowRight } from 'phosphor-react'
 
 import { post } from '../../../../../../libs/fetcher'
+import { findUserTypePath } from '../../../../../../utils/helper'
 import useApp from '../../../../../../hooks/use-app'
 import Button from '../../../button/button'
 import InputLabel from '../../../input/input-label'
@@ -29,14 +30,21 @@ export default function FormGenerateRecoveryPassword() {
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
+  const path = pathname.split('/')
+  path.pop()
   const handleSubmit = async (values) => {
-    const endPoint =
-      pathname.split('/')[1] === 'loja'
-        ? '/users/generate-recovery-password'
-        : '/stores/generate-recovery-password'
-    const { info, success } = await post(endPoint, values, setIsLoading, toast)
+    const _type = findUserTypePath(path[2])
+    const { info, success } = await post(
+      '/auth/generate-recovery-password',
+      { _type, ...values },
+      setIsLoading,
+      toast
+    )
     setInfo(info)
-    setSuccess(success)
+    if (success) {
+      setSuccess(success)
+      formik.resetForm()
+    }
   }
   return (
     <form
@@ -82,10 +90,7 @@ export default function FormGenerateRecoveryPassword() {
         <div className="flex flex-col gap-2">
           <span className="flex gap-[6px] text-sm text-gray-600">
             Lembrou a senha?
-            <Link
-              to={`/${pathname.split('/')[1]}/entrar`}
-              className="text-blue-500"
-            >
+            <Link to={`${path.join('/')}/entrar`} className="text-blue-500">
               Entrar
             </Link>
           </span>

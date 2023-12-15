@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { ArrowRight } from 'phosphor-react'
 
 import { post } from '../../../../../../libs/fetcher'
+import { findUserTypePath } from '../../../../../../utils/helper'
 import useApp from '../../../../../../hooks/use-app'
 import InputLabel from '../../../input/input-label'
 import PasswordLabel from '../../../input/password-label'
@@ -33,18 +34,19 @@ export default function FormAuth() {
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
+  const path = pathname.split('/')
+  path.pop()
   const handleSubmit = async (values) => {
-    const endPoint =
-      pathname.split('/')[1] === 'loja' ? '/users/sign-in' : '/stores/sign-in'
+    const _type = findUserTypePath(path[2])
     const { success, user, token } = await post(
-      endPoint,
-      values,
+      '/auth/sign-in',
+      { _type, ...values },
       setIsLoading,
       toast
     )
     if (success) {
       handleUpdateUser(user, token)
-      navigate('/admin')
+      navigate(path.join('/'))
     }
   }
 
@@ -72,7 +74,7 @@ export default function FormAuth() {
           name="password"
           btn={
             <Link
-              to={`/${pathname.split('/')[1]}/recuperar-senha`}
+              to={`${path.join('/')}/recuperar-senha`}
               className="font-semibold text-blue-500 hover:text-blue-600"
             >
               Esqueceu a senha?

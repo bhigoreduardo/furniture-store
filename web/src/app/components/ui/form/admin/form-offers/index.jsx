@@ -23,7 +23,7 @@ const validationSchema = yup.object().shape({
     minCart: yup.number().optional(),
     maxCustomer: yup.number().optional(),
   }),
-  everyOne: yup.bool().optional(),
+  everyOne: yup.bool().required(),
   brand: yup.array().of(yup.string()).optional(),
   category: yup.array().of(yup.string()).optional(),
   product: yup.array().of(yup.string()).optional(),

@@ -1,0 +1,147 @@
+@server=http://localhost:3001
+@endPoint=api/v1/stores
+@auth=api/v1/auth
+@id=65772b42dfea108e9e57b0f7
+
+### POST /sign-up
+POST {{ server }}/{{ auth }}/sign-up HTTP/1.1
+Content-Type: application/json
+
+{
+  "_type": "store",
+  "email": "furniture@email.com",
+  "password": "fakepass",
+  "repeatPassword": "fakepass"
+}
+
+### POST /sign-in
+POST {{ server }}/{{ auth }}/sign-in HTTP/1.1
+Content-Type: application/json
+
+{
+  "_type": "store",
+  "email": "furniture@email.com",
+  "password": "fakepass"
+}
+
+### POST /generate-recovery-password
+POST {{ server }}/{{ auth }}/generate-recovery-password HTTP/1.1
+Content-Type: application/json
+
+{
+  "_type": "store",
+  "email": "furniture@email.com"
+}
+
+### POST /recovery-password
+POST {{ server }}/{{ auth }}/recovery-password HTTP/1.1
+Content-Type: application/json
+
+{
+  "_type": "store",
+  "passwordResetToken": "96221f39b839f257fd438f4a5b1c8a5fc817f9e7bf3c28c7152320e473ca6945",
+  "password": "fakepasss",
+  "repeatPassword": "fakepasss"
+}
+
+### PATCH /update
+PATCH {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYwNDY4Ny42MTgsImlhdCI6MTcwMjMwODY4N30.k1ILSNR_luLgiOV5Jz7cZBO8As_UUn1z4rUAN-YBiyQ
+
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="_type"
+
+store
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="name"
+
+Furniture
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="email"
+
+furniture@email.com
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="contactEmail"
+
+furniture@contact.com
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="phone"
+
+1234567890
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="whatsApp"
+
+12345678901
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="cnpj"
+
+12345678901234
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="ie"
+
+12345678901234567
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="clockAvailable"
+
+Seg à Sex: 8h - 18h, Sáb: 8h - 12h
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="site"
+
+furniture.com
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="description"
+
+Description
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="image"; filename="logo.svg"
+Content-Type: image/svg
+
+< ../../assets/logo.svg
+------WebKitFormBoundary1234--
+
+### PATCH /update
+PATCH {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYxNDk4Ny44ODQsImlhdCI6MTcwMjMxODk4N30.xIcxcvfu8LfTE-bPF4vr-F18V9JN7uFBVERifVCaTVA
+
+{
+  "_type": "store",
+  "address": {
+    "street": "Fake street",
+    "neighborhood": "Fake Neighborhood",
+    "city": "Fake City",
+    "state": "Fake State",
+    "number": "12",
+    "zipCode": "12345678",
+    "complement": "Fale complement"
+  },
+  "socialMedia": {
+    "facebook": "facebook.com/furniture",
+    "instagram": "instagram.com/furniture",
+    "twitter": "twitter.com/furniture",
+    "linkedin": "linkedin.com/furniture",
+    "pinterest": "pinterest.com/furniture",
+    "youtube": "youtube.com/furniture"
+  }
+}
+
+### PATCH /change-password
+PATCH {{ server }}/{{ endPoint }}/change-password HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYxNDk4Ny44ODQsImlhdCI6MTcwMjMxODk4N30.xIcxcvfu8LfTE-bPF4vr-F18V9JN7uFBVERifVCaTVA
+
+{
+  "_type": "store",
+  "password": "fakepasss",
+  "newPassword": "fakepass",
+  "repeatPassword": "fakepass"
+}
+
+### PATCH /toggle-available
+PATCH {{ server }}/{{ endPoint }}/toggle-available HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYxNDk4Ny44ODQsImlhdCI6MTcwMjMxODk4N30.xIcxcvfu8LfTE-bPF4vr-F18V9JN7uFBVERifVCaTVA
+
+### GET /
+GET {{ server }}/{{ endPoint }}/ HTTP/1.1

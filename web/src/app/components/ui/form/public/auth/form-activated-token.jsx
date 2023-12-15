@@ -29,14 +29,15 @@ export default function FormActivatedToken() {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    const { info, success } = await post(
-      '/customers/activated-token',
+    const { info, success: successData } = await post(
+      '/customers/sign-up/activated-token',
       values,
       setIsLoading,
-      toast
+      toast,
+      null
     )
     setInfo(info)
-    setSuccess(success)
+    setSuccess(successData)
   }
 
   return (

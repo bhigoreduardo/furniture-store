@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import { patch } from '../../../libs/fetcher'
+import { UserEnum } from '../../../types/user-type'
 import { wishlistColumns } from '../../../utils/constants/public'
 import { ProtectedRoute } from '../../layouts/public/dashboard'
 import { useFilterFavorits } from '../../../hooks/use-product'
@@ -13,11 +14,12 @@ import EmptyCart from './cart/empty-cart'
 
 export default function Wishlist() {
   const navigate = useNavigate()
+  const { user, token, handleUpdateUser } = useUser()
   const { docs } = useFilterFavorits()
   const { setIsLoading } = useApp()
-  const { user, token, handleUpdateUser } = useUser()
   const handleProduct = async (id) => {
-    if (!user || !token) return navigate('/entrar')
+    if (!user || !token || user?._type !== UserEnum.Customer)
+      return navigate('/entrar')
     const { user: userData, token: tokenData } = await patch(
       '/customers/toggle-favorite',
       { id: id },

@@ -22,7 +22,7 @@ const initialValues = {
   repeatPassword: '',
 }
 
-export default function FormPassword({ endPoint }) {
+export default function FormPassword({ endPoint, _type }) {
   const { setIsLoading } = useApp()
   const formik = useFormik({
     enableReinitialize: true,
@@ -31,7 +31,12 @@ export default function FormPassword({ endPoint }) {
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
-    const { success } = await patch(endPoint, values, setIsLoading, toast)
+    const { success } = await patch(
+      `${endPoint}/change-password`,
+      { _type, ...values },
+      setIsLoading,
+      toast
+    )
     if (success) {
       formik.resetForm()
     }

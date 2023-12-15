@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { CheckCircle, XCircle } from 'phosphor-react'
 import { toast } from 'react-toastify'
@@ -11,23 +11,23 @@ import Container from '../../../components/ui/container'
 export default function SignUpConfirm() {
   const { setIsLoading } = useApp()
   const queries = useQueries()
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('Falha na ativação da conta')
   const [success, setSuccess] = useState(false)
   const signUpConfirm = async () => {
-    const { message, success } = await post(
+    const { message, success: successData } = await post(
       '/customers/sign-up/confirm',
       {
         activatedToken: queries.get('token'),
       },
       setIsLoading,
-      toast
+      toast,
+      null
     )
     setMessage(message)
-    setSuccess(success)
+    setSuccess(successData)
   }
+  signUpConfirm()
   useEffect(() => {
-    setMessage('Falha na ativação da conta')
-    setSuccess(false)
     if (queries.has('token')) signUpConfirm()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 

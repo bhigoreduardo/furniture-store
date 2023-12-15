@@ -1,0 +1,38 @@
+@server=http://localhost:3001
+@endPoint=api/v1/offers
+@id=657859f6e4fc852c024eef1a
+
+### POST /
+POST {{ server }}/{{ endPoint }}/ HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NGJiNDgwNzA1NGRlYzNhMGM0OCIsImV4cCI6MTcwMzY4MjEyMS42MTcsImlhdCI6MTcwMjM4NjEyMX0.2Lw45XnRidqjaotuLGCBHOLjeF6eO0vi9afIgtMbhjY
+
+{
+  "name": "Oferta",
+  "complement": "Queima de estoque",
+  "discountType": "coupon",
+  "offerType": "percentage",
+  "offerValue": 5,
+  "status": true
+}
+
+### PUT /:id
+PUT {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NGJiNDgwNzA1NGRlYzNhMGM0OCIsImV4cCI6MTcwMzY4MjEyMS42MTcsImlhdCI6MTcwMjM4NjEyMX0.2Lw45XnRidqjaotuLGCBHOLjeF6eO0vi9afIgtMbhjY
+
+{
+  "name": "Black Friday",
+  "complement": "Queima de estoque",
+  "discountType": "coupon",
+  "offerType": "percentage",
+  "offerValue": 15,
+  "status": true
+}
+
+### GET /search?search=oferta&page=1&perPage=5&priority=desc
+GET {{ server }}/{{ endPoint }}/search?search=black&perPage=2 HTTP/1.1
+
+### DELETE /:id
+DELETE {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1NGJiNDgwNzA1NGRlYzNhMGM0OCIsImV4cCI6MTcwMzY4MjEyMS42MTcsImlhdCI6MTcwMjM4NjEyMX0.2Lw45XnRidqjaotuLGCBHOLjeF6eO0vi9afIgtMbhjY

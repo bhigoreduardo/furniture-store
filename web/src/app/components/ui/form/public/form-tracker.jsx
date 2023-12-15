@@ -34,9 +34,10 @@ export default function FormTracker({ setData }) {
   })
   const handleSubmit = async (values) => {
     const data = await get(
-      `/customers/search/orders/${values.code}?email=${values.email}`,
+      `/orders/${values.code}/customers/code/?email=${values.email}`,
       setIsLoading,
-      toast
+      toast,
+      null
     )
     setData(data)
   }

@@ -8,6 +8,7 @@ import {
   IdentificationBadge,
 } from 'phosphor-react'
 
+import { UserEnum } from '../../../../../types/user-type'
 import useApp from '../../../../../hooks/use-app'
 import useUser from '../../../../../hooks/use-user'
 import useFilter from '../../../../../hooks/use-filter'
@@ -73,7 +74,7 @@ export default function MiddleNav() {
           <button onClick={() => navigate('/favoritos')}>
             <Heart size={20} weight="duotone" className="text-white" />
           </button>
-          {!user && !token ? (
+          {!user || !token || user?._type !== UserEnum.Customer ? (
             <button
               type="button"
               onClick={() => setIsCardAuth((prevState) => !prevState)}

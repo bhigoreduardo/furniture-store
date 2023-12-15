@@ -4,10 +4,13 @@ import { IdentificationBadge } from 'phosphor-react'
 
 import { cpfMask, mobileMask } from '../../../../../utils/mask'
 import { optionsFullLocaleDate } from '../../../../../utils/format'
+import useUser from '../../../../../hooks/use-user'
 import Button from '../../button/button'
 import Heading from '../../heading'
+import { UserEnum } from '../../../../../types/user-type'
 
 export default function CardProfile({ user, to }) {
+  const { user: authUser } = useUser()
   const navigate = useNavigate()
 
   return (
@@ -49,11 +52,13 @@ export default function CardProfile({ user, to }) {
             )}
           </p>
         </div>
-        <Button
-          label="Editar conta"
-          className="text-blue-500 !border-blue-500 hover:bg-blue-500 hover:text-white"
-          onClick={() => navigate(to)}
-        />
+        {authUser?._type !== UserEnum.Employee && (
+          <Button
+            label="Editar conta"
+            className="text-blue-500 !border-blue-500 hover:bg-blue-500 hover:text-white"
+            onClick={() => navigate(to)}
+          />
+        )}
       </div>
     </div>
   )

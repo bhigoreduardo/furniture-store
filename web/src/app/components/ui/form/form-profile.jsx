@@ -6,7 +6,7 @@ import * as yup from 'yup'
 
 import { formDataUpload, removeDataMask } from '../../../../utils/format'
 import { cpfMask, mobileMask } from '../../../../utils/mask'
-import { post, put } from '../../../../libs/fetcher'
+import { patch, post } from '../../../../libs/fetcher'
 import useApp from '../../../../hooks/use-app'
 import useUser from '../../../../hooks/use-user'
 import Button from '../button/button'
@@ -14,6 +14,7 @@ import ImageLabel from '../input/image-label'
 import InputLabel from '../input/input-label'
 
 const validationSchema = yup.object().shape({
+  _type: yup.string().required('Usuário tipo é obrigatório'),
   name: yup.string().required('Nome é obrigatório'),
   email: yup
     .string()
@@ -23,13 +24,19 @@ const validationSchema = yup.object().shape({
   whatsApp: yup.string().required('Número de telefone é obrigatório'),
 })
 
-export default function FormProfile({ user, isAdmin = false, endPoint }) {
+export default function FormProfile({
+  user,
+  isAdmin = false,
+  endPoint,
+  _type,
+}) {
   const navigate = useNavigate()
   const { setIsLoading, setRefetch } = useApp()
   const { handleUpdateUser } = useUser()
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      _type,
       image: user?.image || '',
       name: user?.name || '',
       email: user?.email || '',
@@ -45,11 +52,17 @@ export default function FormProfile({ user, isAdmin = false, endPoint }) {
     if (Object.keys(user)?.length !== 0) {
       delete values.email
       if (typeof values.image !== 'string') values = formDataUpload(values)
-      response = await put(endPoint, values, setIsLoading, toast)
+      response = await patch(
+        `${endPoint}/${user._id}`,
+        values,
+        setIsLoading,
+        toast,
+        setRefetch
+      )
       if (!isAdmin) handleUpdateUser(response.user, response.token)
     } else if (isAdmin) {
       delete values.image
-      response = await post(endPoint, values, setIsLoading, toast)
+      response = await post(endPoint, { _type, ...values }, setIsLoading, toast)
     }
     if (isAdmin && response?.success) {
       setRefetch(true)

@@ -36,12 +36,16 @@ export default function FormBrands({ data }) {
     validationSchema.cast(values, { stripUnknown: true })
     if (typeof values.image !== 'string') values = formDataUpload(values)
     if (Object.keys(data)?.length !== 0)
-      response = await put(`/brands/${data._id}`, values, setIsLoading, toast)
-    else response = await post('/brands/', values, setIsLoading, toast)
-    if (response?.success) {
-      setRefetch(true)
-      navigate(-1)
-    }
+      response = await put(
+        `/brands/${data._id}`,
+        values,
+        setIsLoading,
+        toast,
+        setRefetch
+      )
+    else
+      response = await post('/brands/', values, setIsLoading, toast, setRefetch)
+    if (response?.success) navigate(-1)
   }
 
   return (

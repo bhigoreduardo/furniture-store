@@ -4,55 +4,26 @@ import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
-import { put } from '../../../../../../libs/fetcher'
+import { patch } from '../../../../../../libs/fetcher'
 import useApp from '../../../../../../hooks/use-app'
 import useUser from '../../../../../../hooks/use-user'
 import Button from '../../../button/button'
 import InputLabel from '../../../input/input-label'
 
+const urlMatchEncoder = yup
+  .string()
+  .matches(
+    /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    'Informe um perfil válido'
+  )
+  .optional()
 const validationSchema = yup.object().shape({
-  facebook: yup
-    .string()
-    .matches(
-      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-      'Informe um perfil válido'
-    )
-    .optional(),
-  instagram: yup
-    .string()
-    .matches(
-      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-      'Informe um perfil válido'
-    )
-    .optional(),
-  twitter: yup
-    .string()
-    .matches(
-      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-      'Informe um perfil válido'
-    )
-    .optional(),
-  linkedin: yup
-    .string()
-    .matches(
-      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-      'Informe um perfil válido'
-    )
-    .optional(),
-  pinterest: yup
-    .string()
-    .matches(
-      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-      'Informe um perfil válido'
-    )
-    .optional(),
-  youtube: yup
-    .string()
-    .matches(
-      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-      'Informe um perfil válido'
-    )
-    .optional(),
+  facebook: urlMatchEncoder,
+  instagram: urlMatchEncoder,
+  twitter: urlMatchEncoder,
+  linkedin: urlMatchEncoder,
+  pinterest: urlMatchEncoder,
+  youtube: urlMatchEncoder,
 })
 const initialValues = {
   facebook: '',
@@ -77,16 +48,17 @@ export default function FormSocial({ user, endPoint }) {
     if (!Object.keys(values).filter((item) => values[item] !== '')?.length > 0)
       setInfo('Informe ao menos uma rede social para salvar')
     else {
-      const { user, token } = await put(
-        endPoint,
-        { socialMedia: values },
+      const { user: userData, token } = await patch(
+        `${endPoint}/${user?._id}`,
+        { _type: user?._type, socialMedia: values },
         setIsLoading,
         toast,
         null
       )
-      handleUpdateUser(user, token)
+      handleUpdateUser(userData, token)
     }
   }
+
   return (
     <form className="flex flex-col gap-6 px-6" onSubmit={formik.handleSubmit}>
       <div className="flex-grow flex flex-col gap-4">

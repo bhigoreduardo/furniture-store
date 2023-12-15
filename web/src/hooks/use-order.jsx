@@ -21,7 +21,7 @@ export function useFilterOrders() {
     ],
     queryFn: async () =>
       await get(
-        `/customers/search/orders?search=${search}&orderStatus=${orderStatus}&startDate=${
+        `/orders/search/customers?search=${search}&orderStatus=${orderStatus}&startDate=${
           startDate || ''
         }&endDate=${endDate || ''}&page=${page}&perPage=${perPage}`,
         setIsLoading,
@@ -40,7 +40,7 @@ export function useOrder(id) {
   const { data } = useQuery({
     queryKey: ['order', id],
     queryFn: async () => {
-      if (id) return await get(`/customers/orders/${id}`, setIsLoading, toast)
+      if (id) return await get(`/orders/${id}/customers/`, setIsLoading, toast)
       return null
     },
   })
@@ -54,7 +54,7 @@ export function useOrdersAnalytics() {
   const { data } = useQuery({
     queryKey: ['orders-analytics'],
     queryFn: async () => {
-      return await get('/customers/orders-analytics', setIsLoading, toast)
+      return await get('/orders/analytics/customers/', setIsLoading, toast)
     },
   })
 

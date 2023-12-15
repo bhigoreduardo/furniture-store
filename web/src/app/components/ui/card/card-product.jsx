@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import ReactStars from 'react-rating-stars-component'
 
 import { currencyPrice, getBadgeColor } from '../../../../utils/format'
+import { UserEnum } from '../../../../types/user-type'
 import { patch } from '../../../../libs/fetcher'
 import useApp from '../../../../hooks/use-app'
 import useUser from '../../../../hooks/use-user'
@@ -30,10 +31,18 @@ export default function CardProduct({
   const navigate = useNavigate()
   const { setIsLoading } = useApp()
   const { user, token, handleUpdateUser } = useUser()
-  const isFavorite = !isAdmin ? user?.favorits.includes(id) : false
-  const isCompare = !isAdmin ? user?.compare.includes(id) : false
+  const isFavorite =
+    user && user?._type === UserEnum.Customer
+      ? user?.favorits.includes(id)
+      : false
+  const isCompare =
+    user && user?._type === UserEnum.Customer
+      ? user?.compare.includes(id)
+      : false
+
   const handleProduct = async (endpoint) => {
-    if (!user || !token) return navigate('/entrar')
+    if (!user || !token || user._type !== UserEnum.Customer)
+      return navigate('/entrar')
     const { user: userData, token: tokenData } = await patch(
       endpoint,
       { id: id },

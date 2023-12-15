@@ -1,0 +1,137 @@
+@server=http://localhost:3001
+@endPoint=api/v1/admins
+@auth=api/v1/auth
+@id=657753bb13f0da4eb4a737b2
+
+### POST /save
+POST {{ server }}/{{ auth }}/save HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYxNDk4Ny44ODQsImlhdCI6MTcwMjMxODk4N30.xIcxcvfu8LfTE-bPF4vr-F18V9JN7uFBVERifVCaTVA
+
+{
+  "_type": "admin",
+  "name": "admin",
+  "email": "admin@email.com",
+  "whatsApp": "12345678901",
+  "cpf": "12345678901"
+}
+
+### POST /sign-up
+POST {{ server }}/{{ auth }}/sign-up HTTP/1.1
+Content-Type: application/json
+
+{
+  "_type": "admin",
+  "email": "admin@email.com",
+  "password": "fakepass",
+  "repeatPassword": "fakepass"
+}
+
+### POST /sign-in
+POST {{ server }}/{{ auth }}/sign-in HTTP/1.1
+Content-Type: application/json
+
+{
+  "_type": "admin",
+  "email": "admin@email.com",
+  "password": "fakepass"
+}
+
+### POST /generate-recovery-password
+POST {{ server }}/{{ auth }}/generate-recovery-password HTTP/1.1
+Content-Type: application/json
+
+{
+  "_type": "admin",
+  "email": "admin@email.com"
+}
+
+### POST /recovery-password
+POST {{ server }}/{{ auth }}/recovery-password HTTP/1.1
+Content-Type: application/json
+
+{
+  "_type": "admin",
+  "passwordResetToken": "2af56d80b3cc5eb2b4a1a64b399a3bcf807cf5edf9cde4d58be767add9f8e262",
+  "password": "fakepasss",
+  "repeatPassword": "fakepasss"
+}
+
+### PATCH /:id
+PATCH {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary1234
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1M2JiMTNmMGRhNGViNGE3MzdiMiIsImV4cCI6MTcwMzYxNTA0MC4yNzMsImlhdCI6MTcwMjMxOTA0MH0.UZ3PL_Xs9FNqL1N1ZzuoMCUVTr1Ly7djKRkfJ66D8o0
+
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="_type"
+
+admin
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="name"
+
+Furniture
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="email"
+
+admin@email.com
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="whatsApp"
+
+12345678988
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="cpf"
+
+12345678999
+------WebKitFormBoundary1234
+Content-Disposition: form-data; name="image"; filename="logo.svg"
+Content-Type: image/svg
+
+< ../../assets/logo.svg
+------WebKitFormBoundary1234--
+
+### PATCH /:id
+PATCH {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1M2JiMTNmMGRhNGViNGE3MzdiMiIsImV4cCI6MTcwMzYxNTA0MC4yNzMsImlhdCI6MTcwMjMxOTA0MH0.UZ3PL_Xs9FNqL1N1ZzuoMCUVTr1Ly7djKRkfJ66D8o0
+
+{
+  "_type": "admin",
+  "address": {
+    "street": "Fake street",
+    "neighborhood": "Fake Neighborhood",
+    "city": "Fake City",
+    "state": "Fake State",
+    "number": "12",
+    "zipCode": "12345678",
+    "complement": "Fale complement"
+  }
+}
+
+### PATCH /:id/toggle-status
+PATCH {{ server }}/{{ endPoint }}/{{ id }}/toggle-status HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYzNDU4My4xOTMsImlhdCI6MTcwMjMzODU4M30.VMYEnT2P9XMs6ZwEsr6I7GLhqs15zyxyDq9Pki34E_0
+
+{
+  "_type": "admin"
+}
+
+### PATCH /change-password
+PATCH {{ server }}/{{ endPoint }}/change-password HTTP/1.1
+Content-Type: application/json
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Nzc1M2JiMTNmMGRhNGViNGE3MzdiMiIsImV4cCI6MTcwMzYxNTA0MC4yNzMsImlhdCI6MTcwMjMxOTA0MH0.UZ3PL_Xs9FNqL1N1ZzuoMCUVTr1Ly7djKRkfJ66D8o0
+
+{
+  "_type": "admin",
+  "password": "fakepass",
+  "newPassword": "fakepass",
+  "repeatPassword": "fakepass"
+}
+
+### GET /search?search=admin&chatStatus=true&status=true&page=1&limit=5&priority=asc
+GET {{ server }}/{{ endPoint }}/search?search=adm HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYxNDk4Ny44ODQsImlhdCI6MTcwMjMxODk4N30.xIcxcvfu8LfTE-bPF4vr-F18V9JN7uFBVERifVCaTVA
+
+### GET /:id
+GET {{ server }}/{{ endPoint }}/{{ id }} HTTP/1.1
+Authorization: Furniture eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzcyYjQyZGZlYTEwOGU5ZTU3YjBmNyIsImV4cCI6MTcwMzYxNDk4Ny44ODQsImlhdCI6MTcwMjMxODk4N30.xIcxcvfu8LfTE-bPF4vr-F18V9JN7uFBVERifVCaTVA

@@ -6,6 +6,7 @@ import { ArrowRight } from 'phosphor-react'
 import { toast } from 'react-toastify'
 
 import { post } from '../../../../../../libs/fetcher'
+import { UserEnum } from '../../../../../../types/user-type'
 import useApp from '../../../../../../hooks/use-app'
 import useQueries from '../../../../../../hooks/use-queries'
 import PasswordLabel from '../../../input/password-label'
@@ -19,6 +20,7 @@ const validationSchema = yup.object().shape({
     .required('Repetir senha é obrigatório'),
 })
 const initialValues = {
+  _type: UserEnum.Customer,
   password: '',
   repeatPassword: '',
 }
@@ -38,7 +40,7 @@ export default function FormRecoveryPassword() {
   const handleSubmit = async (values) => {
     if (queries.has('token')) {
       const { info, success } = await post(
-        '/customers/recovery-password',
+        '/auth/recovery-password',
         {
           ...values,
           passwordResetToken: queries.get('token'),

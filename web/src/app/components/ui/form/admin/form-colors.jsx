@@ -34,12 +34,16 @@ export default function FormColors({ data }) {
     let response
     validationSchema.cast(values, { stripUnknown: true })
     if (Object.keys(data)?.length !== 0)
-      response = await put(`/colors/${data._id}`, values, setIsLoading, toast)
-    else response = await post('/colors/', values, setIsLoading, toast)
-    if (response?.success) {
-      setRefetch(true)
-      navigate(-1)
-    }
+      response = await put(
+        `/colors/${data._id}`,
+        values,
+        setIsLoading,
+        toast,
+        setRefetch
+      )
+    else
+      response = await post('/colors/', values, setIsLoading, toast, setRefetch)
+    if (response?.success) navigate(-1)
   }
 
   return (

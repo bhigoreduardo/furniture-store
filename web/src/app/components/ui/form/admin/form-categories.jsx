@@ -44,7 +44,9 @@ export default function FormCategories({ data }) {
       name: data?.name || '',
       parent: data?.parent || '',
       description: data?.description || '',
-      product: data?.spotlights || [],
+      ...(Object.keys(data)?.length !== 0 && {
+        product: data?.spotlights || [],
+      }),
     },
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),
@@ -62,13 +64,18 @@ export default function FormCategories({ data }) {
         `/categories/${data._id}`,
         values,
         setIsLoading,
-        toast
+        toast,
+        setRefetch
       )
-    else response = await post('/categories/', values, setIsLoading, toast)
-    if (response?.success) {
-      setRefetch(true)
-      navigate(-1)
-    }
+    else
+      response = await post(
+        '/categories/',
+        values,
+        setIsLoading,
+        toast,
+        setRefetch
+      )
+    if (response?.success) navigate(-1)
   }
   useEffect(() => {
     if (Object.keys(data)?.length !== 0) setCategory(data._id)

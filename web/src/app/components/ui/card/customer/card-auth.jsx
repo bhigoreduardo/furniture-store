@@ -7,6 +7,7 @@ import * as yup from 'yup'
 
 import { post } from '../../../../../libs/fetcher'
 import { mergeClassName } from '../../../../../utils/format'
+import { UserEnum } from '../../../../../types/user-type'
 import useApp from '../../../../../hooks/use-app'
 import useUser from '../../../../../hooks/use-user'
 import InputLabel from '../../input/input-label'
@@ -14,6 +15,7 @@ import PasswordLabel from '../../input/password-label'
 import Button from '../../button/button'
 
 const validationSchema = yup.object().shape({
+  _type: yup.string().required('Usuário tipo é obrigatório'),
   email: yup
     .string()
     .matches(/\S+@\S+\.\S+/, 'Informe email válido')
@@ -21,6 +23,7 @@ const validationSchema = yup.object().shape({
   password: yup.string().required('Senha é obrigatório'),
 })
 const initialValues = {
+  _type: UserEnum.Customer,
   email: '',
   password: '',
 }
@@ -37,10 +40,11 @@ export default function CardAuth({ setIsCardAuth, className }) {
   })
   const handleSubmit = async (values) => {
     const { success, user, token } = await post(
-      '/customers/sign-in',
+      '/auth/sign-in',
       values,
       setIsLoading,
-      toast
+      toast,
+      null
     )
     if (success) {
       handleUpdateUser(user, token)

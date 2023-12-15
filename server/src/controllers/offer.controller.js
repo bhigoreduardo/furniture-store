@@ -1,6 +1,7 @@
 import { filterSorted } from '../utils/format.js'
 import OfferModel from '../models/offer.model.js'
 
+// SAVE
 export const save = async (req, res) => {
   await OfferModel.create({ ...req.body })
   return res
@@ -8,9 +9,18 @@ export const save = async (req, res) => {
     .json({ success: true, message: 'Oferta criada com sucesso' })
 }
 
+// UPDATE
+export const update = async (req, res) => {
+  await OfferModel.findByIdAndUpdate(req.params.id, { ...req.body })
+  return res
+    .status(200)
+    .json({ success: true, message: 'Oferta atualizada com sucesso' })
+}
+
+// SEARCH
 export const search = async (req, res) => {
   const query = req.query
-  const page = Number(query.page) || 0
+  const page = Number(query.page) || 1
   const limit = Number(query.perPage) || 10
   const filter = {
     ...(query.search && {
@@ -32,4 +42,10 @@ export const search = async (req, res) => {
     sort: filterSorted(query.priority),
   })
   return res.status(200).json(finded)
+}
+
+// REMOVE
+export const remove = async (req, res) => {
+  await OfferModel.findByIdAndDelete(req.params.id)
+  return res.status(200).json({ success: true, message: 'Oferta removida' })
 }

@@ -7,10 +7,10 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import colors from 'colors'
 
+import { errors } from './middlewares/ErrorHandler.js'
 import config from './config/index.js'
 import connectWithRetry from './config/mongo.js'
 import routes from './routes/index.js'
-import { errors } from './utils/ErrorHandler.js'
 
 /* CONST */
 const serverPort = config.SERVER_PORT

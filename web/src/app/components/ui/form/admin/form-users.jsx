@@ -13,16 +13,16 @@ import FormAddress from '../form-address'
 import FormPassword from '../form-password'
 import FormProfile from '../form-profile'
 
-export default function FormUsers({ user, isAdmin = false, endPoint }) {
+export default function FormUsers({ user, isAdmin = false, endPoint, _type }) {
   const { setIsLoading, setRefetch } = useApp()
   const navigate = useNavigate()
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { status: user.status || false },
-    onSubmit: async (values) =>
+    onSubmit: async () =>
       await patch(
-        `/users/${user._id}/toggle-status`,
-        values,
+        `/${endPoint}/${user._id}/toggle-status`,
+        { _type },
         setIsLoading,
         toast,
         setRefetch
@@ -55,18 +55,28 @@ export default function FormUsers({ user, isAdmin = false, endPoint }) {
             />
           }
         />
-        <FormProfile user={user} isAdmin endPoint={endPoint} />
+        <FormProfile
+          user={user}
+          isAdmin={isAdmin}
+          endPoint={endPoint}
+          _type={_type}
+        />
       </div>
       {Object.keys(user)?.length !== 0 && (
         <>
           <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
             <Heading title="Endereço" />
-            <FormAddress user={user} isAdmin endPoint={endPoint} />
+            <FormAddress
+              user={user}
+              isAdmin={isAdmin}
+              endPoint={endPoint}
+              _type={_type}
+            />
           </div>
           {!isAdmin && (
             <div className="flex flex-col gap-6 border border-100 rounded-sm shadow-md py-2">
               <Heading title="Segurança" />
-              <FormPassword />
+              <FormPassword endPoint={endPoint} _type={_type} />
             </div>
           )}
         </>

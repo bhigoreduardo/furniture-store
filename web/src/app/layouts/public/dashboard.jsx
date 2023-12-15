@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Navigate, Outlet } from 'react-router-dom'
 
+import { UserEnum } from '../../../types/user-type'
 import useUser from '../../../hooks/use-user'
 import Container from '../../components/ui/container'
 import Sidebar from '../../components/navigation/public/dashboard/sidebar'
@@ -8,7 +9,8 @@ import Sidebar from '../../components/navigation/public/dashboard/sidebar'
 export const ProtectedRoute = ({ children }) => {
   const { user, token } = useUser()
 
-  if (!user || !token) return <Navigate to="/entrar" />
+  if (!user || !token || user?._type !== UserEnum.Customer)
+    return <Navigate to="/entrar" />
   return children
 }
 

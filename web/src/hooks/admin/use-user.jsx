@@ -5,13 +5,13 @@ import { get } from '../../libs/fetcher'
 import useFilter from '../use-filter'
 import useApp from '../use-app'
 
-export function useFilterUsers() {
+export function useFilterUsers(path) {
   const { setIsLoading, refetch, setRefetch } = useApp()
   const { search, priority, page, perPage } = useFilter()
 
   const { data } = useQuery({
     queryKey: [
-      'users',
+      path,
       search,
       priority,
       page,
@@ -21,7 +21,7 @@ export function useFilterUsers() {
     ],
     queryFn: async () =>
       await get(
-        `/users/search?search=${search}&priority=${priority}&page=${page}&perPage=${perPage}`,
+        `/${path}/search?search=${search}&priority=${priority}&page=${page}&perPage=${perPage}`,
         setIsLoading,
         toast,
         setRefetch
@@ -32,13 +32,13 @@ export function useFilterUsers() {
   return { ...data }
 }
 
-export function useUser(id) {
+export function useUser(path, id) {
   const { setIsLoading, refetch } = useApp()
 
   const { data } = useQuery({
-    queryKey: ['user', id],
+    queryKey: [path, id],
     queryFn: async () => {
-      if (id) return await get(`/users/${id}`, setIsLoading, toast)
+      if (id) return await get(`/${path}/${id}`, setIsLoading, toast)
       return null
     },
     staleTime: refetch ? 0 : 1000 * 60 * 1,

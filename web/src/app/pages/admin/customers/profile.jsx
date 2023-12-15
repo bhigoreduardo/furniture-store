@@ -22,7 +22,7 @@ export default function Profile() {
   const { id } = useParams()
   const customer = useCustomer(id)
   const address = customer.address
-  const lastHistory = useLastHistory(id)
+  // const lastHistory = useLastHistory(id)
 
   return (
     <section className="flex-grow flex flex-col gap-6">
@@ -89,7 +89,7 @@ export default function Profile() {
             />
           }
         />
-        {lastHistory?.length > 0 ? (
+        {/* {lastHistory?.length > 0 ? (
           <Slider perView={4} spaceBetween={24} className="px-6">
             {({ swiperRef }) =>
               lastHistory?.map((item) => (
@@ -120,7 +120,7 @@ export default function Profile() {
           <span className="text-sm text-gray-600 text-left px-6">
             Sem resultados
           </span>
-        )}
+        )} */}
       </div>
     </section>
   )

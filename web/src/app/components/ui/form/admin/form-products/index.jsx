@@ -231,20 +231,19 @@ export default function FormProducts({ data }) {
         `/products/${data._id}`,
         { ...values, cover, backCover, gallery },
         setIsLoading,
-        toast
+        toast,
+        setRefetch
       )
     } else
       response = await post(
         '/products',
         { ...values, cover, backCover, gallery },
         setIsLoading,
-        toast
+        toast,
+        setRefetch
       )
 
-    if (response?.success) {
-      setRefetch(true)
-      navigate(-1)
-    }
+    if (response?.success) navigate(-1)
   }
 
   return (
