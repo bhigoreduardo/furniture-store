@@ -25,7 +25,7 @@ router.put(
   useError(authMiddleware.userAuth),
   useError(authMiddleware.employeeAdminStoreAuth),
   upload.single('image'),
-  validate(categoryMiddleware.update),
+  // validate(categoryMiddleware.update),
   useError(categoryController.update)
 )
 

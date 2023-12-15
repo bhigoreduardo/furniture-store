@@ -4,6 +4,11 @@ import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
+import {
+  checkFileSize,
+  checkImageFormat,
+  imageMessage,
+} from '../../../../utils/helper'
 import { formDataUpload, removeDataMask } from '../../../../utils/format'
 import { cpfMask, mobileMask } from '../../../../utils/mask'
 import { patch, post } from '../../../../libs/fetcher'
@@ -13,7 +18,7 @@ import Button from '../button/button'
 import ImageLabel from '../input/image-label'
 import InputLabel from '../input/input-label'
 
-const validationSchema = yup.object().shape({
+const validationSignUpSchema = yup.object().shape({
   _type: yup.string().required('Usuário tipo é obrigatório'),
   name: yup.string().required('Nome é obrigatório'),
   email: yup
@@ -22,6 +27,17 @@ const validationSchema = yup.object().shape({
     .required('Email é obrigatório'),
   cpf: yup.string().required('CPF é obrigatório'),
   whatsApp: yup.string().required('Número de telefone é obrigatório'),
+})
+const validationUpdateSchema = validationSignUpSchema.shape({
+  image: yup
+    .mixed()
+    .optional()
+    .test('fileType', 'Formato inválido', (value) =>
+      checkImageFormat(value, true)
+    )
+    .test('fileSize', 'Máximo 70kb', (value) =>
+      checkFileSize(value, 1024 * 70, true)
+    ),
 })
 
 export default function FormProfile({
@@ -33,6 +49,10 @@ export default function FormProfile({
   const navigate = useNavigate()
   const { setIsLoading, setRefetch } = useApp()
   const { handleUpdateUser } = useUser()
+  const validationSchema =
+    Object.keys(user)?.length !== 0
+      ? validationUpdateSchema
+      : validationSignUpSchema
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -43,7 +63,7 @@ export default function FormProfile({
       cpf: user?.cpf || '',
       whatsApp: user?.whatsApp || '',
     },
-    validationSchema: validationSchema,
+    validationSchema,
     onSubmit: (values) => handleSubmit(values),
   })
   const handleSubmit = async (values) => {
@@ -78,8 +98,8 @@ export default function FormProfile({
             id="image"
             label="Imagem"
             name="image"
-            info="800*450"
-            hint="Tamanho máximo da imagem aceito é de até 70KB"
+            info="800*800"
+            hint={imageMessage('70kb')}
             error={formik.touched.image && formik.errors.image}
             onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
             onBlur={formik.handleBlur}

@@ -60,4 +60,13 @@ export const zipCodeMask = (value) =>
         .replace(/(\d{3})(\d+?$)/, '$1')
     : ''
 
+export const creditCardNumberMask = (value) => {
+  value = value.replace(/\D/g, '')
+  value = value.replace(/(\d{4})/g, '$1 ')
+  value = value.replace(/\.$/, '')
+  value = value.substring(0, 19)
+
+  return value
+}
+
 export const removeMask = (value) => value.replace(/[^0-9]+/g, '')

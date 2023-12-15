@@ -48,7 +48,7 @@ export default function Media(props) {
             <ImageLabel
               id="gallery"
               name="gallery"
-              info="800*800"
+              info="1200*960"
               error={
                 props.formik.touched?.gallery && props.formik.errors?.gallery
               }

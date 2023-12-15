@@ -5,6 +5,11 @@ import { toast } from 'react-toastify'
 import * as yup from 'yup'
 
 import { formDataUpload } from '../../../../../utils/format'
+import {
+  checkFileSize,
+  checkImageFormat,
+  imageMessage,
+} from '../../../../../utils/helper'
 import { post, put } from '../../../../../libs/fetcher'
 import useApp from '../../../../../hooks/use-app'
 import Button from '../../button/button'
@@ -13,7 +18,13 @@ import InputLabel from '../../input/input-label'
 import TextAreaLabel from '../../input/textarea-label'
 
 const validationSchema = yup.object().shape({
-  image: yup.string().required('Imagem é obrigatório'),
+  image: yup
+    .mixed()
+    .required('Imagem é obrigatório')
+    .test('fileType', 'Formato inválido', (value) => checkImageFormat(value))
+    .test('fileSize', 'Máximo 70kb', (value) =>
+      checkFileSize(value, 1024 * 70)
+    ),
   name: yup.string().required('Nome é obrigatório'),
   description: yup.string().optional(),
 })
@@ -56,7 +67,8 @@ export default function FormBrands({ data }) {
             id="image"
             label="Imagem"
             name="image"
-            info="800*800"
+            info="512*512"
+            hint={imageMessage('70kb')}
             error={formik.touched.image && formik.errors.image}
             onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
             onBlur={formik.handleBlur}

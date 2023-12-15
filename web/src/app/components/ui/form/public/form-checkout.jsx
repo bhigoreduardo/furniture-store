@@ -10,7 +10,11 @@ import {
   parsedSelectData,
   removeDataMask,
 } from '../../../../../utils/format'
-import { mobileMask, zipCodeMask } from '../../../../../utils/mask'
+import {
+  creditCardNumberMask,
+  mobileMask,
+  zipCodeMask,
+} from '../../../../../utils/mask'
 import { post } from '../../../../../libs/fetcher'
 import useApp from '../../../../../hooks/use-app'
 import useUser from '../../../../../hooks/use-user'
@@ -400,7 +404,12 @@ export default function FormCheckout() {
                     formik.touched?.payment?.cardNumber &&
                     formik.errors?.payment?.cardNumber
                   }
-                  onChange={formik.handleChange}
+                  onChange={(e) =>
+                    formik.setFieldValue(
+                      'payment.cardNumber',
+                      creditCardNumberMask(e.target.value)
+                    )
+                  }
                   onBlur={formik.handleBlur}
                   value={formik.values?.payment?.cardNumber}
                   className="flex-grow"

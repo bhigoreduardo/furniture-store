@@ -20,6 +20,7 @@ import FormPublished from './form-published'
 import FormSeo from './form-seo'
 import FormSpecification from './form-specification'
 import FormTag from './form-tag'
+import { checkFileSize, checkImageFormat } from '../../../../../../utils/helper'
 
 export const validationOtherInfosSchema = yup.object().shape({
   title: yup.string().required('Título é obrigatório'),
@@ -43,6 +44,11 @@ export const validationInventoryInfoSchema = yup.object().shape({
     .optional(),
   featured: yup.bool().required('Pronta entrega é obrigatório'),
 })
+const coverValidation = yup
+  .mixed()
+  .required('Imagem é obrigatório')
+  .test('fileType', 'Formato inválido', (value) => checkImageFormat(value))
+  .test('fileSize', 'Máximo 70kb', (value) => checkFileSize(value, 1024 * 70))
 const validationSchema = yup.object().shape({
   name: yup.string().required('Nome é obrigatório'),
   sku: yup.string().optional(),
@@ -107,9 +113,22 @@ const validationSchema = yup.object().shape({
     .min(1, 'Pelo menos 1 categoria deve ser selecionada'),
   brand: yup.string().required('Marca é obrigatório'),
   tags: yup.array(yup.string()).optional(),
-  cover: yup.string().required('Frete é obrigatório'),
-  backCover: yup.string().required('Verso é obrigatório'),
-  gallery: yup.array().of(yup.string()).min(2, 'Mínimo 2 imagens'),
+  cover: coverValidation,
+  backCover: coverValidation,
+  gallery: yup
+    .array()
+    .of(
+      yup
+        .mixed()
+        .required('Imagem é obrigatório')
+        .test('fileType', 'Formato inválido', (value) =>
+          checkImageFormat(value)
+        )
+        .test('fileSize', 'Máximo 300kb', (value) =>
+          checkFileSize(value, 1024 * 300)
+        )
+    )
+    .min(2, 'Mínimo 2 imagens'),
   video: yup.string().optional(),
 })
 const initialValues = {

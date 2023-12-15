@@ -8,6 +8,11 @@ import * as yup from 'yup'
 
 import { offerProductColumns } from '../../../../../utils/constants/admin'
 import { formDataUpload, parsedSelectData } from '../../../../../utils/format'
+import {
+  checkFileSize,
+  checkImageFormat,
+  imageMessage,
+} from '../../../../../utils/helper'
 import { useCategories } from '../../../../../hooks/use-category'
 import { post, put } from '../../../../../libs/fetcher'
 import useFilter from '../../../../../hooks/use-filter'
@@ -21,7 +26,13 @@ import FormProduct from './form-product'
 import Heading from '../../heading'
 
 const validationSchema = yup.object().shape({
-  image: yup.string().required('Imagem é obrigatório'),
+  image: yup
+    .mixed()
+    .required('Imagem é obrigatório')
+    .test('fileType', 'Formato inválido', (value) => checkImageFormat(value))
+    .test('fileSize', 'Máximo 70kb', (value) =>
+      checkFileSize(value, 1024 * 70)
+    ),
   name: yup.string().required('Nome é obrigatório'),
   parent: yup.string().optional(),
   description: yup.string().optional(),
@@ -89,7 +100,8 @@ export default function FormCategories({ data }) {
             id="image"
             label="Imagem"
             name="image"
-            info="800*800"
+            info="512*512"
+            hint={imageMessage('70kb')}
             error={formik.touched.image && formik.errors.image}
             onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
             onBlur={formik.handleBlur}

@@ -10,6 +10,11 @@ import {
   phoneMask,
 } from '../../../../../../utils/mask'
 import { formDataUpload, removeDataMask } from '../../../../../../utils/format'
+import {
+  checkFileSize,
+  checkImageFormat,
+  imageMessage,
+} from '../../../../../../utils/helper'
 import { patch } from '../../../../../../libs/fetcher'
 import useApp from '../../../../../../hooks/use-app'
 import useUser from '../../../../../../hooks/use-user'
@@ -20,7 +25,13 @@ import TextAreaLabel from '../../../input/textarea-label'
 
 const validationSchema = yup.object().shape({
   _type: yup.string().required('Usuário tipo é obrigatório'),
-  image: yup.string().required('Imagem é obrigatório'),
+  image: yup
+    .mixed()
+    .required('Imagem é obrigatório')
+    .test('fileType', 'Formato inválido', (value) => checkImageFormat(value))
+    .test('fileSize', 'Máximo 70kb', (value) =>
+      checkFileSize(value, 1024 * 70)
+    ),
   name: yup.string().required('Nome é obrigatório'),
   email: yup
     .string()
@@ -90,6 +101,7 @@ export default function FormStore({ user }) {
           label="Imagem"
           name="image"
           info="800*800"
+          hint={imageMessage('70kb')}
           error={formik.touched.image && formik.errors.image}
           onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
           onBlur={formik.handleBlur}
