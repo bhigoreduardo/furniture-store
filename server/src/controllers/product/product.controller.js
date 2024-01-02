@@ -8,6 +8,7 @@ import ColorModel from '../../models/product/color.model.js'
 import InventoryModel from '../../models/product/inventory.model.js'
 import MediaModel from '../../models/product/media.model.js'
 import ProductModel from '../../models/product/product.model.js'
+import OrderModel from '../../models/order.model.js'
 
 // UTILS
 const updateStorageGallery = (firstGallery, secondGallery) => {
@@ -242,8 +243,23 @@ export const findById = async (req, res) => {
 
 // REMOVE
 export const remove = async (req, res) => {
+  const allFindedOrder = await OrderModel.find({
+    cart: { $elemMatch: { product: req.params.id } },
+  })
+  const allFindedCategory = await CategoryModel.find({
+    $in: { 'banner.product': req.params.id },
+  })
+  if (allFindedOrder?.length > 0)
+    return res
+      .status(422)
+      .json({ success: false, message: 'Produto possui pedidos' })
+  if (allFindedCategory?.length > 0)
+    return res
+      .status(422)
+      .json({ success: false, message: 'Produto está em destaque' })
+
   const finded = await ProductModel.findById(req.params.id).populate(
-    'productData.media'
+    'productData.media productData.inventory.info'
   )
   if (!finded) throw new ErrorHandler('Produto não cadastrado', 422)
 
@@ -252,10 +268,27 @@ export const remove = async (req, res) => {
   finded.productData.media.gallery.forEach((item) => removeServerImage(item))
   await MediaModel.findByIdAndDelete(finded.productData.media._id.toString())
   await Promise.all(
-    finded.productData.inventory.info.map(
-      async (item) => await InventoryModel.findByIdAndDelete(item.toString())
-    )
+    finded.productData.inventory.info.map(async (item) => {
+      await InventoryModel.findByIdAndDelete(item._id.toString())
+      await ColorModel.findByIdAndUpdate(item.color, {
+        $pull: { products: finded._id },
+      })
+    })
   )
   await ProductModel.findByIdAndDelete(req.params.id)
+  await BrandModel.findByIdAndUpdate(finded.brand, {
+    $pull: { products: finded._id },
+  })
+  await Promise.all(
+    finded.category.map(
+      async (item) =>
+        await CategoryModel.findByIdAndUpdate(item, {
+          $pull: {
+            products: finded._id,
+            spotlights: finded._id,
+          },
+        })
+    )
+  )
   return res.status(200).json({ success: true, message: 'Produto removido' })
 }

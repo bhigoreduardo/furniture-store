@@ -40,7 +40,7 @@ export function useFilterCustomerOrders(id) {
 
   const { data } = useQuery({
     queryKey: [
-      'orders-customers',
+      'customers-orders',
       id,
       search,
       orderStatus,
@@ -52,7 +52,7 @@ export function useFilterCustomerOrders(id) {
     queryFn: async () => {
       if (id)
         return await get(
-          `/orders/customers/${id}/search?search=${search}&orderStatus=${orderStatus}&startDate=${
+          `/customers/${id}/orders/search?search=${search}&orderStatus=${orderStatus}&startDate=${
             startDate || ''
           }&endDate=${endDate || ''}&page=${page}&perPage=${perPage}`,
           setIsLoading,

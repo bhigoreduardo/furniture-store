@@ -2,11 +2,13 @@
 MERN ecommerce furniture application
 
 FIXME:
-  - Se estiver no admin consertar bug dos compare, favorits
+  - Ao excluir produto
+    - Recalcular cores/marcas/categorias
+    - Remover de spotlight/banner
+  - Ao excluir categoria remover no filho
+
   - Fazer a validação do tempo da oferta para aplicar no produto
   - req.body.status === StatusEnum.Canceled devolver estoque
-  - Componentizar form tag button
-  - Colocar modal para confirmar exclusão
   - Na oferta quanto for escolhido para todos produtos colocar condição na validação do formik
   - Erro da remoção da imagem do servidor está crashando a aplicação tem que ser resolvido com urgência
 
@@ -23,6 +25,7 @@ FIXME:
   - externalizar handleProduct(user, token, handleUpdateUser, endpoint, id) - [card-product/compare/wishlist/hero]
   - Text rich está com bug no enter
   - Rever todos refetch
+  - Rever todos search dos hooks
 
 TODO:
   - Condições de loja no ar:

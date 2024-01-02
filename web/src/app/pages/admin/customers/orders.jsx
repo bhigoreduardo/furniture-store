@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 
 import { orderColumns } from '../../../../utils/constants/public'
 import { useFilterCustomerOrders } from '../../../../hooks/admin/use-order'
@@ -7,6 +7,7 @@ import TableData from '../../../components/ui/table/table-data'
 
 export default function Orders() {
   const { id } = useParams()
+  const { pathname } = useLocation()
   const { docs, total, pages } = useFilterCustomerOrders(id)
 
   return (
@@ -14,7 +15,7 @@ export default function Orders() {
       <FitlerOrder />
       <TableData
         title="Pedidos"
-        columns={orderColumns('/admin/pedidos')}
+        columns={orderColumns(`/acesso/${pathname.split('/')[2]}/pedidos`)}
         data={docs}
         total={total}
         pages={pages}

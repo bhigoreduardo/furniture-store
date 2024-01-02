@@ -4,6 +4,7 @@ import { removeServerImage } from '../../utils/helper.js'
 import { filterSorted } from '../../utils/format.js'
 import ErrorHandler from '../../middlewares/ErrorHandler.js'
 import BrandModel from '../../models/product/brand.model.js'
+import ProductModel from '../../models/product/product.model.js'
 
 // SAVE
 export const save = async (req, res) => {
@@ -79,9 +80,15 @@ export const findById = async (req, res) => {
 
 // REMOVE
 export const remove = async (req, res) => {
+  const allFindedProduct = await ProductModel.find({ brand: req.params.id })
+  if (allFindedProduct?.length > 0)
+    return res
+      .status(422)
+      .json({ success: false, message: 'Marca possui produtos' })
+
   const finded = await BrandModel.findById(req.params.id)
   if (!finded) throw new ErrorHandler('Marca não cadastrada', 422)
-  
+
   removeServerImage(finded.image)
   await BrandModel.findByIdAndDelete(req.params.id)
   return res.status(200).json({ success: true, message: 'Marca removida' })

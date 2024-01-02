@@ -7,6 +7,7 @@ import * as authMiddleware from '../../../../middlewares/user/auth.middleware.js
 import * as authController from '../../../../controllers/user/auth.controller.js'
 import * as customerMiddleware from '../../../../middlewares/user/customer.middleware.js'
 import * as customerController from '../../../../controllers/user/customer.controller.js'
+import customer from './combine/customer.route.js'
 
 const router = express.Router()
 
@@ -55,6 +56,9 @@ router.patch(
   validate(customerMiddleware.update),
   useError(authController.update)
 )
+
+// EXTENDS
+router.use(customer)
 
 // SEARCH
 router.get(

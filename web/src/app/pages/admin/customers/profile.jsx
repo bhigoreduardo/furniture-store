@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { Package, Receipt, Rocket, ArrowRight } from 'phosphor-react'
 import { SwiperSlide } from 'swiper/react'
 
@@ -20,6 +20,8 @@ import CardProduct from '../../../components/ui/card/card-product'
 export default function Profile() {
   const navigate = useNavigate()
   const { id } = useParams()
+  const { pathname } = useLocation()
+  const path = pathname.split('/')[2]
   const customer = useCustomer(id)
   const address = customer.address
   // const lastHistory = useLastHistory(id)
@@ -70,10 +72,10 @@ export default function Profile() {
             label="Vê todos"
             icon={<ArrowRight size={14} />}
             className="!gap-1 font-semibold text-sm text-orange-500 hover:bg-orange-500 hover:text-white !py-2 normal-case"
-            onClick={() => navigate(`/admin/clientes/pedidos/${id}`)}
+            onClick={() => navigate(`/acesso/${path}/clientes/pedidos/${id}`)}
           />
         }
-        columns={orderColumns('/admin/pedidos')}
+        columns={orderColumns(`/acesso/${path}/pedidos`)}
         data={customer?.orders}
       />
 

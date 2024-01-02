@@ -2,6 +2,7 @@ import slugify from 'slugify'
 
 import { filterSorted } from '../../utils/format.js'
 import ColorModel from '../../models/product/color.model.js'
+import InventoryModel from '../../models/product/inventory.model.js'
 
 // SAVE
 export const save = async (req, res) => {
@@ -64,6 +65,12 @@ export const findById = async (req, res) => {
 
 // REMOVE
 export const remove = async (req, res) => {
+  const allFindedInvetory = InventoryModel.find({ color: req.params.id })
+  if (allFindedInvetory?.length > 0)
+    return res
+      .status(422)
+      .json({ success: false, message: 'Cor possui produtos' })
+
   await ColorModel.findByIdAndDelete(req.params.id)
   return res.status(200).json({ success: true, message: 'Cor removida' })
 }

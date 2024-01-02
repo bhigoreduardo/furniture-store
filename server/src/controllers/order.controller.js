@@ -40,7 +40,18 @@ export const save = async (req, res) => {
         (i) => i.color.toString() === item.color
       )
       const quantity = item.quantity
-      const price = inventory?.offer?.offerPrice || inventory.price
+      let price = inventory.price
+      if (inventory.offer && inventory.offer.offerPrice) {
+        const currentDate = new Date()
+        const startedIn = new Date(inventory.offer?.offerPriceDates[0])
+
+        if (currentDate >= startedIn) {
+          const expiredIn = new Date(inventory.offer?.offerPriceDates[1])
+          if (!expiredIn || (expiredIn && currentDate <= expiredIn)) {
+            price = inventory.offer.offerPrice
+          }
+        }
+      }
       const { fee, timeDelivery, isFree } = product.productData.shippingInfo
       const subAmount = isFree ? price * quantity : (price + fee) * quantity
 

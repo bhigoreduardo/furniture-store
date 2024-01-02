@@ -1,9 +1,11 @@
+import mongoose from 'mongoose'
 import slugify from 'slugify'
 
 import { removeServerImage } from '../../utils/helper.js'
 import { filterSorted } from '../../utils/format.js'
 import ErrorHandler from '../../middlewares/ErrorHandler.js'
 import CategoryModel from '../../models/product/category.model.js'
+import ProductModel from '../../models/product/product.model.js'
 
 // SAVE
 export const save = async (req, res, next) => {
@@ -82,10 +84,26 @@ export const findById = async (req, res) => {
 
 // REMOVE
 export const remove = async (req, res) => {
+  const allFindedProduct = await ProductModel.find({
+    $in: { category: new mongoose.Types.ObjectId(req.params.id) },
+  })
+  const allFindedCategory = await CategoryModel.find({ parent: req.params.id })
+  if (allFindedProduct?.length > 0)
+    return res
+      .status(422)
+      .json({ success: false, message: 'Categoria possui produtos' })
+
   const finded = await CategoryModel.findById(req.params.id)
   if (!finded) throw new ErrorHandler('Categoria não cadastrada', 422)
 
   removeServerImage(finded.image)
   await CategoryModel.findByIdAndDelete(req.params.id)
+  if (allFindedCategory?.length > 0)
+    await Promise.all(
+      allFindedCategory.map(
+        async (item) =>
+          await CategoryModel.findByIdAndUpdate(item._id, { parent: null })
+      )
+    )
   return res.status(200).json({ success: true, message: 'Categoria removida' })
 }
